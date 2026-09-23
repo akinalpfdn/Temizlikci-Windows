@@ -17,6 +17,8 @@ internal ref struct MftRecord
     /// <summary>Record number of the folder holding the primary (non-DOS) name.</summary>
     public long ParentRecord;
     public ReadOnlySpan<char> Name;
+    /// <summary>The name is only a DOS 8.3 alias (PROFIL~1); a Win32 name may still come in an extension record.</summary>
+    public bool NameIsDos;
     /// <summary>Junctions, symbolic links and mount points: they stand for another path and are never shown.</summary>
     public bool IsNameSurrogate;
 }
@@ -102,6 +104,7 @@ internal static class MftRecordParser
                             result.HasName = true;
                             result.ParentRecord = (long)BinaryPrimitives.ReadUInt64LittleEndian(fileName) & RecordNumberMask;
                             result.Name = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, char>(fileName.Slice(66, characters * 2));
+                            result.NameIsDos = space == NamespaceDos;
                         }
                     }
                     break;

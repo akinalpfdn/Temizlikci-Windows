@@ -11,6 +11,8 @@ internal sealed class MftRecordTable
     public const byte Directory = 0x02;
     public const byte NameSurrogate = 0x04;
     public const byte Named = 0x08;
+    /// <summary>The name kept so far is a DOS 8.3 alias; a Win32 name replaces it when one turns up.</summary>
+    public const byte DosName = 0x10;
     public const int NoParent = -1;
 
     public MftRecordTable(int capacity)
@@ -53,9 +55,14 @@ internal sealed class MftRecordTable
         }
         if (record.IsNameSurrogate) Flags[owner] |= NameSurrogate;
         Allocated[owner] += record.DataAllocated;
-        if (record.HasName && !Has(owner, Named) && record.ParentRecord < Capacity)
+        // Base and extension records arrive in any order, and the long name can sit in an extension record while the
+        // base holds only the 8.3 alias, so a real name replaces an alias whichever came first.
+        bool better = !Has(owner, Named) || (Has(owner, DosName) && !record.NameIsDos);
+        if (record.HasName && better && record.ParentRecord < Capacity)
         {
             Flags[owner] |= Named;
+            if (record.NameIsDos) Flags[owner] |= DosName;
+            else Flags[owner] &= unchecked((byte)~DosName);
             Parents[owner] = (int)record.ParentRecord;
             bool keepName = record.IsDirectory || owner != recordNumber || Allocated[owner] >= individualFileThreshold;
             if (keepName) Names[owner] = new string(record.Name);

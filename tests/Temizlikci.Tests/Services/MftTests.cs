@@ -196,6 +196,20 @@ public sealed class MftTreeBuilderTests
         (35, new MftRecordBuilder().Deleted().FileName("old.txt", 5).Data((1L << 30) / MftRecordBuilder.ClusterSize).Build()),
         (40, new MftRecordBuilder().ExtensionOf(34).Data((50L << 20) / MftRecordBuilder.ClusterSize).Build()));
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void Should_KeepTheLongName_When_ItLivesInAnExtensionRecordBesideA83Alias(bool baseFirst)
+    {
+        // The base record holds only the DOS alias; the Win32 name moved to an extension record with the attribute list.
+        var baseRecord = (30, new MftRecordBuilder().Directory().FileName("PROFIL~1", 5, space: 2).Build());
+        var extension = (41, new MftRecordBuilder().ExtensionOf(30).FileName("Profile 1", 5, space: 1).Build());
+
+        var table = baseFirst ? Table(baseRecord, extension) : Table(extension, baseRecord);
+
+        Assert.Equal("Profile 1", table.Names[30]);
+    }
+
     [Fact]
     public void Should_AskForTheNamesItDidNotKeep_When_AFileGrewThroughAnExtensionRecord()
     {
