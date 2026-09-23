@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>Temizlikci.Tests</RootNamespace>
+    <!-- Tests assert on literal English strings and use literal paths on purpose. -->
+    <NoWarn>$(NoWarn);CA1303;CA1861;CA2007</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Temizlikci.Domain\Temizlikci.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Temizlikci.Presentation\Temizlikci.Presentation.csproj" />
+    <ProjectReference Include="..\..\src\Temizlikci.Services\Temizlikci.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>

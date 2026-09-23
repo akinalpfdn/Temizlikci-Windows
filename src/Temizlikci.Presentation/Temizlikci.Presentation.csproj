@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- View models, strings and formatting, free of WinUI types so they can be unit-tested. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>Temizlikci.Presentation</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Temizlikci.Domain\Temizlikci.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Temizlikci.Tests" />
+  </ItemGroup>
+</Project>

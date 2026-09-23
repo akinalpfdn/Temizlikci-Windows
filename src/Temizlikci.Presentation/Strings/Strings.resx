@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="app.name" xml:space="preserve">
+    <value>Temizlikci</value>
+    <comment>The app's name. Keep it untranslated.</comment>
+  </data>
+  <data name="sidebar.section.locations" xml:space="preserve">
+    <value>Locations</value>
+    <comment>Sidebar section listing places that can be scanned.</comment>
+  </data>
+  <data name="sidebar.section.insights" xml:space="preserve">
+    <value>Insights</value>
+    <comment>Sidebar section listing analysis views.</comment>
+  </data>
+  <data name="sidebar.item.localDisk" xml:space="preserve">
+    <value>Local Disk</value>
+    <comment>Name of a drive whose label can't be read.</comment>
+  </data>
+  <data name="sidebar.item.drive" xml:space="preserve">
+    <value>{0} ({1})</value>
+    <comment>A drive in the sidebar. {0}: its label, {1}: its letter such as C:.</comment>
+  </data>
+  <data name="volume.free" xml:space="preserve">
+    <value>{0} free</value>
+    <comment>Sidebar badge with a drive's free space.</comment>
+  </data>
+  <data name="sidebar.item.home" xml:space="preserve">
+    <value>Home</value>
+    <comment>Sidebar item for the user's profile folder.</comment>
+  </data>
+  <data name="sidebar.action.chooseFolder" xml:space="preserve">
+    <value>Choose Folder…</value>
+    <comment>Sidebar row that opens a picker to choose a folder to scan.</comment>
+  </data>
+  <data name="sidebar.item.developer" xml:space="preserve">
+    <value>Developer</value>
+    <comment>Sidebar item for reclaimable developer files.</comment>
+  </data>
+  <data name="sidebar.item.whatGrew" xml:space="preserve">
+    <value>What Grew</value>
+    <comment>Sidebar item that compares the latest scan with the previous one.</comment>
+  </data>
+  <data name="sidebar.item.largeFiles" xml:space="preserve">
+    <value>Large Files</value>
+    <comment>Sidebar item listing the largest files.</comment>
+  </data>
+  <data name="sidebar.item.recycleBin" xml:space="preserve">
+    <value>Recycle Bin</value>
+    <comment>Sidebar item for items moved to the Recycle Bin.</comment>
+  </data>
+  <data name="menu.file" xml:space="preserve">
+    <value>File</value>
+    <comment>Menu bar title.</comment>
+  </data>
+  <data name="menu.edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Menu bar title.</comment>
+  </data>
+  <data name="menu.view" xml:space="preserve">
+    <value>View</value>
+    <comment>Menu bar title.</comment>
+  </data>
+  <data name="menu.go" xml:space="preserve">
+    <value>Go</value>
+    <comment>Menu bar title for navigation commands.</comment>
+  </data>
+  <data name="menu.help" xml:space="preserve">
+    <value>Help</value>
+    <comment>Menu bar title.</comment>
+  </data>
+  <data name="menu.file.exit" xml:space="preserve">
+    <value>Exit</value>
+    <comment>File menu command that closes the app.</comment>
+  </data>
+  <data name="menu.file.chooseFolder" xml:space="preserve">
+    <value>Choose Folder…</value>
+    <comment>File menu command that opens a picker to choose a folder to scan.</comment>
+  </data>
+  <data name="menu.file.settings" xml:space="preserve">
+    <value>Settings</value>
+    <comment>File menu command that opens the settings page.</comment>
+  </data>
+  <data name="menu.view.inspector" xml:space="preserve">
+    <value>Inspector</value>
+    <comment>View menu toggle that shows or hides the inspector.</comment>
+  </data>
+  <data name="inspector.empty.title" xml:space="preserve">
+    <value>No Selection</value>
+    <comment>Inspector title when nothing is selected.</comment>
+  </data>
+  <data name="inspector.empty.message" xml:space="preserve">
+    <value>Select a folder in the chart or the list to see its details.</value>
+    <comment>Inspector message when nothing is selected.</comment>
+  </data>
+  <data name="overview.empty.title" xml:space="preserve">
+    <value>See What’s Using Your Disk</value>
+    <comment>Title of the empty state before the first scan.</comment>
+  </data>
+  <data name="overview.empty.message" xml:space="preserve">
+    <value>Temizlikci measures every folder and shows the result as rings you can open. Nothing is changed or deleted while it scans.</value>
+    <comment>Explanation in the empty state before the first scan.</comment>
+  </data>
+  <data name="insights.empty.title" xml:space="preserve">
+    <value>Nothing Scanned Yet</value>
+    <comment>Title shown in insight views before any scan has run.</comment>
+  </data>
+  <data name="format.bytes" xml:space="preserve">
+    <value>{0} bytes</value>
+    <comment>A size under 1 KB. {0}: the number of bytes.</comment>
+  </data>
+  <data name="format.byte" xml:space="preserve">
+    <value>1 byte</value>
+    <comment>A size of exactly one byte.</comment>
+  </data>
+  <data name="format.kb" xml:space="preserve">
+    <value>{0} KB</value>
+    <comment>A size in kilobytes (1024 bytes), as Explorer shows it.</comment>
+  </data>
+  <data name="format.mb" xml:space="preserve">
+    <value>{0} MB</value>
+    <comment>A size in megabytes (1024 KB), as Explorer shows it.</comment>
+  </data>
+  <data name="format.gb" xml:space="preserve">
+    <value>{0} GB</value>
+    <comment>A size in gigabytes (1024 MB), as Explorer shows it.</comment>
+  </data>
+  <data name="format.tb" xml:space="preserve">
+    <value>{0} TB</value>
+    <comment>A size in terabytes (1024 GB), as Explorer shows it.</comment>
+  </data>
+  <data name="format.pb" xml:space="preserve">
+    <value>{0} PB</value>
+    <comment>A size in petabytes (1024 TB), as Explorer shows it.</comment>
+  </data>
+  <data name="relative.justNow" xml:space="preserve">
+    <value>just now</value>
+    <comment>Relative time under a minute.</comment>
+  </data>
+  <data name="relative.minuteAgo" xml:space="preserve">
+    <value>1 minute ago</value>
+    <comment>Relative time.</comment>
+  </data>
+  <data name="relative.minutesAgo" xml:space="preserve">
+    <value>{0} minutes ago</value>
+    <comment>Relative time. {0}: number of minutes.</comment>
+  </data>
+  <data name="relative.hourAgo" xml:space="preserve">
+    <value>1 hour ago</value>
+    <comment>Relative time.</comment>
+  </data>
+  <data name="relative.hoursAgo" xml:space="preserve">
+    <value>{0} hours ago</value>
+    <comment>Relative time. {0}: number of hours.</comment>
+  </data>
+  <data name="relative.yesterday" xml:space="preserve">
+    <value>yesterday</value>
+    <comment>Relative time.</comment>
+  </data>
+  <data name="relative.daysAgo" xml:space="preserve">
+    <value>{0} days ago</value>
+    <comment>Relative time. {0}: number of days, 2 to 6.</comment>
+  </data>
+  <data name="relative.onDate" xml:space="preserve">
+    <value>on {0}</value>
+    <comment>Relative time a week or more ago. {0}: the date.</comment>
+  </data>
+</root>

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Temizlikci.App/Temizlikci.App.csproj" />
+    <Project Path="src/Temizlikci.Domain/Temizlikci.Domain.csproj" />
+    <Project Path="src/Temizlikci.Presentation/Temizlikci.Presentation.csproj" />
+    <Project Path="src/Temizlikci.Services/Temizlikci.Services.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Temizlikci.Tests/Temizlikci.Tests.csproj" />
+  </Folder>
+</Solution>

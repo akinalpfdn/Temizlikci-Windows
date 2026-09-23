@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Windows implementations of the domain's service interfaces. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+    <RootNamespace>Temizlikci.Services</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Temizlikci.Domain\Temizlikci.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Temizlikci.Tests" />
+  </ItemGroup>
+</Project>

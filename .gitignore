@@ -1,0 +1,24 @@
+# Build output
+bin/
+obj/
+artifacts/
+publish/
+*.user
+*.suo
+.vs/
+TestResults/
+# Logs and crash dumps
+*.log
+*.dmp
+# OS
+Thumbs.db
+.DS_Store
+# Secrets / env
+.env
+.env.local
+.env.*.local
+# Release artifacts
+*.zip
+# Local working notes, kept out of the repository like the macOS project (developer decision, 2026-09-23)
+.claude/
+.lore/

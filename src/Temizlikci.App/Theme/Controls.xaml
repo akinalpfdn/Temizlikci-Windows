@@ -1,0 +1,29 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Grid lengths can't be x:Double, so layout tokens that feed row and column definitions live here. -->
+    <GridLength x:Key="TitleBarGridHeight">48</GridLength>
+    <GridLength x:Key="InspectorGridWidth">300</GridLength>
+
+    <!-- The navigation pane sits on Mica; its content surface is aliased per theme in Colors.xaml. -->
+    <StaticResource x:Key="NavigationViewDefaultPaneBackground" ResourceKey="ControlFillColorTransparentBrush" />
+    <StaticResource x:Key="NavigationViewExpandedPaneBackground" ResourceKey="ControlFillColorTransparentBrush" />
+
+    <Style x:Key="EmptyStateIconStyle" TargetType="FontIcon">
+        <Setter Property="FontSize" Value="{StaticResource EmptyStateIconSize}" />
+        <Setter Property="Foreground" Value="{ThemeResource TextFillColorTertiaryBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="EmptyStatePanelStyle" TargetType="StackPanel">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="MaxWidth" Value="{StaticResource EmptyStateMaxWidth}" />
+        <Setter Property="Spacing" Value="{StaticResource SpacingMedium}" />
+    </Style>
+
+    <Style x:Key="SidebarBadgeTextStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextStyle}">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+</ResourceDictionary>

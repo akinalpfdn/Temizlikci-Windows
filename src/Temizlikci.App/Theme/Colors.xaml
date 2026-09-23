@@ -1,0 +1,87 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+      UI colors. Controls and text keep system brushes; these are the few roles the app defines itself.
+      Chart segment colors live in ChartPalette.cs, because Win2D draws them (values from the macOS colorsets,
+      validated for light and dark surfaces #FFFFFF / #1E1E1E — DECISIONS in ../temizlikci, 2026-09-22).
+      High Contrast maps every role to a system color so the person's contrast theme wins.
+    -->
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <Color x:Key="ContentSurfaceColor">#FFFFFF</Color>
+            <Color x:Key="CaptionForegroundColor">#E4000000</Color>
+            <Color x:Key="CaptionInactiveForegroundColor">#72000000</Color>
+            <Color x:Key="CaptionHoverBackgroundColor">#09000000</Color>
+            <Color x:Key="CaptionPressedBackgroundColor">#06000000</Color>
+            <SolidColorBrush x:Key="ContentSurfaceBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ContentDividerBrush" Color="#14000000" />
+            <SolidColorBrush x:Key="RowBackgroundBrush" Color="#08000000" />
+            <SolidColorBrush x:Key="RowSelectedBrush" Color="#1F005FB8" />
+            <SolidColorBrush x:Key="StatusSafeInkBrush" Color="#006300" />
+            <SolidColorBrush x:Key="StatusToolInkBrush" Color="#8A5A00" />
+            <SolidColorBrush x:Key="StatusKeepInkBrush" Color="#9E000000" />
+            <SolidColorBrush x:Key="StatusSafeFillBrush" Color="#0CA30C" />
+            <SolidColorBrush x:Key="StatusToolFillBrush" Color="#FAB219" />
+            <SolidColorBrush x:Key="GrowthUpInkBrush" Color="#B8431A" />
+            <SolidColorBrush x:Key="GrowthDownInkBrush" Color="#0A6C77" />
+            <SolidColorBrush x:Key="GrowthUpBackgroundBrush" Color="#1FB8431A" />
+            <SolidColorBrush x:Key="GrowthDownBackgroundBrush" Color="#1F0A6C77" />
+            <SolidColorBrush x:Key="AttentionInkBrush" Color="#9D5D00" />
+            <SolidColorBrush x:Key="BannerBackgroundBrush" Color="#0A000000" />
+            <SolidColorBrush x:Key="SizeBarTrackBrush" Color="#14000000" />
+            <StaticResource x:Key="NavigationViewContentBackground" ResourceKey="ContentSurfaceBrush" />
+            <StaticResource x:Key="NavigationViewContentGridBorderBrush" ResourceKey="ContentDividerBrush" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <Color x:Key="ContentSurfaceColor">#1E1E1E</Color>
+            <Color x:Key="CaptionForegroundColor">#FFFFFFFF</Color>
+            <Color x:Key="CaptionInactiveForegroundColor">#5DFFFFFF</Color>
+            <Color x:Key="CaptionHoverBackgroundColor">#0FFFFFFF</Color>
+            <Color x:Key="CaptionPressedBackgroundColor">#0AFFFFFF</Color>
+            <SolidColorBrush x:Key="ContentSurfaceBrush" Color="#1E1E1E" />
+            <SolidColorBrush x:Key="ContentDividerBrush" Color="#19FFFFFF" />
+            <SolidColorBrush x:Key="RowBackgroundBrush" Color="#0AFFFFFF" />
+            <SolidColorBrush x:Key="RowSelectedBrush" Color="#2E60CDFF" />
+            <SolidColorBrush x:Key="StatusSafeInkBrush" Color="#35C35A" />
+            <SolidColorBrush x:Key="StatusToolInkBrush" Color="#FAB219" />
+            <SolidColorBrush x:Key="StatusKeepInkBrush" Color="#C5FFFFFF" />
+            <SolidColorBrush x:Key="StatusSafeFillBrush" Color="#0CA30C" />
+            <SolidColorBrush x:Key="StatusToolFillBrush" Color="#FAB219" />
+            <SolidColorBrush x:Key="GrowthUpInkBrush" Color="#FF9459" />
+            <SolidColorBrush x:Key="GrowthDownInkBrush" Color="#4CCBD8" />
+            <SolidColorBrush x:Key="GrowthUpBackgroundBrush" Color="#26FF9459" />
+            <SolidColorBrush x:Key="GrowthDownBackgroundBrush" Color="#264CCBD8" />
+            <SolidColorBrush x:Key="AttentionInkBrush" Color="#FCE100" />
+            <SolidColorBrush x:Key="BannerBackgroundBrush" Color="#0DFFFFFF" />
+            <SolidColorBrush x:Key="SizeBarTrackBrush" Color="#19FFFFFF" />
+            <StaticResource x:Key="NavigationViewContentBackground" ResourceKey="ContentSurfaceBrush" />
+            <StaticResource x:Key="NavigationViewContentGridBorderBrush" ResourceKey="ContentDividerBrush" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <Color x:Key="ContentSurfaceColor">#000000</Color>
+            <Color x:Key="CaptionForegroundColor">#FFFFFFFF</Color>
+            <Color x:Key="CaptionInactiveForegroundColor">#FFFFFFFF</Color>
+            <Color x:Key="CaptionHoverBackgroundColor">#33FFFFFF</Color>
+            <Color x:Key="CaptionPressedBackgroundColor">#22FFFFFF</Color>
+            <SolidColorBrush x:Key="ContentSurfaceBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="ContentDividerBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+            <SolidColorBrush x:Key="RowBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="RowSelectedBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+            <SolidColorBrush x:Key="StatusSafeInkBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+            <SolidColorBrush x:Key="StatusToolInkBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+            <SolidColorBrush x:Key="StatusKeepInkBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+            <SolidColorBrush x:Key="StatusSafeFillBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+            <SolidColorBrush x:Key="StatusToolFillBrush" Color="{ThemeResource SystemColorHotlightColor}" />
+            <SolidColorBrush x:Key="GrowthUpInkBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+            <SolidColorBrush x:Key="GrowthDownInkBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+            <SolidColorBrush x:Key="GrowthUpBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="GrowthDownBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="AttentionInkBrush" Color="{ThemeResource SystemColorHotlightColor}" />
+            <SolidColorBrush x:Key="BannerBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="SizeBarTrackBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <StaticResource x:Key="NavigationViewContentBackground" ResourceKey="ContentSurfaceBrush" />
+            <StaticResource x:Key="NavigationViewContentGridBorderBrush" ResourceKey="ContentDividerBrush" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>
