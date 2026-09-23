@@ -14,7 +14,9 @@
     <WindowsPackageType>None</WindowsPackageType>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <EnableMsixTooling>false</EnableMsixTooling>
+    <ApplicationIcon>Assets\Temizlikci.ico</ApplicationIcon>
+    <!-- Needed even unpackaged: its targets put the app's .pri and compiled XAML (.xbf) into publish output. -->
+    <EnableMsixTooling>true</EnableMsixTooling>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>

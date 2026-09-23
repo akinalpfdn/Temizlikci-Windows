@@ -165,3 +165,17 @@ repository's own config can name an fsmonitor program that `status` would start;
 LibGit2Sharp would add a native dependency and still differ from the Git people use.
 **Trade-offs:** Very large repositories read slower without their monitor.
 **Revisit if:** Git gains a read-only "safe status" mode.
+
+---
+
+## 2026-09-23 — MSIX tooling stays on in an unpackaged app
+**Chosen:** `EnableMsixTooling=true` with `WindowsPackageType=None`; `scripts/publish.ps1` publishes self-contained,
+ReadyToRun, and zips the folder.
+**Alternatives:** Tooling off (as set up in Phase 1) and copying `Temizlikci.pri` and the `.xbf` files into the
+publish folder by hand or with a custom target.
+**Why:** With the tooling off, `dotnet publish` left out the app's `.pri` and compiled XAML, and the published app died
+at startup inside Microsoft.UI.Xaml.dll (0xC000027B), although Debug and Release builds ran. The tooling's targets are
+what add those files to publish output; they produce no package when the package type is None. Verified: the zip,
+unpacked into a new folder, starts.
+**Trade-offs:** The build loads the MSIX targets it doesn't otherwise need.
+**Revisit if:** The Windows App SDK adds unpackaged publish support without the MSIX targets.
