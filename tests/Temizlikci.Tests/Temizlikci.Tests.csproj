@@ -6,8 +6,10 @@
     <IsPackable>false</IsPackable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RootNamespace>Temizlikci.Tests</RootNamespace>
-    <!-- Tests assert on literal English strings and use literal paths on purpose. -->
-    <NoWarn>$(NoWarn);CA1303;CA1861;CA2007</NoWarn>
+    <!-- Tests assert on literal English strings and use literal paths on purpose. xUnit1051 asks for the test's
+         cancellation token on every optional-token call; for synchronous tree walks that is noise, and async scanner
+         tests pass it deliberately. -->
+    <NoWarn>$(NoWarn);CA1303;CA1861;CA2007;xUnit1051</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="xunit.v3" />

@@ -110,3 +110,29 @@ the private GitHub repository `akinalpfdn/Temizlikci-Windows`.
 **Why:** Git rules allow direct commits while prototyping without users; the phase tags give the same rollback points.
 **Trade-offs:** No PR review trail.
 **Revisit if:** The app gets users or contributors — switch to squash-merged branches.
+
+---
+
+## 2026-09-23 — Tree nodes store names, not paths
+**Chosen:** `FileNode` holds its name only (the root's name is the scanned path). Paths and IDs are derived while
+walking (`NodeRef` = node + path); an ID is the full path, or the folder's path plus a suffix for aggregates, exactly
+as on macOS. Nodes stay immutable; edits rebuild the folders on the way (copy-on-write).
+**Alternatives:** A path per node like macOS (`URL`); a mutable tree with parent pointers.
+**Why:** The macOS app measured a second copy of every path as its largest memory cost (Lore knownIssue 101). Parent
+pointers would make shared subtrees impossible, so every trash edit would have to mutate a tree that background
+analyses are still reading.
+**Trade-offs:** Code that needs a path must carry it (`NodeRef`, `IdPath`); a node alone doesn't know where it is.
+**Revisit if:** Profiling shows path rebuilding in hot UI paths.
+
+---
+
+## 2026-09-23 — Rules are data in the domain; their wording lives in the presentation layer
+**Chosen:** `CleanupRule` carries an ID, ecosystem, safety, matcher and action; the reason people read is looked up by
+rule ID in `L10n`. Matchers gained `AtDriveRoot` (for `$Recycle.Bin`, `hiberfil.sys` on any drive) and glob markers
+(`*.csproj`, `*.sln`), and exact-path rules also match files.
+**Alternatives:** Resource keys stored in the domain, as `LocalizedStringResource` was on macOS.
+**Why:** The domain project has no resources and must stay free of presentation concerns. On Windows several of the
+largest space users are single files at a drive root (hibernation and page files), and .NET projects are recognized by
+`*.csproj` whose name varies.
+**Trade-offs:** A new rule needs a matching reason string; a test enforces it.
+**Revisit if:** Rules become user-editable.
