@@ -62,6 +62,9 @@ public sealed class ContentRow
 
     public Visibility ShareVisibility => Columns.Compact ? Visibility.Collapsed : Visibility.Visible;
 
+    /// <summary>What screen readers say for the row: the list item has no name of its own, only this object.</summary>
+    public override string ToString() => ShareText.Length > 0 ? $"{Title}, {SizeText}, {ShareText}" : $"{Title}, {SizeText}";
+
     public Visibility MeasuringVisibility => IsMeasuring ? Visibility.Visible : Visibility.Collapsed;
     public Visibility NeedsAccessVisibility => NeedsAccess ? Visibility.Visible : Visibility.Collapsed;
     public Visibility SafetyVisibility => Safety is null ? Visibility.Collapsed : Visibility.Visible;
