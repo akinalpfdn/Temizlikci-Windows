@@ -629,8 +629,30 @@ public sealed partial class LocationScanModel : ObservableObject, IDisposable
         return HasResult && !services.Protection.IsProtected(file.Path) && (MatchAlong(file.IdPath)?.Rule.Safety ?? SafetyLevel.Safe) == SafetyLevel.Safe;
     }
 
+    /// <summary>True for real items Windows needs (its folder, drive roots, profile roots), which never move.</summary>
+    public bool IsSystemProtected(NodeRef node) =>
+        node.Node.Kind is NodeKind.Directory or NodeKind.File && node.Id != RootPath && services.Protection.IsProtected(node.Path);
+
+    /// <summary>An item inside a program folder waiting for the person to confirm moving it; the view asks.</summary>
+    public PendingRecycle? PendingRecycle { get; private set; }
+
+    /// <summary>Moves the item the confirmation was about.</summary>
+    public void ConfirmRecycle()
+    {
+        if (PendingRecycle is not { } pending) return;
+        PendingRecycle = null;
+        Recycle(pending.Item, pending.Ids, confirmed: true);
+        Changed();
+    }
+
+    public void CancelRecycle()
+    {
+        PendingRecycle = null;
+        Changed();
+    }
+
     /// <summary>Moves <paramref name="node"/> to the Recycle Bin, updates the tree without rescanning, and registers
-    /// Undo. No confirmation: the action is undoable.</summary>
+    /// Undo. No confirmation, because the action is undoable, except inside program folders (<see cref="PendingRecycle"/>).</summary>
     public void Recycle(NodeRef? node)
     {
         if (node is not { } item || AbsoluteIdPath(item) is not { } ids) return;
@@ -643,13 +665,6 @@ public sealed partial class LocationScanModel : ObservableObject, IDisposable
         ArgumentNullException.ThrowIfNull(match);
         if (match.Rule.Safety != SafetyLevel.Safe) return;
         Recycle(new NodeRef(match.Node, match.Path), match.IdPath);
-        // Drop the row right away; re-matching the whole tree takes a moment on a full drive.
-        if (LastRecycled?.Item.OriginalPath == match.Path)
-        {
-            CleanupMatches = CleanupMatches.Where(existing => existing.Id != match.Id).ToList();
-            matchesById.Remove(match.Id);
-            Changed();
-        }
     }
 
     public void Recycle(LargeFile file)
@@ -657,11 +672,6 @@ public sealed partial class LocationScanModel : ObservableObject, IDisposable
         ArgumentNullException.ThrowIfNull(file);
         if (!CanRecycle(file)) return;
         Recycle(new NodeRef(file.Node, file.Path), file.IdPath);
-        if (LastRecycled?.Item.OriginalPath == file.Path)
-        {
-            LargeFiles = LargeFiles.Where(existing => existing.Id != file.Id).ToList();
-            Changed();
-        }
     }
 
     /// <summary>Items dragged onto the sidebar's Recycle Bin: only items of this scan that nothing protects.</summary>
@@ -678,15 +688,23 @@ public sealed partial class LocationScanModel : ObservableObject, IDisposable
             if ((MatchAlong(ids)?.Rule.Safety ?? SafetyLevel.Safe) != SafetyLevel.Safe || services.Protection.IsProtected(target.Path)) continue;
             Recycle(target, ids);
             moved |= LastRecycled?.Item.OriginalPath == target.Path;
+            // One confirmation at a time: the rest of the drop waits for the person to drag it again.
+            if (PendingRecycle is not null) break;
         }
         return moved;
     }
 
-    private void Recycle(NodeRef item, IReadOnlyList<string> ids)
+    private void Recycle(NodeRef item, IReadOnlyList<string> ids, bool confirmed = false)
     {
         if (!HasResult || Tree is not { } tree || item.Id == RootPath) return;
         if (item.Node.Kind is not (NodeKind.Directory or NodeKind.File)) return;
         if (services.Protection.IsProtected(item.Path) || (MatchAlong(ids)?.Rule.Safety ?? SafetyLevel.Safe) != SafetyLevel.Safe) return;
+        if (!confirmed && services.Protection.ConfirmationArea(item.Path) is { } area)
+        {
+            PendingRecycle = new PendingRecycle(item, ids, area);
+            Changed();
+            return;
+        }
         RecycledItem recycled;
         try
         {
@@ -705,6 +723,14 @@ public sealed partial class LocationScanModel : ObservableObject, IDisposable
         else
         {
             IsOutdated = true;
+        }
+        // Lists outside the chart drop what went with it right away; re-matching a whole drive takes a moment.
+        LargeFiles = LargeFiles.Where(file => !NodePath.IsSameOrWithin(file.Path, item.Path)).ToList();
+        var gone = CleanupMatches.Where(match => NodePath.IsSameOrWithin(match.Path, item.Path)).ToList();
+        if (gone.Count > 0)
+        {
+            CleanupMatches = CleanupMatches.Except(gone).ToList();
+            foreach (var match in gone) matchesById.Remove(match.Id);
         }
         services.Ledger.Add(record);
         LastRecycled = record;

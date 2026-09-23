@@ -3,8 +3,9 @@ using Temizlikci.Domain.Tree;
 namespace Temizlikci.Domain.Cleanup;
 
 /// <summary>
-/// Locations the app refuses to move to the Recycle Bin, whatever the rules say (DECISIONS 2026-09-23). macOS protects
-/// its system with SIP; on Windows an elevated app could recycle System32, so the app keeps its own floor.
+/// Locations the app refuses to move to the Recycle Bin, whatever the rules say, and locations it moves only after the
+/// person confirms (DECISIONS 2026-09-23, 2026-09-24). macOS protects its system with SIP; on Windows an elevated app
+/// could recycle System32, so the app keeps its own floor.
 /// </summary>
 public sealed class SystemProtection
 {
@@ -14,20 +15,33 @@ public sealed class SystemProtection
         "pagefile.sys", "hiberfil.sys", "swapfile.sys", "bootmgr", "BOOTNXT", "DumpStack.log.tmp",
     ];
 
-    private readonly string[] protectedTrees;
+    private readonly string windows;
+    private readonly string[] programAreas;
     private readonly string users;
 
     public SystemProtection(KnownLocations locations)
     {
         ArgumentNullException.ThrowIfNull(locations);
-        protectedTrees =
+        windows = NodePath.Trim(locations.Windows);
+        programAreas =
         [
-            NodePath.Trim(locations.Windows),
             NodePath.Trim(locations.ProgramFiles),
             NodePath.Trim(locations.ProgramFilesX86),
             NodePath.Trim(locations.ProgramData),
         ];
         users = NodePath.Trim(locations.Users);
+    }
+
+    /// <summary>
+    /// The program folder (Program Files, Program Files (x86) or ProgramData) that <paramref name="path"/> is inside, when
+    /// moving it needs the person's confirmation: programs keep their files there, and removing a folder by hand can
+    /// leave an installed program broken. <c>null</c> elsewhere, and for the program folders themselves (protected).
+    /// </summary>
+    public string? ConfirmationArea(string path)
+    {
+        ArgumentNullException.ThrowIfNull(path);
+        string trimmed = NodePath.Trim(path);
+        return programAreas.FirstOrDefault(area => NodePath.IsWithin(trimmed, area));
     }
 
     /// <summary>True when nothing at or below <paramref name="path"/> may be recycled from the app.</summary>
@@ -36,10 +50,9 @@ public sealed class SystemProtection
         ArgumentNullException.ThrowIfNull(path);
         string trimmed = NodePath.Trim(path);
         if (NodePath.IsDriveRoot(trimmed)) return true;
-        foreach (var tree in protectedTrees)
-        {
-            if (NodePath.IsSameOrWithin(trimmed, tree)) return true;
-        }
+        if (NodePath.IsSameOrWithin(trimmed, windows)) return true;
+        // The program folders themselves; what is inside them moves after a confirmation (ConfirmationArea).
+        if (programAreas.Any(area => NodePath.Comparer.Equals(trimmed, area))) return true;
         // The folder of all profiles, each profile itself, and the profile's AppData root hold everything else.
         if (NodePath.Comparer.Equals(trimmed, users)) return true;
         string? parent = NodePath.Parent(trimmed);

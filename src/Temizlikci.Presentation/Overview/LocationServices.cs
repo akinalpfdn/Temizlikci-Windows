@@ -4,6 +4,7 @@ using Temizlikci.Domain.History;
 using Temizlikci.Domain.Identity;
 using Temizlikci.Domain.Projects;
 using Temizlikci.Domain.Scanning;
+using Temizlikci.Domain.Tree;
 using Temizlikci.Domain.Volumes;
 using Temizlikci.Presentation.Actions;
 
@@ -20,6 +21,10 @@ public enum ScanPhase
     Finished,
     Failed,
 }
+
+/// <summary>An item inside a program folder that moves to the Recycle Bin only after the person confirms.</summary>
+/// <param name="Area">The program folder it is in (Program Files, Program Files (x86) or ProgramData).</param>
+public sealed record PendingRecycle(NodeRef Item, IReadOnlyList<string> Ids, string Area);
 
 /// <summary>A failed action, shown as a dialog with what happened and what to do next.</summary>
 public sealed record ActionError(string Message, string? Suggestion)

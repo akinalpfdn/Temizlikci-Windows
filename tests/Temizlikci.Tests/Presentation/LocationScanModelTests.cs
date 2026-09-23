@@ -552,4 +552,74 @@ public sealed class LocationScanModelTests
         model.Open(windows);
         Assert.Equal(40_001, model.CurrentFolder!.Value.Children.Single(child => child.Node.Name == "WinSxS").Node.Children.Count);
     }
+
+    private async Task<LocationScanModel> ScannedDrive()
+    {
+        var drive = FileNode.Directory(@"C:\", null,
+        [
+            Dir("Program Files", Dir("OldGame", File("data.pak", 900))),
+            Dir("Windows", File("explorer.exe", 50)),
+            Dir("Games", File("save.dat", 50)),
+        ]);
+        return await ModelFixture.Scanned(fixture.Make([Finished(drive)], root: @"C:\"));
+    }
+
+    [Fact]
+    public async Task Should_AskBeforeMoving_When_TheItemIsInsideProgramFiles()
+    {
+        var model = await ScannedDrive();
+        model.Open(model.Rows.Single(row => row.Node.Name == "Program Files"));
+        var game = model.Rows.Single(row => row.Node.Name == "OldGame");
+
+        model.Recycle(game);
+
+        Assert.Empty(fixture.Bin.Recycled);
+        Assert.Equal(@"C:\Program Files", model.PendingRecycle?.Area);
+        Assert.Equal(game.Id, model.PendingRecycle?.Item.Id);
+    }
+
+    [Fact]
+    public async Task Should_MoveTheItem_When_ThePersonConfirms()
+    {
+        var model = await ScannedDrive();
+        model.Open(model.Rows.Single(row => row.Node.Name == "Program Files"));
+        model.Recycle(model.Rows.Single(row => row.Node.Name == "OldGame"));
+
+        model.ConfirmRecycle();
+
+        Assert.Equal([@"C:\Program Files\OldGame"], fixture.Bin.Recycled);
+        Assert.Null(model.PendingRecycle);
+        Assert.DoesNotContain(model.Rows, row => row.Node.Name == "OldGame");
+    }
+
+    [Fact]
+    public async Task Should_LeaveTheItem_When_ThePersonCancels()
+    {
+        var model = await ScannedDrive();
+        model.Open(model.Rows.Single(row => row.Node.Name == "Program Files"));
+        model.Recycle(model.Rows.Single(row => row.Node.Name == "OldGame"));
+
+        model.CancelRecycle();
+
+        Assert.Empty(fixture.Bin.Recycled);
+        Assert.Null(model.PendingRecycle);
+        Assert.Contains(model.Rows, row => row.Node.Name == "OldGame");
+    }
+
+    [Fact]
+    public async Task Should_NeverOfferToMove_When_WindowsOrAProgramFolderItselfIsChosen()
+    {
+        var model = await ScannedDrive();
+        var programFiles = model.Rows.Single(row => row.Node.Name == "Program Files");
+        var windows = model.Rows.Single(row => row.Node.Name == "Windows");
+
+        model.Recycle(programFiles);
+        model.Recycle(windows);
+
+        Assert.False(model.CanRecycle(programFiles));
+        Assert.True(model.IsSystemProtected(windows));
+        Assert.Null(model.PendingRecycle);
+        Assert.Empty(fixture.Bin.Recycled);
+        Assert.True(model.CanRecycle(model.Rows.Single(row => row.Node.Name == "Games")));
+    }
 }

@@ -94,6 +94,7 @@ internal sealed partial class DeveloperView : UserControl
         if (!ReferenceEquals(shownMatches, scan.CleanupMatches)) RebuildMatches();
         UpdateStatus();
         if (scan.ActionError is { } error && !showingDialog && XamlRoot is not null) _ = ShowScanErrorAsync(error);
+        if (scan.PendingRecycle is not null && !showingDialog && XamlRoot is not null) _ = ConfirmRecycleAsync();
     }
 
     private void OnToolsChanged(object? sender, PropertyChangedEventArgs e)
@@ -421,6 +422,19 @@ internal sealed partial class DeveloperView : UserControl
         {
             showingDialog = false;
             tools.DismissError();
+        }
+    }
+
+    private async Task ConfirmRecycleAsync()
+    {
+        showingDialog = true;
+        try
+        {
+            await Ui.ConfirmPendingRecycleAsync(XamlRoot, scan);
+        }
+        finally
+        {
+            showingDialog = false;
         }
     }
 

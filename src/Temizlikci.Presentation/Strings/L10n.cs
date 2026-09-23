@@ -339,4 +339,9 @@ public static class L10n
     public static string UpdatesFailedMessage => Get("updates.failed.message");
     public static string AboutVersion(string version) => Format("about.version", version);
     public static string AboutSummary => Get("about.summary");
+
+    public static string RecycleConfirmTitle(string name) => Format("recycle.confirm.title", name);
+    public static string RecycleConfirmMessage(string name, string area) => Format("recycle.confirm.message", name, area);
+    public static string RecycleConfirmButton => Get("recycle.confirm.button");
+    public static string DetailsProtected => Get("details.protected");
 }

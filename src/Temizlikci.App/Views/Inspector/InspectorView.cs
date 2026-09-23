@@ -47,6 +47,7 @@ internal sealed partial class InspectorView : UserControl
             panel.Children.Add(Card(L10n.IdentityTitle, IdentityTexts.Summary(identity)));
         }
         if (Explanation(item.Node.Kind) is { } explanation) panel.Children.Add(Card(null, explanation));
+        if (scan.IsSystemProtected(item)) panel.Children.Add(Card(null, L10n.DetailsProtected));
         if (Actions(scan, item) is { } actions) panel.Children.Add(actions);
     }
 

@@ -235,9 +235,9 @@ public sealed class SystemProtectionTests
     [InlineData(@"D:\")]
     [InlineData(@"C:\Windows")]
     [InlineData(@"C:\Windows\System32\drivers")]
-    [InlineData(@"C:\Program Files\App")]
+    [InlineData(@"C:\Program Files")]
     [InlineData(@"C:\Program Files (x86)")]
-    [InlineData(@"C:\ProgramData\Package Cache")]
+    [InlineData(@"C:\ProgramData")]
     [InlineData(@"C:\Users")]
     [InlineData(@"C:\Users\dev")]
     [InlineData(@"C:\Users\someone")]
@@ -260,5 +260,25 @@ public sealed class SystemProtectionTests
     public void Should_AllowRecycling_When_ThePersonOwnsTheLocation(string path)
     {
         Assert.False(Protection.IsProtected(path));
+        Assert.Null(Protection.ConfirmationArea(path));
+    }
+
+    [Theory]
+    [InlineData(@"C:\Program Files\App", @"C:\Program Files")]
+    [InlineData(@"C:\Program Files (x86)\Steam\steamapps", @"C:\Program Files (x86)")]
+    [InlineData(@"C:\ProgramData\Package Cache", @"C:\ProgramData")]
+    public void Should_AskFirst_When_TheItemIsInsideAProgramFolder(string path, string area)
+    {
+        Assert.False(Protection.IsProtected(path));
+        Assert.Equal(area, Protection.ConfirmationArea(path));
+    }
+
+    [Theory]
+    [InlineData(@"C:\Program Files")]
+    [InlineData(@"C:\Windows\Installer")]
+    public void Should_NotOfferConfirmation_When_TheLocationIsProtectedOutright(string path)
+    {
+        Assert.True(Protection.IsProtected(path));
+        Assert.Null(Protection.ConfirmationArea(path));
     }
 }

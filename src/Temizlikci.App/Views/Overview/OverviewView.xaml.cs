@@ -112,6 +112,21 @@ public sealed partial class OverviewView : UserControl
         UpdateFooter();
         UpdateToast();
         _ = ShowErrorAsync();
+        _ = ConfirmRecycleAsync();
+    }
+
+    private async Task ConfirmRecycleAsync()
+    {
+        if (showingError || Model.PendingRecycle is null || XamlRoot is null) return;
+        showingError = true;
+        try
+        {
+            await Ui.ConfirmPendingRecycleAsync(XamlRoot, Model);
+        }
+        finally
+        {
+            showingError = false;
+        }
     }
 
     private void UpdateFooter()

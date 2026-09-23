@@ -186,6 +186,18 @@ internal static class Ui
         if (await dialog.ShowAsync() == ContentDialogResult.Primary && restartAsAdministrator!()) Application.Current.Exit();
     }
 
+    /// <summary>Asks before moving an item out of a program folder, then moves it or lets it be.</summary>
+    public static async Task ConfirmPendingRecycleAsync(XamlRoot root, LocationScanModel scan)
+    {
+        ArgumentNullException.ThrowIfNull(scan);
+        if (scan.PendingRecycle is not { } pending) return;
+        string name = scan.Title(pending.Item);
+        bool confirmed = await ConfirmAsync(root, L10n.RecycleConfirmTitle(name), L10n.RecycleConfirmMessage(name, Domain.Tree.NodePath.Name(pending.Area)), L10n.RecycleConfirmButton);
+        if (!ReferenceEquals(scan.PendingRecycle, pending)) return;
+        if (confirmed) scan.ConfirmRecycle();
+        else scan.CancelRecycle();
+    }
+
     /// <summary>Asks before an action that can't be undone or that stops something; true when confirmed.</summary>
     public static async Task<bool> ConfirmAsync(XamlRoot root, string title, string message, string confirm)
     {

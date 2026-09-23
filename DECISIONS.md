@@ -179,3 +179,17 @@ what add those files to publish output; they produce no package when the package
 unpacked into a new folder, starts.
 **Trade-offs:** The build loads the MSIX targets it doesn't otherwise need.
 **Revisit if:** The Windows App SDK adds unpackaged publish support without the MSIX targets.
+
+---
+
+## 2026-09-24 — Program folders: move after a confirmation (developer decision)
+**Chosen:** Items inside `Program Files`, `Program Files (x86)` and `ProgramData` can be moved to the Recycle Bin after a
+confirmation that names the folder and suggests uninstalling in Settings › Apps instead. `Windows`, drive roots, the
+three program folders themselves, profile roots and Windows' drive-root files stay protected outright. This replaces
+the program-folder part of the 2026-09-23 protection decision.
+**Alternatives:** Keep them protected and point to Settings › Apps (recommended at the time); leave as it was.
+**Why:** The developer decided it: on the Mac they can trash what they want, and the Windows floor blocked 300 GB of
+their drive with no way to act and no explanation.
+**Trade-offs:** Recycling an installed program's folder leaves it listed in Apps, and its services or updater can fail.
+The confirmation says so, and Put Back undoes it.
+**Revisit if:** Someone breaks an installed program this way; then offer the program's uninstaller in the dialog.

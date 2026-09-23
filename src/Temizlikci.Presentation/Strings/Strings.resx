@@ -1744,4 +1744,20 @@
     <value>See what fills your disk, and free space safely.</value>
     <comment>About dialog description.</comment>
   </data>
+  <data name="recycle.confirm.title" xml:space="preserve">
+    <value>Move “{0}” to the Recycle Bin?</value>
+    <comment>Confirmation title before moving an item from a program folder. The argument is the item's name.</comment>
+  </data>
+  <data name="recycle.confirm.message" xml:space="preserve">
+    <value>“{0}” is inside {1}, where installed programs keep their files. If a program still uses it, that program may stop working; uninstalling the program in Settings › Apps is safer. You can put it back from the Recycle Bin.</value>
+    <comment>Confirmation message. Arguments: item name, program folder name (Program Files, ProgramData).</comment>
+  </data>
+  <data name="recycle.confirm.button" xml:space="preserve">
+    <value>Move to Recycle Bin</value>
+    <comment>Confirmation button.</comment>
+  </data>
+  <data name="details.protected" xml:space="preserve">
+    <value>Windows needs this, so Temizlikci never moves it to the Recycle Bin.</value>
+    <comment>Inspector note on protected system locations.</comment>
+  </data>
 </root>

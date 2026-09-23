@@ -55,6 +55,7 @@ internal sealed partial class LargeFilesView : UserControl
         if (!ReferenceEquals(shownFiles, scan.LargeFiles) || !ReferenceEquals(shownGrowth, scan.Growth)) Rebuild();
         UpdateStatus();
         if (scan.ActionError is { } error && !showingDialog && XamlRoot is not null) _ = ShowErrorAsync(error);
+        if (scan.PendingRecycle is not null && !showingDialog && XamlRoot is not null) _ = ConfirmRecycleAsync();
     }
 
     private void OnMainChanged(object? sender, PropertyChangedEventArgs e)
@@ -280,6 +281,19 @@ internal sealed partial class LargeFilesView : UserControl
     {
         statusHost.Children.Clear();
         if (Ui.RecycleConfirmation(scan) is { } recycled) statusHost.Children.Add(recycled);
+    }
+
+    private async Task ConfirmRecycleAsync()
+    {
+        showingDialog = true;
+        try
+        {
+            await Ui.ConfirmPendingRecycleAsync(XamlRoot, scan);
+        }
+        finally
+        {
+            showingDialog = false;
+        }
     }
 
     private async Task ShowErrorAsync(Presentation.Overview.ActionError error)
