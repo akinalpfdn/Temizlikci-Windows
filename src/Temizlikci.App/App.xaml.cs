@@ -80,7 +80,7 @@ public partial class App : Application
         var runner = new ProcessToolRunner();
         var windowsTools = new WindowsToolsModel(
             new WslManager(runner, elevation), new DismComponentStore(runner, elevation), volumes, Path.GetPathRoot(Environment.SystemDirectory) ?? @"C:\");
-        var tools = new InsightTools(windowsTools, new WindowsEditorLauncher(), services.Shell);
+        var tools = new InsightTools(windowsTools, new GitStatusModel(new GitInspector(runner)), new WindowsEditorLauncher(), markers, services.Shell);
 
         var main = new MainViewModel(
             volumes,

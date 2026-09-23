@@ -53,6 +53,18 @@ public sealed partial class SourceHygieneTests
         Assert.Empty(offenders);
     }
 
+    /// <summary>Icon glyphs are private-use characters that show as nothing in an editor; sources name them as escapes
+    /// (scripts/escape-glyphs.py converts them).</summary>
+    [Fact]
+    public void Should_WriteGlyphsAsEscapes_When_ASourceNamesAnIcon()
+    {
+        var offenders = SourceTree.Files("*.cs")
+            .Where(path => File.ReadAllText(path).Any(character => character is >= (char)0xE000 and <= (char)0xF8FF))
+            .Select(SourceTree.Relative)
+            .ToList();
+        Assert.Empty(offenders);
+    }
+
     /// <summary>XAML views: everything except the theme resource dictionaries.</summary>
     private static IEnumerable<string> Views() =>
         SourceTree.Files("*.xaml").Where(path => !SourceTree.Relative(path).Contains("/Theme/", StringComparison.Ordinal));

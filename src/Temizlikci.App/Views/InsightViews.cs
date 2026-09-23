@@ -15,6 +15,10 @@ internal static class InsightViews
         DestinationKind.Developer => main.DeveloperScan is { } scan
             ? new Developer.DeveloperView(main, scan)
             : EmptyState(destination.Glyph, L10n.InsightsNotScannedTitle, L10n.DeveloperScanFirst, (L10n.DeveloperScanHome, main.ScanHome)),
+        DestinationKind.WhatGrew => new Growth.WhatGrewView(main),
+        DestinationKind.LargeFiles => main.LargeFilesScan is { } files
+            ? new Growth.LargeFilesView(main, files)
+            : EmptyState(destination.Glyph, L10n.InsightsNotScannedTitle, L10n.LargeFilesScanFirst),
         _ => EmptyState(destination.Glyph, L10n.InsightsNotScannedTitle, null),
     };
 

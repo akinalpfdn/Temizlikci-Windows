@@ -152,3 +152,16 @@ failure through its exit code only in `/s` mode, hence a script file (rewritten 
 Stopping or removing Docker's distributions breaks Docker Desktop, which manages that data itself.
 **Trade-offs:** Compacting needs the app elevated; the shield on the button says so and the error offers a restart.
 **Revisit if:** WSL gains a supported compact command.
+
+---
+
+## 2026-09-23 — Git is read with core.fsmonitor turned off
+**Chosen:** Every Git call the app makes is `git --no-optional-locks -c core.fsmonitor=false -C <repo> ...`, with
+git.exe found on PATH or in Git for Windows' install folders. Three repositories are read at a time, lazily.
+**Alternatives:** Plain `git status` as on macOS; libgit2 (LibGit2Sharp).
+**Why:** The app runs `git status` in every repository a scan finds, including cloned ones nobody reviewed. A
+repository's own config can name an fsmonitor program that `status` would start; turning it off costs only speed.
+`--no-optional-locks` keeps `.git/index` untouched, so a project's last-worked-on date stays true (tested with real Git).
+LibGit2Sharp would add a native dependency and still differ from the Git people use.
+**Trade-offs:** Very large repositories read slower without their monitor.
+**Revisit if:** Git gains a read-only "safe status" mode.

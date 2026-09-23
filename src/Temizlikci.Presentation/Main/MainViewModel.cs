@@ -270,6 +270,14 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         CurrentScan?.StartScan();
     }
 
+    // MARK: Projects
+
+    /// <summary>The editors that can open a project and are installed, most specific first.</summary>
+    public IReadOnlyList<EditorTarget> Editors(DeveloperProject project) =>
+        ProjectEditors.Targets(project, Tools.Markers).Where(target => Tools.Editors.IsInstalled(target.Editor)).ToList();
+
+    public void Open(EditorTarget target) => Tools.Editors.Open(target);
+
     // MARK: Windows tools
 
     public bool IsAndroidStudioInstalled => Tools.Editors.IsInstalled(Editor.AndroidStudio);

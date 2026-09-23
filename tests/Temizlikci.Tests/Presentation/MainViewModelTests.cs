@@ -54,7 +54,7 @@ public sealed class MainViewModelTests
 
     private readonly ModelFixture fixture = new();
     private readonly MemorySettings settings = new();
-    private readonly ToolsFixture tools = new();
+    private ToolsFixture tools = new();
 
     private MainViewModel Make(IVolumeInfoProvider? volumes = null, bool elevated = false, string? picked = null, IReadOnlyList<ScanEvent>? events = null) => new(
         volumes ?? new StubVolumes(SystemDrive, DataDrive),
@@ -254,5 +254,19 @@ public sealed class MainViewModelTests
         Assert.Equal(1, tools.Shell.SystemProtectionOpened);
         Assert.Equal([Temizlikci.Domain.Projects.Editor.AndroidStudio], tools.Editors.Started);
         Assert.True(model.IsAndroidStudioInstalled);
+    }
+
+    [Fact]
+    public void Should_OfferOnlyInstalledEditors_When_AProjectCanOpenInSeveral()
+    {
+        tools = new ToolsFixture { Markers = new Temizlikci.Tests.Domain.StubMarkers(new() { [@"C:\src\app"] = ["build.gradle"] }) };
+        var model = Make();
+        var project = new Temizlikci.Domain.Projects.DeveloperProject(
+            Temizlikci.Domain.Tree.FileNode.Directory("app", null, []), @"C:\src\app", [@"C:\src\app"],
+            Temizlikci.Domain.Projects.ProjectEvidence.Gradle, [], null);
+
+        var editors = model.Editors(project);
+
+        Assert.Equal([Temizlikci.Domain.Projects.Editor.AndroidStudio], editors.Select(target => target.Editor));
     }
 }

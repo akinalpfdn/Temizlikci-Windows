@@ -1,8 +1,10 @@
 using Temizlikci.Domain.Actions;
+using Temizlikci.Domain.Cleanup;
 using Temizlikci.Domain.Projects;
 using Temizlikci.Domain.Tools;
 using Temizlikci.Domain.Volumes;
 using Temizlikci.Presentation.Developer;
+using Temizlikci.Tests.Domain;
 
 namespace Temizlikci.Tests.Support;
 
@@ -108,6 +110,35 @@ internal sealed class ToolsFixture
     public MutableVolume Volume { get; } = new();
     public StubEditors Editors { get; init; } = new(Editor.AndroidStudio);
     public RecordingShell Shell { get; } = new();
+    public StubGit Git { get; } = new();
+    public StubMarkers Markers { get; init; } = new();
 
-    public InsightTools Make() => new(new WindowsToolsModel(Wsl, Components, Volume, @"C:\"), Editors, Shell);
+    public InsightTools Make() => new(new WindowsToolsModel(Wsl, Components, Volume, @"C:\"), new GitStatusModel(Git), Editors, Markers, Shell);
+}
+
+/// <summary>Git answers from a table; counts how many reads run at once.</summary>
+internal sealed class StubGit : IGitInspector
+{
+    private readonly Dictionary<string, TaskCompletionSource<GitState?>> pending = new(StringComparer.OrdinalIgnoreCase);
+
+    public int Running { get; private set; }
+    public int MostAtOnce { get; private set; }
+    public List<string> Asked { get; } = [];
+
+    public Task<GitState?> StateAsync(string repositoryPath, CancellationToken cancellationToken)
+    {
+        Asked.Add(repositoryPath);
+        Running++;
+        MostAtOnce = Math.Max(MostAtOnce, Running);
+        var source = new TaskCompletionSource<GitState?>();
+        pending[repositoryPath] = source;
+        return source.Task;
+    }
+
+    /// <summary>Finishes one read; <c>null</c> means Git couldn't read the repository.</summary>
+    public void Answer(string repositoryPath, GitState? state)
+    {
+        Running--;
+        pending[repositoryPath].SetResult(state);
+    }
 }

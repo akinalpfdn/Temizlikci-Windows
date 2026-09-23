@@ -35,6 +35,11 @@ public sealed partial class MainWindow : Window
         RestartItem.Visibility = ViewModel.Elevation.IsElevated ? Visibility.Collapsed : Visibility.Visible;
         ViewModel.PropertyChanged += OnViewModelChanged;
         ViewModel.Undo.PropertyChanged += (_, _) => UpdateMenus();
+        // Git answers arrive in the background; a project in the inspector shows them as they come.
+        ViewModel.Tools.Git.PropertyChanged += (_, _) =>
+        {
+            if (ViewModel.Inspected is { IsProject: true }) UpdateInspector();
+        };
         Activated += OnActivated;
         ShowSelection();
         ApplyPreviewArguments();
@@ -44,7 +49,7 @@ public sealed partial class MainWindow : Window
     /// Debug builds only, for checking the UI by eye: <c>--folder=C:\path</c> opens that folder, <c>--scan</c> scans the
     /// open location at launch, <c>--select=name</c> picks a row by name once the scan is done, <c>--recycle=a,b</c>
     /// moves those rows to the Recycle Bin (point it only at a scratch folder), <c>--show=RecycleBin</c> then switches to
-    /// that sidebar destination.
+    /// that sidebar destination, and <c>--inspect-project=C:\path</c> shows that project in the inspector.
     /// </summary>
     [System.Diagnostics.Conditional("DEBUG")]
     private void ApplyPreviewArguments()
@@ -57,6 +62,7 @@ public sealed partial class MainWindow : Window
         string? select = Value("--select=");
         var recycle = Value("--recycle=")?.Split(',').ToList() ?? [];
         var show = Enum.TryParse<DestinationKind>(Value("--show="), out var kind) ? ViewModel.InsightDestinations.FirstOrDefault(item => item.Kind == kind) : null;
+        string? inspectProject = Value("--inspect-project=");
         scan.PropertyChanged += (_, _) =>
         {
             if (!scan.HasResult) return;
@@ -70,7 +76,11 @@ public sealed partial class MainWindow : Window
             {
                 var destination = show;
                 show = null;
-                DispatcherQueue.TryEnqueue(() => ViewModel.Selection = destination);
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    ViewModel.Selection = destination;
+                    if (inspectProject is not null) ViewModel.Inspected = new InspectedItem(inspectProject, IsProject: true);
+                });
             }
             if (select is not null && scan.Selection is null && scan.Rows.FirstOrDefault(row => row.Node.Name == select) is { Node: not null } row) scan.Select(row);
         };
@@ -254,10 +264,18 @@ public sealed partial class MainWindow : Window
             inspector.Show(scan, scan is { Tree: not null } ? scan.Selection ?? scan.CurrentFolder : null);
             return;
         }
-        if (ViewModel.InsightScan is { } insightScan && ViewModel.Inspected is { } item && !item.IsProject)
+        if (ViewModel.InsightScan is { } insightScan && ViewModel.Inspected is { } item)
         {
-            inspector.Show(insightScan, insightScan.NodeAnywhere(item.Id));
-            return;
+            if (!item.IsProject)
+            {
+                inspector.Show(insightScan, insightScan.NodeAnywhere(item.Id));
+                return;
+            }
+            if (insightScan.ProjectById(item.Id) is { } project)
+            {
+                inspector.ShowProject(ViewModel, insightScan, project);
+                return;
+            }
         }
         inspector.Show(null, null);
     }

@@ -12,6 +12,15 @@
     <StaticResource x:Key="NavigationViewDefaultPaneBackground" ResourceKey="ControlFillColorTransparentBrush" />
     <StaticResource x:Key="NavigationViewExpandedPaneBackground" ResourceKey="ControlFillColorTransparentBrush" />
 
+    <!-- Column headers that sort a list: flat, secondary ink, the same in every list. -->
+    <Style x:Key="ColumnHeaderButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="{StaticResource BadgePadding}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+    </Style>
+
     <Style x:Key="EmptyStateIconStyle" TargetType="FontIcon">
         <Setter Property="FontSize" Value="{StaticResource EmptyStateIconSize}" />
         <Setter Property="Foreground" Value="{ThemeResource TextFillColorTertiaryBrush}" />

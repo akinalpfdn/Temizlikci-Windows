@@ -63,5 +63,5 @@ public sealed class RecycleRow(RecycleRecord record)
     public string OriginalPath => Record.OriginalPath;
     public string FromText => L10n.RecycleFrom(Path.GetDirectoryName(Record.OriginalPath) ?? Record.OriginalPath);
     public string SizeText => Format.Bytes(Record.Node.AllocatedSize);
-    public string Glyph => Record.Node.Kind == NodeKind.Directory ? "" : "";
+    public string Glyph => Record.Node.Kind == NodeKind.Directory ? "\uE8B7" : "\uE8A5";
 }

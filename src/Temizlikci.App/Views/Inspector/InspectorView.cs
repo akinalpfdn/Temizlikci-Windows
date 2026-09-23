@@ -2,9 +2,11 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Temizlikci.App.Views.Overview;
+using Temizlikci.Domain.Projects;
 using Temizlikci.Domain.Tree;
 using Temizlikci.Domain.Volumes;
 using Temizlikci.Presentation.Formatting;
+using Temizlikci.Presentation.Main;
 using Temizlikci.Presentation.Overview;
 using Temizlikci.Presentation.Strings;
 
@@ -16,6 +18,8 @@ namespace Temizlikci.App.Views.Inspector;
 /// </summary>
 internal sealed partial class InspectorView : UserControl
 {
+    private const string ProjectGlyph = "\uE7B8";
+
     private readonly StackPanel panel = new();
 
     public InspectorView()
@@ -44,6 +48,50 @@ internal sealed partial class InspectorView : UserControl
         }
         if (Explanation(item.Node.Kind) is { } explanation) panel.Children.Add(Card(null, explanation));
         if (Actions(scan, item) is { } actions) panel.Children.Add(actions);
+    }
+
+    /// <summary>A project: when it was last worked on, what it holds, and, for a Git repository, the work that exists
+    /// only on this PC, so nobody deletes a project with unpushed commits by mistake.</summary>
+    public void ShowProject(MainViewModel main, LocationScanModel scan, DeveloperProject project)
+    {
+        ArgumentNullException.ThrowIfNull(main);
+        ArgumentNullException.ThrowIfNull(scan);
+        ArgumentNullException.ThrowIfNull(project);
+        main.Tools.Git.Load(project);
+        panel.Children.Clear();
+
+        var header = new Grid { ColumnSpacing = Double("SpacingMedium") };
+        header.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+        header.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+        header.Children.Add(new FontIcon { Glyph = ProjectGlyph, FontSize = Double("LargeIconSize"), Foreground = Brush("TextFillColorSecondaryBrush"), VerticalAlignment = VerticalAlignment.Top });
+        var titles = new StackPanel { Spacing = Double("SpacingXXSmall") };
+        var title = Text(project.Name, "SectionTitleTextStyle");
+        title.IsTextSelectionEnabled = true;
+        title.TextWrapping = TextWrapping.Wrap;
+        titles.Children.Add(title);
+        titles.Children.Add(Text(ProjectTexts.Evidence(project.Evidence), "SecondaryTextStyle"));
+        Grid.SetColumn(titles, 1);
+        header.Children.Add(titles);
+        panel.Children.Add(header);
+
+        var details = new StackPanel { Spacing = Double("SpacingSmall") };
+        details.Children.Add(Row(L10n.DetailsSize, Format.Bytes(project.Node.AllocatedSize)));
+        if (project.ReclaimableSize > 0) details.Children.Add(Row(L10n.ProjectsBuildOutput, Format.Bytes(project.ReclaimableSize)));
+        if (project.LastTouchedUtc is { } touched) details.Children.Add(Row(L10n.ProjectsLastWorkedOn, Format.Date(touched)));
+        details.Children.Add(Text(L10n.DetailsPath, "SecondaryTextStyle"));
+        details.Children.Add(Text(project.Path, "PathTextStyle"));
+        panel.Children.Add(details);
+
+        if (project.Evidence == ProjectEvidence.Git) panel.Children.Add(Developer.GitViews.Card(project, main.Tools.Git));
+        var note = Text(L10n.ProjectsOnlyBuildOutput, "CaptionTextStyle");
+        note.TextWrapping = TextWrapping.Wrap;
+        panel.Children.Add(note);
+
+        var actions = new StackPanel { Spacing = Double("SpacingSmall") };
+        var node = new NodeRef(project.Node, project.Path);
+        actions.Children.Add(ActionButton(L10n.DetailsShowInExplorer, () => scan.ShowInExplorer(node)));
+        foreach (var target in main.Editors(project)) actions.Children.Add(ActionButton(ProjectTexts.Editor(target.Editor), () => main.Open(target)));
+        panel.Children.Add(actions);
     }
 
     private static StackPanel EmptyState()

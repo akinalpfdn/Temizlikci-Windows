@@ -90,6 +90,11 @@ internal sealed partial class FixtureTree : IDisposable
         // Junctions go first, one by one, as links: the recursive delete treats a junction like a volume mount point
         // and reports an error for it (without following it).
         foreach (var junction in junctions) Directory.Delete(junction, recursive: false);
+        // Git writes its objects read-only, and a recursive delete stops at the first one.
+        foreach (var file in new DirectoryInfo(Root).EnumerateFiles("*", new EnumerationOptions { RecurseSubdirectories = true, AttributesToSkip = 0, IgnoreInaccessible = true }))
+        {
+            if (file.IsReadOnly) file.IsReadOnly = false;
+        }
         try
         {
             // The fixture's own temporary folder.

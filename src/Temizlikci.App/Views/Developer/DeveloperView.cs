@@ -24,6 +24,7 @@ internal sealed partial class DeveloperView : UserControl
 {
     private const string WslSection = "wsl";
     private const string WindowsSection = "windows";
+    private const string ProjectsSection = "projects";
 
     private readonly MainViewModel main;
     private readonly LocationScanModel scan;
@@ -35,6 +36,7 @@ internal sealed partial class DeveloperView : UserControl
     private readonly StackPanel windowsHost = new();
     private readonly Expander wslSection;
     private readonly Expander windowsSection;
+    private readonly StaleProjectsSection staleProjects;
     private readonly HashSet<string> opened = [];
     private readonly List<ListView> lists = [];
     private IReadOnlyList<CleanupMatch>? shownMatches;
@@ -56,8 +58,10 @@ internal sealed partial class DeveloperView : UserControl
         windowsHost.Spacing = Ui.Double("SpacingSmall");
         wslSection = Section(WslSection, L10n.WslSectionTitle, null, wslHost);
         windowsSection = Section(WindowsSection, L10n.WindowsToolsTitle, null, windowsHost);
+        staleProjects = new StaleProjectsSection(main, scan);
         page.Children.Add(summaryHost);
         page.Children.Add(statusHost);
+        page.Children.Add(Section(ProjectsSection, L10n.ProjectsTitle, null, staleProjects));
         page.Children.Add(groupsHost);
         page.Children.Add(wslSection);
         page.Children.Add(windowsSection);
@@ -110,6 +114,7 @@ internal sealed partial class DeveloperView : UserControl
     {
         shownMatches = scan.CleanupMatches;
         RebuildSummary();
+        staleProjects?.Rebuild();
         groupsHost.Children.Clear();
         lists.Clear();
         var groups = DeveloperSummary.Groups(scan.CleanupMatches);
@@ -162,7 +167,7 @@ internal sealed partial class DeveloperView : UserControl
     /// <summary>A group's matches as a list: rows are selectable, reachable by keyboard, and shown in the inspector.</summary>
     private ListView MatchList(IReadOnlyList<CleanupMatch> matches)
     {
-        var list = new ListView { SelectionMode = ListViewSelectionMode.Single, ItemContainerStyle = StretchedItems() };
+        var list = new ListView { SelectionMode = ListViewSelectionMode.Single, ItemContainerStyle = Ui.StretchedItems() };
         foreach (var match in matches) list.Items.Add(MatchRow(match));
         list.SelectionChanged += (_, _) =>
         {
@@ -366,14 +371,7 @@ internal sealed partial class DeveloperView : UserControl
             bar.Closed += (_, _) => tools.DismissResult();
             statusHost.Children.Add(bar);
         }
-        if (scan.LastRecycled is { } record)
-        {
-            var undo = new Button { Content = L10n.RecycleUndo };
-            undo.Click += (_, _) => scan.PutBack(record);
-            var bar = new InfoBar { IsOpen = true, Severity = InfoBarSeverity.Informational, Message = L10n.RecycleMoved(record.Name, Format.Bytes(record.Node.AllocatedSize)), ActionButton = undo };
-            bar.Closed += (_, _) => scan.DismissRecycleConfirmation();
-            statusHost.Children.Add(bar);
-        }
+        if (Ui.RecycleConfirmation(scan) is { } recycled) statusHost.Children.Add(recycled);
     }
 
     // MARK: Actions that ask first
@@ -467,12 +465,5 @@ internal sealed partial class DeveloperView : UserControl
     {
         section.IsExpanded = true;
         section.StartBringIntoView(new BringIntoViewOptions { VerticalAlignmentRatio = 0, AnimationDesired = true });
-    }
-
-    private static Style StretchedItems()
-    {
-        var style = new Style(typeof(ListViewItem)) { BasedOn = (Style)Application.Current.Resources["DefaultListViewItemStyle"] };
-        style.Setters.Add(new Setter(HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
-        return style;
     }
 }

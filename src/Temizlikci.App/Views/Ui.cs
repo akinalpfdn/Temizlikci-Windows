@@ -3,6 +3,8 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Temizlikci.App.Views.Overview;
 using Temizlikci.Domain.Cleanup;
+using Temizlikci.Domain.History;
+using Temizlikci.Presentation.Formatting;
 using Temizlikci.Presentation.Overview;
 using Temizlikci.Presentation.Strings;
 
@@ -12,7 +14,7 @@ namespace Temizlikci.App.Views;
 internal static class Ui
 {
     /// <summary>The Windows convention for "this asks for administrator rights": the UAC shield.</summary>
-    private const string ShieldGlyph = "";
+    private const string ShieldGlyph = "\uEA18";
 
     public static TextBlock Text(string text, string style) => new() { Text = text, Style = (Style)Application.Current.Resources[style] };
 
@@ -83,6 +85,58 @@ internal static class Ui
         Background = Brush("SizeBarTrackBrush"),
         VerticalAlignment = VerticalAlignment.Center,
     };
+
+    /// <summary>A size change: arrow and signed amount in a pill, warm for growth and cool for shrinking; the arrow and
+    /// the sign carry the direction, the color only reinforces it.</summary>
+    public static Border GrowthPill(GrowthChange change)
+    {
+        ArgumentNullException.ThrowIfNull(change);
+        var ink = GrowthTexts.Ink(change.Kind);
+        var content = new StackPanel { Orientation = Orientation.Horizontal, Spacing = Double("SpacingXSmall") };
+        content.Children.Add(new FontIcon { Glyph = GrowthTexts.Glyph(change.Kind), FontSize = Double("CaptionFontSize"), Foreground = ink });
+        var amount = Text(GrowthTexts.Signed(change.Delta), "BadgeTextStyle");
+        amount.Foreground = ink;
+        content.Children.Add(amount);
+        var pill = new Border
+        {
+            Child = content,
+            Padding = Thickness("BadgePadding"),
+            CornerRadius = Radius("PillRadius"),
+            Background = GrowthTexts.Background(change.Kind),
+            HorizontalAlignment = HorizontalAlignment.Right,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+        string size = Format.Bytes(Math.Abs(change.Delta));
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(pill, change.Delta >= 0 ? L10n.GrowthGrewBy(size) : L10n.GrowthShrankBy(size));
+        if (change.Kind == GrowthKind.Appeared) ToolTipService.SetToolTip(pill, L10n.GrowthAppearedHelp);
+        return pill;
+    }
+
+    /// <summary>"Moved to the Recycle Bin" with Undo, for views that recycle through a scan model.</summary>
+    public static InfoBar? RecycleConfirmation(LocationScanModel scan)
+    {
+        ArgumentNullException.ThrowIfNull(scan);
+        if (scan.LastRecycled is not { } record) return null;
+        var undo = new Button { Content = L10n.RecycleUndo };
+        undo.Click += (_, _) => scan.PutBack(record);
+        var bar = new InfoBar
+        {
+            IsOpen = true,
+            Severity = InfoBarSeverity.Informational,
+            Message = L10n.RecycleMoved(record.Name, Format.Bytes(record.Node.AllocatedSize)),
+            ActionButton = undo,
+        };
+        bar.Closed += (_, _) => scan.DismissRecycleConfirmation();
+        return bar;
+    }
+
+    /// <summary>List items whose content spans the row, so columns line up with their headers.</summary>
+    public static Style StretchedItems()
+    {
+        var style = new Style(typeof(ListViewItem)) { BasedOn = (Style)Application.Current.Resources["DefaultListViewItemStyle"] };
+        style.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
+        return style;
+    }
 
     /// <summary>A collapsible section whose title and summary stay visible (HIG: progressive disclosure).</summary>
     public static Expander Section(string title, string? detail, UIElement content, bool isExpanded)

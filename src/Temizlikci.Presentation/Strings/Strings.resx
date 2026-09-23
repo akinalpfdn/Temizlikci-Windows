@@ -1428,4 +1428,200 @@
     <value>Close programs that use WSL, such as terminals and Docker Desktop, then try again.</value>
     <comment>Recovery suggestion when compacting fails.</comment>
   </data>
+  <data name="growth.accessibility.grew" xml:space="preserve">
+    <value>Grew by {0}</value>
+    <comment>Accessible text of a growth label. The argument is a size.</comment>
+  </data>
+  <data name="growth.accessibility.shrank" xml:space="preserve">
+    <value>Shrank by {0}</value>
+    <comment>Accessible text of a growth label. The argument is a size.</comment>
+  </data>
+  <data name="growth.appeared.help" xml:space="preserve">
+    <value>New, or under 100 MB in the previous scan.</value>
+    <comment>Tooltip of a growth label for an item that appeared.</comment>
+  </data>
+  <data name="growth.removed" xml:space="preserve">
+    <value>Removed</value>
+    <comment>Shown for an item that is gone since the previous scan.</comment>
+  </data>
+  <data name="growth.empty.title" xml:space="preserve">
+    <value>Nothing to Compare Yet</value>
+    <comment>Empty state title of What Grew.</comment>
+  </data>
+  <data name="growth.empty.message" xml:space="preserve">
+    <value>Temizlikci keeps a small summary of every scan on this PC. Scan the same location again later to see what grew.</value>
+    <comment>Empty state message of What Grew.</comment>
+  </data>
+  <data name="growth.noChanges.title" xml:space="preserve">
+    <value>No Big Changes</value>
+    <comment>Title when nothing changed much.</comment>
+  </data>
+  <data name="growth.noChanges.message" xml:space="preserve">
+    <value>Nothing changed by more than 10 MB since {0}.</value>
+    <comment>Message when nothing changed much. The argument is a date.</comment>
+  </data>
+  <data name="growth.header" xml:space="preserve">
+    <value>{0} since {1}</value>
+    <comment>Header of What Grew. Arguments: location name, date of the previous scan.</comment>
+  </data>
+  <data name="growth.section.grew" xml:space="preserve">
+    <value>Grew</value>
+    <comment>Section header in What Grew.</comment>
+  </data>
+  <data name="growth.section.shrank" xml:space="preserve">
+    <value>Shrank</value>
+    <comment>Section header in What Grew.</comment>
+  </data>
+  <data name="growth.net" xml:space="preserve">
+    <value>Net change {0}</value>
+    <comment>Subtitle of What Grew. The argument is a signed size.</comment>
+  </data>
+  <data name="growth.fromSavedScans" xml:space="preserve">
+    <value>From the two saved scans, the most recent on {0}. Scan again to compare with what is on disk now.</value>
+    <comment>Note when the comparison uses saved scans. The argument is a date.</comment>
+  </data>
+  <data name="growth.showInChart" xml:space="preserve">
+    <value>Show in Chart</value>
+    <comment>Button that opens an item in the chart.</comment>
+  </data>
+  <data name="growth.previous" xml:space="preserve">
+    <value>was {0}</value>
+    <comment>The size an item had in the previous scan. The argument is a size.</comment>
+  </data>
+  <data name="largeFiles.title" xml:space="preserve">
+    <value>Largest Files in {0}</value>
+    <comment>Title of Large Files. The argument is a location name.</comment>
+  </data>
+  <data name="largeFiles.column.modified" xml:space="preserve">
+    <value>Modified</value>
+    <comment>Column header.</comment>
+  </data>
+  <data name="largeFiles.hint" xml:space="preserve">
+    <value>Double-click a file to show it in the chart. Right-click for more actions.</value>
+    <comment>Hint under the Large Files title.</comment>
+  </data>
+  <data name="largeFiles.none.title" xml:space="preserve">
+    <value>No Files Over 10 MB</value>
+    <comment>Empty state title of Large Files.</comment>
+  </data>
+  <data name="largeFiles.none.message" xml:space="preserve">
+    <value>Temizlikci lists files of 10 MB or more here after a scan.</value>
+    <comment>Empty state message of Large Files.</comment>
+  </data>
+  <data name="largeFiles.empty.message" xml:space="preserve">
+    <value>Scan a location to list its largest files.</value>
+    <comment>Empty state of Large Files before any scan.</comment>
+  </data>
+  <data name="projects.title" xml:space="preserve">
+    <value>Stale Projects</value>
+    <comment>Section title in the Developer view.</comment>
+  </data>
+  <data name="projects.period.label" xml:space="preserve">
+    <value>Untouched for</value>
+    <comment>Label of the period picker.</comment>
+  </data>
+  <data name="projects.empty" xml:space="preserve">
+    <value>No project has been left alone that long.</value>
+    <comment>Shown when no project is stale.</comment>
+  </data>
+  <data name="projects.lastTouched" xml:space="preserve">
+    <value>Last worked on {0}</value>
+    <comment>When a project was last changed. The argument is a date.</comment>
+  </data>
+  <data name="projects.total" xml:space="preserve">
+    <value>{0} in total</value>
+    <comment>A project's size. The argument is a size.</comment>
+  </data>
+  <data name="projects.onlyBuildOutput" xml:space="preserve">
+    <value>Temizlikci only ever moves this project's build output to the Recycle Bin, never the project itself.</value>
+    <comment>Note in the project inspector.</comment>
+  </data>
+  <data name="projects.lastWorkedOn" xml:space="preserve">
+    <value>Last Worked On</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="projects.buildOutput" xml:space="preserve">
+    <value>Build output</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="projects.noArtifacts" xml:space="preserve">
+    <value>No build output to remove.</value>
+    <comment>Shown in an opened project row without artifacts.</comment>
+  </data>
+  <data name="projects.unknownActivity" xml:space="preserve">
+    <value>Last change unknown</value>
+    <comment>Shown when a project's last change can't be read.</comment>
+  </data>
+  <data name="git.title" xml:space="preserve">
+    <value>Git</value>
+    <comment>Inspector section title.</comment>
+  </data>
+  <data name="git.reading" xml:space="preserve">
+    <value>Checking for work that exists only on this PC…</value>
+    <comment>Shown while Git is read.</comment>
+  </data>
+  <data name="git.unreadable" xml:space="preserve">
+    <value>Git couldn't read this repository. Git may not be installed, or the folder is no longer a repository.</value>
+    <comment>Shown when Git fails.</comment>
+  </data>
+  <data name="git.localWork" xml:space="preserve">
+    <value>Some work exists only on this PC. Push or back it up before deleting this project.</value>
+    <comment>Summary when there is unpushed work.</comment>
+  </data>
+  <data name="git.allPushed" xml:space="preserve">
+    <value>Everything is committed and pushed.</value>
+    <comment>Summary when nothing is local-only.</comment>
+  </data>
+  <data name="git.badge.localWork" xml:space="preserve">
+    <value>Unpushed Work</value>
+    <comment>Badge on a project with local-only work.</comment>
+  </data>
+  <data name="git.badge.allPushed" xml:space="preserve">
+    <value>Pushed</value>
+    <comment>Badge on a project with nothing local-only.</comment>
+  </data>
+  <data name="git.branch" xml:space="preserve">
+    <value>Branch</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.detached" xml:space="preserve">
+    <value>No branch (detached)</value>
+    <comment>Shown instead of a branch name.</comment>
+  </data>
+  <data name="git.noRemote" xml:space="preserve">
+    <value>No remote: nothing here was ever pushed</value>
+    <comment>Inspector row.</comment>
+  </data>
+  <data name="git.unpushedCommits" xml:space="preserve">
+    <value>Commits not on any remote</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.behind" xml:space="preserve">
+    <value>Commits to pull</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.staged" xml:space="preserve">
+    <value>Staged changes</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.unstaged" xml:space="preserve">
+    <value>Unstaged changes</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.untracked" xml:space="preserve">
+    <value>Untracked files</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.conflicted" xml:space="preserve">
+    <value>Unresolved conflicts</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.stashes" xml:space="preserve">
+    <value>Stashes</value>
+    <comment>Inspector row label.</comment>
+  </data>
+  <data name="git.branchesOnlyHere" xml:space="preserve">
+    <value>Branches with commits only here</value>
+    <comment>Inspector list title.</comment>
+  </data>
 </root>
