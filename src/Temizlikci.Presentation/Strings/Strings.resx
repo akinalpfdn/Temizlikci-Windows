@@ -1697,11 +1697,11 @@
     <comment>Banner and alert title. The argument is a version.</comment>
   </data>
   <data name="updates.current" xml:space="preserve">
-    <value>You have {0}. Download the new version, unzip it and replace the old folder.</value>
+    <value>You have {0}. Download the installer and run it; it updates Temizlikci in place and keeps your saved scans.</value>
     <comment>Banner detail. The argument is the installed version.</comment>
   </data>
   <data name="updates.newerMessage" xml:space="preserve">
-    <value>You have {0}. Download opens the zip file in your browser.</value>
+    <value>You have {0}. Download gets the installer in your browser; run it to update.</value>
     <comment>Alert message. The argument is the installed version.</comment>
   </data>
   <data name="updates.download" xml:space="preserve">

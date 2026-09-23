@@ -64,7 +64,7 @@ public sealed class AppVersion : IComparable<AppVersion>, IEquatable<AppVersion>
 }
 
 /// <summary>A published release: what it is and where to get it.</summary>
-/// <param name="DownloadUrl">The attached zip; the release page when nothing is attached.</param>
+/// <param name="DownloadUrl">The attached installer, else the zip, else the release page.</param>
 public sealed record Release(AppVersion Version, Uri PageUrl, Uri DownloadUrl)
 {
     /// <summary>Reads GitHub's "latest release" response. <c>null</c> for anything that isn't a usable release.</summary>
@@ -78,21 +78,20 @@ public sealed record Release(AppVersion Version, Uri PageUrl, Uri DownloadUrl)
             if (Bool(root, "draft") || Bool(root, "prerelease")) return null;
             if (!root.TryGetProperty("tag_name", out var tag) || AppVersion.Parse(tag.GetString()) is not { } version) return null;
             if (!root.TryGetProperty("html_url", out var html) || !Uri.TryCreate(html.GetString(), UriKind.Absolute, out var page)) return null;
-            Uri download = page;
+            Uri? installer = null;
+            Uri? zip = null;
             if (root.TryGetProperty("assets", out var assets) && assets.ValueKind == JsonValueKind.Array)
             {
                 foreach (var asset in assets.EnumerateArray())
                 {
                     string name = asset.TryGetProperty("name", out var n) ? n.GetString() ?? string.Empty : string.Empty;
-                    if (!name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) continue;
-                    if (asset.TryGetProperty("browser_download_url", out var url) && Uri.TryCreate(url.GetString(), UriKind.Absolute, out var zip))
-                    {
-                        download = zip;
-                        break;
-                    }
+                    if (!asset.TryGetProperty("browser_download_url", out var url) || !Uri.TryCreate(url.GetString(), UriKind.Absolute, out var link)) continue;
+                    if (name.EndsWith(".exe", StringComparison.OrdinalIgnoreCase)) installer ??= link;
+                    else if (name.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)) zip ??= link;
                 }
             }
-            return new Release(version, page, download);
+            // The installer upgrades in place; the portable zip is for releases that came before it.
+            return new Release(version, page, installer ?? zip ?? page);
         }
         catch (JsonException)
         {

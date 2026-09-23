@@ -38,6 +38,20 @@ public sealed class AppVersionTests
     }
 
     [Fact]
+    public void Should_PreferTheInstaller_When_BothInstallerAndZipAreAttached()
+    {
+        const string json = """
+            {"tag_name":"v1.1.0","html_url":"https://github.com/akinalpfdn/Temizlikci-Windows/releases/tag/v1.1.0",
+             "assets":[{"name":"Temizlikci-1.1.0-win-x64-portable.zip","browser_download_url":"https://example.com/portable.zip"},
+                       {"name":"Temizlikci-Setup.exe","browser_download_url":"https://example.com/Temizlikci-Setup.exe"}]}
+            """;
+
+        var release = Release.FromGitHub(json);
+
+        Assert.Equal("https://example.com/Temizlikci-Setup.exe", release?.DownloadUrl.AbsoluteUri);
+    }
+
+    [Fact]
     public void Should_FallBackToTheReleasePage_When_NothingIsAttached()
     {
         var release = Release.FromGitHub("""{"tag_name":"v0.3.0","html_url":"https://github.com/x/y/releases/tag/v0.3.0","assets":[]}""");
