@@ -12,6 +12,9 @@ internal static class InsightViews
     public static UIElement For(SidebarDestination destination, MainViewModel main, LocationServices services) => destination.Kind switch
     {
         DestinationKind.RecycleBin => new RecycleBin.RecycleBinView(main),
+        DestinationKind.Developer => main.DeveloperScan is { } scan
+            ? new Developer.DeveloperView(main, scan)
+            : EmptyState(destination.Glyph, L10n.InsightsNotScannedTitle, L10n.DeveloperScanFirst, (L10n.DeveloperScanHome, main.ScanHome)),
         _ => EmptyState(destination.Glyph, L10n.InsightsNotScannedTitle, null),
     };
 

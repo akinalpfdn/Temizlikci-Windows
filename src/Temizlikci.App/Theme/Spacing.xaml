@@ -38,6 +38,10 @@
     <!-- List item padding and the scroll bar, on top of the columns. -->
     <x:Double x:Key="ListChromeWidth">48</x:Double>
     <x:Double x:Key="SizeTextMinWidth">72</x:Double>
+    <!-- Developer view: the stacked safety bar, and a column wide enough for its longest action button. -->
+    <x:Double x:Key="SummaryBarHeight">16</x:Double>
+    <CornerRadius x:Key="SummaryBarRadius">8</CornerRadius>
+    <x:Double x:Key="ActionColumnMinWidth">190</x:Double>
     <x:Double x:Key="ToolbarButtonWidth">44</x:Double>
     <x:Double x:Key="SearchBoxWidth">220</x:Double>
     <x:Double x:Key="SettingsMaxWidth">640</x:Double>

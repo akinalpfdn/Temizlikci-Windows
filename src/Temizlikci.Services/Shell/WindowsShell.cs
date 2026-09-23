@@ -8,6 +8,7 @@ namespace Temizlikci.Services.Shell;
 public sealed partial class WindowsShell : IShell
 {
     private const uint ShopFilePath = 0x2;
+    private const int ErrorCancelled = 1223;
 
     public void ShowInExplorer(string path)
     {
@@ -28,6 +29,20 @@ public sealed partial class WindowsShell : IShell
     {
         ArgumentNullException.ThrowIfNull(uri);
         using var _ = Process.Start(new ProcessStartInfo(uri.OriginalString) { UseShellExecute = true });
+    }
+
+    public void OpenSystemProtection()
+    {
+        // The dialog asks for administrator rights itself; only the shell can show that prompt for it.
+        var start = new ProcessStartInfo(Path.Join(Environment.SystemDirectory, "SystemPropertiesProtection.exe")) { UseShellExecute = true };
+        try
+        {
+            using var _ = Process.Start(start);
+        }
+        catch (System.ComponentModel.Win32Exception exception) when (exception.NativeErrorCode == ErrorCancelled)
+        {
+            // The person chose No on the UAC prompt: nothing to open.
+        }
     }
 
     [LibraryImport("shell32.dll", StringMarshalling = StringMarshalling.Utf16)]

@@ -54,6 +54,7 @@ public sealed class MainViewModelTests
 
     private readonly ModelFixture fixture = new();
     private readonly MemorySettings settings = new();
+    private readonly ToolsFixture tools = new();
 
     private MainViewModel Make(IVolumeInfoProvider? volumes = null, bool elevated = false, string? picked = null, IReadOnlyList<ScanEvent>? events = null) => new(
         volumes ?? new StubVolumes(SystemDrive, DataDrive),
@@ -63,7 +64,8 @@ public sealed class MainViewModelTests
         settings,
         new StubElevation(elevated),
         fixture.Ledger,
-        fixture.Undo);
+        fixture.Undo,
+        tools.Make());
 
     [Fact]
     public void Should_OpenTheSystemDrive_When_TheAppStarts()
@@ -225,5 +227,32 @@ public sealed class MainViewModelTests
 
         Assert.Empty(model.Ledger.Records);
         Assert.Null(model.Badge(SidebarDestination.RecycleBin));
+    }
+
+    [Fact]
+    public async Task Should_MarkEveryFinishedScanOutdated_When_AToolChangedTheDisk()
+    {
+        var model = Make();
+        var home = model.ScanModel(SidebarDestination.Home)!;
+        await ModelFixture.Scanned(home);
+
+        await model.Tools.Windows.CleanUpComponentsAsync();
+
+        Assert.True(home.IsOutdated);
+    }
+
+    [Fact]
+    public void Should_HandPeopleToTheRightPlace_When_ARuleNamesATool()
+    {
+        var model = Make();
+
+        model.OpenStorageSettings();
+        model.OpenSystemProtection();
+        model.OpenAndroidStudio();
+
+        Assert.Equal([new Uri("ms-settings:storagesense")], tools.Shell.Opened);
+        Assert.Equal(1, tools.Shell.SystemProtectionOpened);
+        Assert.Equal([Temizlikci.Domain.Projects.Editor.AndroidStudio], tools.Editors.Started);
+        Assert.True(model.IsAndroidStudioInstalled);
     }
 }

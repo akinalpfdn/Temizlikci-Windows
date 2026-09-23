@@ -1212,4 +1212,220 @@
     <value>Open Recycle Bin</value>
     <comment>Button that opens the Recycle Bin in Explorer.</comment>
   </data>
+  <data name="developer.summary.title" xml:space="preserve">
+    <value>Developer Files</value>
+    <comment>Title of the Developer view.</comment>
+  </data>
+  <data name="developer.summary.source" xml:space="preserve">
+    <value>From the scan of {0}</value>
+    <comment>Subtitle of the Developer view. The argument is a location name.</comment>
+  </data>
+  <data name="developer.group.reclaimable" xml:space="preserve">
+    <value>{0} reclaimable</value>
+    <comment>Size shown beside a group in the Developer view.</comment>
+  </data>
+  <data name="developer.empty.message" xml:space="preserve">
+    <value>Scan Home or your startup disk to find developer files.</value>
+    <comment>Empty state of the Developer view.</comment>
+  </data>
+  <data name="developer.empty.scanHome" xml:space="preserve">
+    <value>Scan Home</value>
+    <comment>Button in the Developer view's empty state.</comment>
+  </data>
+  <data name="developer.summary.bar" xml:space="preserve">
+    <value>Reclaimable space by safety</value>
+    <comment>Accessible name of the stacked bar in the Developer view.</comment>
+  </data>
+  <data name="cleanup.action.manageWsl" xml:space="preserve">
+    <value>Manage WSL</value>
+    <comment>Button that jumps to the WSL section.</comment>
+  </data>
+  <data name="cleanup.action.openAndroidStudio" xml:space="preserve">
+    <value>Open Android Studio</value>
+    <comment>Button that starts Android Studio.</comment>
+  </data>
+  <data name="cleanup.action.storageSettings" xml:space="preserve">
+    <value>Open Storage Settings</value>
+    <comment>Button that opens Settings › System › Storage.</comment>
+  </data>
+  <data name="cleanup.action.components" xml:space="preserve">
+    <value>Clean Up Components…</value>
+    <comment>Button that runs DISM component cleanup after a confirmation.</comment>
+  </data>
+  <data name="cleanup.action.systemProtection" xml:space="preserve">
+    <value>Open System Protection</value>
+    <comment>Button that opens System Properties › System Protection.</comment>
+  </data>
+  <data name="wsl.section.title" xml:space="preserve">
+    <value>WSL Distributions</value>
+    <comment>Section title in the Developer view.</comment>
+  </data>
+  <data name="wsl.empty" xml:space="preserve">
+    <value>No WSL distributions are installed.</value>
+    <comment>Shown in the WSL section when there are none.</comment>
+  </data>
+  <data name="wsl.badge.default" xml:space="preserve">
+    <value>Default</value>
+    <comment>Badge on the default WSL distribution.</comment>
+  </data>
+  <data name="wsl.badge.running" xml:space="preserve">
+    <value>Running</value>
+    <comment>Badge on a running WSL distribution.</comment>
+  </data>
+  <data name="wsl.version" xml:space="preserve">
+    <value>WSL {0}</value>
+    <comment>Which WSL runs a distribution. The argument is 1 or 2.</comment>
+  </data>
+  <data name="wsl.docker" xml:space="preserve">
+    <value>Managed by Docker Desktop. Use Docker Desktop's settings to free its space.</value>
+    <comment>Shown instead of actions for Docker's distributions.</comment>
+  </data>
+  <data name="wsl.action.compact" xml:space="preserve">
+    <value>Compact Disk…</value>
+    <comment>Button that compacts a distribution's virtual disk after a confirmation.</comment>
+  </data>
+  <data name="wsl.action.remove" xml:space="preserve">
+    <value>Remove…</value>
+    <comment>Button that unregisters a distribution after a confirmation.</comment>
+  </data>
+  <data name="wsl.alert.compact.title" xml:space="preserve">
+    <value>Compact {0}'s disk?</value>
+    <comment>Confirmation title. The argument is a distribution name.</comment>
+  </data>
+  <data name="wsl.alert.compact.message" xml:space="preserve">
+    <value>{0} stops while its disk is compacted, so save your work in it first. Nothing inside it is removed: unused space in its disk file goes back to Windows.</value>
+    <comment>Confirmation message. The argument is a distribution name.</comment>
+  </data>
+  <data name="wsl.alert.compact.confirm" xml:space="preserve">
+    <value>Compact</value>
+    <comment>Confirmation button.</comment>
+  </data>
+  <data name="wsl.alert.remove.title" xml:space="preserve">
+    <value>Remove {0}?</value>
+    <comment>Confirmation title. The argument is a distribution name.</comment>
+  </data>
+  <data name="wsl.alert.remove.message" xml:space="preserve">
+    <value>This deletes {0} and every file in it ({1}) with wsl --unregister. It can't be undone, and nothing goes to the Recycle Bin.</value>
+    <comment>Confirmation message. Arguments: distribution name, its disk size.</comment>
+  </data>
+  <data name="wsl.alert.remove.confirm" xml:space="preserve">
+    <value>Remove Distribution</value>
+    <comment>Destructive confirmation button.</comment>
+  </data>
+  <data name="wsl.result.compacted" xml:space="preserve">
+    <value>{0}'s disk is now {1}, {2} smaller.</value>
+    <comment>Result after compacting. Arguments: distribution name, new size, space saved.</comment>
+  </data>
+  <data name="wsl.result.compactedNothing" xml:space="preserve">
+    <value>{0}'s disk had no unused space to give back.</value>
+    <comment>Result after compacting when nothing changed. The argument is a distribution name.</comment>
+  </data>
+  <data name="wsl.result.removed" xml:space="preserve">
+    <value>{0} was removed.</value>
+    <comment>Result after unregistering. The argument is a distribution name.</comment>
+  </data>
+  <data name="windowsTools.section.title" xml:space="preserve">
+    <value>Windows Cleanup</value>
+    <comment>Section title in the Developer view.</comment>
+  </data>
+  <data name="windowsTools.components.title" xml:space="preserve">
+    <value>Windows Components (WinSxS)</value>
+    <comment>Row title.</comment>
+  </data>
+  <data name="windowsTools.components.detail" xml:space="preserve">
+    <value>Older versions of Windows components that updates replaced. Only DISM can remove them safely.</value>
+    <comment>Row explanation.</comment>
+  </data>
+  <data name="windowsTools.components.alert.title" xml:space="preserve">
+    <value>Clean up Windows components?</value>
+    <comment>Confirmation title.</comment>
+  </data>
+  <data name="windowsTools.components.alert.message" xml:space="preserve">
+    <value>DISM removes older versions of Windows components that updates replaced. It takes several minutes; keep Temizlikci open until it finishes.</value>
+    <comment>Confirmation message.</comment>
+  </data>
+  <data name="windowsTools.components.alert.confirm" xml:space="preserve">
+    <value>Clean Up</value>
+    <comment>Confirmation button.</comment>
+  </data>
+  <data name="windowsTools.components.done" xml:space="preserve">
+    <value>Component cleanup finished and freed {0}.</value>
+    <comment>Result. The argument is a size.</comment>
+  </data>
+  <data name="windowsTools.components.doneNothing" xml:space="preserve">
+    <value>Component cleanup finished. There was nothing more to remove.</value>
+    <comment>Result when no space was freed.</comment>
+  </data>
+  <data name="windowsTools.storage.title" xml:space="preserve">
+    <value>Temporary Files and Update Leftovers</value>
+    <comment>Row title.</comment>
+  </data>
+  <data name="windowsTools.storage.detail" xml:space="preserve">
+    <value>Storage Settings removes temporary files, Windows Update downloads and previous Windows installations.</value>
+    <comment>Row explanation.</comment>
+  </data>
+  <data name="windowsTools.restorePoints.title" xml:space="preserve">
+    <value>Restore Points</value>
+    <comment>Row title.</comment>
+  </data>
+  <data name="windowsTools.restorePoints.detail" xml:space="preserve">
+    <value>System Protection shows how much space restore points use, and deletes them.</value>
+    <comment>Row explanation.</comment>
+  </data>
+  <data name="windowsTools.android.title" xml:space="preserve">
+    <value>Android Emulators</value>
+    <comment>Row title.</comment>
+  </data>
+  <data name="windowsTools.android.detail" xml:space="preserve">
+    <value>Android Studio's Device Manager deletes emulators and their system images.</value>
+    <comment>Row explanation.</comment>
+  </data>
+  <data name="windowsTools.android.missing" xml:space="preserve">
+    <value>Android Studio isn't installed.</value>
+    <comment>Shown instead of the Android Studio button.</comment>
+  </data>
+  <data name="tools.working.components" xml:space="preserve">
+    <value>DISM is cleaning up components. This can take several minutes…</value>
+    <comment>Progress text.</comment>
+  </data>
+  <data name="tools.working.compact" xml:space="preserve">
+    <value>Compacting {0}'s disk…</value>
+    <comment>Progress text. The argument is a distribution name.</comment>
+  </data>
+  <data name="tools.working.remove" xml:space="preserve">
+    <value>Removing {0}…</value>
+    <comment>Progress text. The argument is a distribution name.</comment>
+  </data>
+  <data name="tools.working.load" xml:space="preserve">
+    <value>Looking for WSL distributions…</value>
+    <comment>Progress text.</comment>
+  </data>
+  <data name="tools.rescanHint" xml:space="preserve">
+    <value>Rescan to update sizes in the chart.</value>
+    <comment>Shown after a tool changed the disk.</comment>
+  </data>
+  <data name="tools.needsAdministrator" xml:space="preserve">
+    <value>Needs administrator rights</value>
+    <comment>Tooltip of the shield on buttons whose action needs administrator rights.</comment>
+  </data>
+  <data name="tools.error.notInstalled" xml:space="preserve">
+    <value>{0} isn't available on this PC.</value>
+    <comment>Error. The argument is a tool name (wsl, DISM).</comment>
+  </data>
+  <data name="tools.error.needsAdministrator" xml:space="preserve">
+    <value>{0} needs administrator rights.</value>
+    <comment>Error. The argument is a tool name.</comment>
+  </data>
+  <data name="tools.error.failed" xml:space="preserve">
+    <value>{0} reported an error.</value>
+    <comment>Error. The argument is a tool name.</comment>
+  </data>
+  <data name="tools.error.said" xml:space="preserve">
+    <value>It said: {0}</value>
+    <comment>Recovery text quoting the tool's own error. The argument is its message.</comment>
+  </data>
+  <data name="tools.suggestion.wslInUse" xml:space="preserve">
+    <value>Close programs that use WSL, such as terminals and Docker Desktop, then try again.</value>
+    <comment>Recovery suggestion when compacting fails.</comment>
+  </data>
 </root>

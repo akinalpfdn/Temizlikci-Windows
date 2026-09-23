@@ -10,6 +10,7 @@ public static class ErrorText
     {
         ScanException scan => ForScan(scan),
         RecycleException recycle => ForRecycle(recycle),
+        ToolException tool => ForTool(tool),
         UnauthorizedAccessException => (L10n.ErrorNoPermission, L10n.ErrorRestartAsAdministrator),
         _ => (L10n.ErrorUnexpected(exception?.Message ?? string.Empty), null),
     };
@@ -35,6 +36,19 @@ public static class ErrorText
         RecycleFailure.Occupied => (L10n.RecycleErrorOccupied(exception.Name), L10n.RecycleSuggestionPutBack),
         _ => (L10n.RecycleErrorFailed(exception.Name), L10n.RecycleSuggestionRescan),
     };
+
+    private static (string, string?) ForTool(ToolException exception)
+    {
+        string? said = exception.Detail is { Length: > 0 } detail ? L10n.ToolErrorSaid(detail) : null;
+        return exception.Failure switch
+        {
+            ToolFailure.NotInstalled => (L10n.ToolErrorNotInstalled(exception.Tool), said),
+            ToolFailure.NeedsAdministrator => (L10n.ToolErrorNeedsAdministrator(exception.Tool), L10n.ErrorRestartAsAdministrator),
+            // diskpart fails mostly because something still has the disk attached; say what to close, then its words.
+            _ when exception.Tool == "diskpart" => (L10n.ToolErrorFailed(exception.Tool), said is null ? L10n.ToolSuggestionWslInUse : L10n.ToolSuggestionWslInUse + "\n" + said),
+            _ => (L10n.ToolErrorFailed(exception.Tool), said),
+        };
+    }
 
     private static string Name(string path)
     {

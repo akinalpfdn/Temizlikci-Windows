@@ -1,8 +1,10 @@
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Temizlikci.Domain.Actions;
+using Temizlikci.Domain.Projects;
 using Temizlikci.Domain.Volumes;
 using Temizlikci.Presentation.Actions;
+using Temizlikci.Presentation.Developer;
 using Temizlikci.Presentation.Formatting;
 using Temizlikci.Presentation.Overview;
 using Temizlikci.Presentation.Strings;
@@ -43,7 +45,8 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         ISettingsStore settingsStore,
         IElevation elevation,
         RecycleLedger ledger,
-        UndoHistory undo)
+        UndoHistory undo,
+        InsightTools tools)
     {
         this.volumes = volumes ?? throw new ArgumentNullException(nameof(volumes));
         this.makeScanModel = makeScanModel ?? throw new ArgumentNullException(nameof(makeScanModel));
@@ -52,6 +55,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         Elevation = elevation ?? throw new ArgumentNullException(nameof(elevation));
         Ledger = ledger ?? throw new ArgumentNullException(nameof(ledger));
         Undo = undo ?? throw new ArgumentNullException(nameof(undo));
+        Tools = tools ?? throw new ArgumentNullException(nameof(tools));
         settings = settingsStore.Load();
         HomeFolder = homeFolder;
         Drives = volumes.FixedVolumes();
@@ -63,6 +67,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         var locations = LocationDestinations;
         selection = locations.Count > 0 ? locations[0] : null;
         Ledger.PropertyChanged += (_, _) => OnPropertyChanged(nameof(Ledger));
+        Tools.Windows.PropertyChanged += OnWindowsToolsChanged;
     }
 
     public string HomeFolder { get; }
@@ -74,6 +79,8 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     public RecycleLedger Ledger { get; }
 
     public UndoHistory Undo { get; }
+
+    public InsightTools Tools { get; }
 
     public AppSettings Settings
     {
@@ -261,6 +268,26 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     {
         Selection = SidebarDestination.Home;
         CurrentScan?.StartScan();
+    }
+
+    // MARK: Windows tools
+
+    public bool IsAndroidStudioInstalled => Tools.Editors.IsInstalled(Editor.AndroidStudio);
+
+    /// <summary>Android Studio's Device Manager is where emulators and system images are deleted.</summary>
+    public void OpenAndroidStudio() => Tools.Editors.Start(Editor.AndroidStudio);
+
+    /// <summary>Settings › System › Storage, which removes temporary files, update leftovers and old installations.</summary>
+    public void OpenStorageSettings() => Tools.Shell.OpenUri(new Uri("ms-settings:storagesense"));
+
+    public void OpenSystemProtection() => Tools.Shell.OpenSystemProtection();
+
+    private void OnWindowsToolsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(WindowsToolsModel.DidChangeDisk) || !Tools.Windows.DidChangeDisk) return;
+        ToolsChangedDisk();
+        // Free space in the sidebar moved too.
+        OnPropertyChanged(nameof(Drives));
     }
 
     /// <summary>After a tool (wsl, DISM) changed the disk, every finished scan's sizes are outdated until rescanned.</summary>

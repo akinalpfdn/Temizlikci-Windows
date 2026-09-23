@@ -22,7 +22,11 @@ public enum ScanPhase
 }
 
 /// <summary>A failed action, shown as a dialog with what happened and what to do next.</summary>
-public sealed record ActionError(string Message, string? Suggestion);
+public sealed record ActionError(string Message, string? Suggestion)
+{
+    /// <summary>The action needs administrator rights, so the dialog offers to restart the app as administrator.</summary>
+    public bool OffersRestart { get; init; }
+}
 
 /// <summary>What a location's model works with. One bundle, shared by every location and built by the composition root.</summary>
 public sealed class LocationServices

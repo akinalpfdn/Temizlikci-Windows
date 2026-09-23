@@ -4,15 +4,18 @@ using Temizlikci.Domain.Cleanup;
 using Temizlikci.Domain.Identity;
 using Temizlikci.Domain.Projects;
 using Temizlikci.Presentation.Actions;
+using Temizlikci.Presentation.Developer;
 using Temizlikci.Presentation.Main;
 using Temizlikci.Presentation.Overview;
 using Temizlikci.Services.Access;
+using Temizlikci.Services.Editors;
 using Temizlikci.Services.Identity;
 using Temizlikci.Services.Persistence;
 using Temizlikci.Services.Projects;
 using Temizlikci.Services.RecycleBin;
 using Temizlikci.Services.Scanning;
 using Temizlikci.Services.Shell;
+using Temizlikci.Services.Tools;
 using Temizlikci.Services.Volumes;
 
 namespace Temizlikci.App;
@@ -74,6 +77,11 @@ public partial class App : Application
             HiddenSpace = new HiddenSpaceReader(),
         };
 
+        var runner = new ProcessToolRunner();
+        var windowsTools = new WindowsToolsModel(
+            new WslManager(runner, elevation), new DismComponentStore(runner, elevation), volumes, Path.GetPathRoot(Environment.SystemDirectory) ?? @"C:\");
+        var tools = new InsightTools(windowsTools, new WindowsEditorLauncher(), services.Shell);
+
         var main = new MainViewModel(
             volumes,
             locations.Home,
@@ -82,7 +90,8 @@ public partial class App : Application
             settingsStore,
             elevation,
             ledger,
-            undo);
+            undo,
+            tools);
         window = new MainWindow(main, services);
         window.Closed += (_, _) => main.Dispose();
         window.Activate();

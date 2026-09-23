@@ -136,3 +136,19 @@ largest space users are single files at a drive root (hibernation and page files
 `*.csproj` whose name varies.
 **Trade-offs:** A new rule needs a matching reason string; a test enforces it.
 **Revisit if:** Rules become user-editable.
+
+---
+
+## 2026-09-23 — WSL: registry inventory, diskpart compaction, Docker's distributions left alone
+**Chosen:** Distributions are read from `HKCU\...\Lxss` (name, folder, version, default); whether one runs comes from
+`wsl --list --running --quiet`. Compact Disk stops the distribution with `wsl --terminate` and runs a `diskpart /s`
+script (attach read-only, compact, detach), which needs administrator rights. Remove uses `wsl --unregister` after a
+confirmation. Distributions named `docker-desktop*` get no actions.
+**Alternatives:** Parsing `wsl --list --verbose`; `Optimize-VHD`; `wsl --manage --set-sparse`; `wsl --shutdown`.
+**Why:** `--list --verbose` prints a localized table (Turkish on this PC), so parsing it breaks by language; the registry
+and the quiet list are locale-free. `Optimize-VHD` needs the Hyper-V PowerShell module, which Home editions lack.
+Sparse mode only returns space freed after it is switched on. `--shutdown` would stop Docker too. diskpart reports
+failure through its exit code only in `/s` mode, hence a script file (rewritten in the app folder) rather than stdin.
+Stopping or removing Docker's distributions breaks Docker Desktop, which manages that data itself.
+**Trade-offs:** Compacting needs the app elevated; the shield on the button says so and the error offers a restart.
+**Revisit if:** WSL gains a supported compact command.

@@ -47,6 +47,10 @@ internal sealed class RecordingShell : IShell
     public void ShowProperties(string path) => Properties.Add(path);
 
     public void OpenUri(Uri uri) => Opened.Add(uri);
+
+    public int SystemProtectionOpened { get; private set; }
+
+    public void OpenSystemProtection() => SystemProtectionOpened++;
 }
 
 /// <summary>Never touches the real Recycle Bin: records what would have moved.</summary>

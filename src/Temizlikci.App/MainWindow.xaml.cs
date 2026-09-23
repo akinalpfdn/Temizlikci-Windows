@@ -65,7 +65,12 @@ public sealed partial class MainWindow : Window
                 var targets = scan.Rows.Where(row => recycle.Contains(row.Node.Name)).ToList();
                 recycle.Clear();
                 foreach (var target in targets) scan.Recycle(target);
-                if (show is not null) DispatcherQueue.TryEnqueue(() => ViewModel.Selection = show);
+            }
+            if (show is not null)
+            {
+                var destination = show;
+                show = null;
+                DispatcherQueue.TryEnqueue(() => ViewModel.Selection = destination);
             }
             if (select is not null && scan.Selection is null && scan.Rows.FirstOrDefault(row => row.Node.Name == select) is { Node: not null } row) scan.Select(row);
         };
