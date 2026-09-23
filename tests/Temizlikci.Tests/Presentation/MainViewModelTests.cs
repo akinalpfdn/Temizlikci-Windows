@@ -58,7 +58,7 @@ public sealed class MainViewModelTests
 
     private MainViewModel Make(IVolumeInfoProvider? volumes = null, bool elevated = false, string? picked = null, IReadOnlyList<ScanEvent>? events = null) => new(
         volumes ?? new StubVolumes(SystemDrive, DataDrive),
-        @"C:\Users\akina",
+        @"C:\Users\dev",
         location => fixture.Make(events, root: location.Path, wholeVolume: location.IsWholeVolume),
         new StubPicker(picked),
         settings,
@@ -110,14 +110,14 @@ public sealed class MainViewModelTests
     [Fact]
     public async Task Should_AddAndOpenTheFolder_When_OneIsChosen()
     {
-        var model = Make(picked: @"C:\Users\akina\source");
+        var model = Make(picked: @"C:\Users\dev\source");
 
         await model.ChooseFolderAsync();
 
         Assert.Equal(SidebarDestination.ChosenFolder, model.Selection);
         Assert.Contains(SidebarDestination.ChosenFolder, model.LocationDestinations);
         Assert.Equal("source", model.Title(SidebarDestination.ChosenFolder));
-        Assert.Equal(@"C:\Users\akina\source", model.CurrentScan!.Location.Path);
+        Assert.Equal(@"C:\Users\dev\source", model.CurrentScan!.Location.Path);
     }
 
     [Fact]

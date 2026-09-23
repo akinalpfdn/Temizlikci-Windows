@@ -13,7 +13,7 @@ DECISIONS.md.
 | Chart | Win2D `CanvasControl` | Custom sunburst with hit testing |
 | MVVM | CommunityToolkit.Mvvm | Source-generated observable properties and commands |
 | Language | C# latest, .NET 10, nullable enabled, warnings as errors | |
-| Interop | LibraryImport (scanner), CsWin32 (shell COM) | |
+| Interop | LibraryImport (scanner, shell, Recycle Bin COM) | |
 | Tests | xUnit v3 on Microsoft.Testing.Platform | Real temp folders, synthetic MFT records |
 
 ## Architecture
