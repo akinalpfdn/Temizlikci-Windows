@@ -1007,8 +1007,17 @@ public sealed partial class LocationScanModel : ObservableObject, IDisposable
         }
         Segments = SunburstLayout.Segments(folder.Node, folder.Path);
         slots = SunburstLayout.SlotAssignments(folder.Node, folder.Path);
+        // Every child of the open folder is a list row and needs its chain. Deeper, only what the chart draws does:
+        // slivers are merged, so that is a few hundred items even when a folder like WinSxS holds 80,000. Walking every
+        // node within the rings instead ran on each progress update and froze the window on a whole-drive scan.
+        var drawn = Segments.Select(segment => segment.NodeId).OfType<string>().ToHashSet(StringComparer.Ordinal);
         var map = new Dictionary<string, IReadOnlyList<NodeRef>>(StringComparer.Ordinal);
-        Walk(folder, [folder]);
+        foreach (var child in folder.Children)
+        {
+            List<NodeRef> chain = [folder, child];
+            map[child.Id] = chain;
+            if (drawn.Contains(child.Id)) Walk(child, chain);
+        }
         chains = map;
 
         void Walk(NodeRef node, List<NodeRef> chain)
@@ -1016,6 +1025,7 @@ public sealed partial class LocationScanModel : ObservableObject, IDisposable
             if (chain.Count > SunburstLayout.RingCount) return;
             foreach (var child in node.Children)
             {
+                if (!drawn.Contains(child.Id)) continue;
                 var childChain = new List<NodeRef>(chain) { child };
                 map[child.Id] = childChain;
                 if (child.Node.Kind == NodeKind.Directory) Walk(child, childChain);

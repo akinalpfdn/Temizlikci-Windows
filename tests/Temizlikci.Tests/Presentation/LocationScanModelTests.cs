@@ -531,4 +531,25 @@ public sealed class LocationScanModelTests
         Assert.Equal("Docs", model.CurrentFolder!.Value.Node.Name);
         Assert.NotNull(model.Result);
     }
+
+    [Fact]
+    public async Task Should_FindEveryRowAndEveryDrawnSegment_When_AFolderHoldsTensOfThousandsOfItems()
+    {
+        // A WinSxS-like folder: one big item and 40,000 tiny ones that the chart merges into a sliver.
+        var tiny = Enumerable.Range(0, 40_000).Select(index => Dir($"c{index}", File("f", 1)));
+        var root = Root(Dir("Windows", [Dir("WinSxS", [Dir("big", File("b", 10_000_000)), .. tiny])]), File("pagefile.sys", 5_000_000));
+        var model = await ModelFixture.Scanned(fixture.Make([Finished(root)]));
+
+        var windows = model.Rows.Single(row => row.Node.Name == "Windows");
+        var winSxS = Assert.IsType<NodeRef>(model.NodeById(Id(@"Windows\WinSxS")));
+        var big = model.NodeById(Id(@"Windows\WinSxS\big"));
+        var sliver = model.NodeById(Id(@"Windows\WinSxS\c7"));
+
+        Assert.All(model.Rows, row => Assert.NotNull(model.NodeById(row.Id)));
+        Assert.Equal("WinSxS", winSxS.Node.Name);
+        Assert.NotNull(big);
+        Assert.Null(sliver);
+        model.Open(windows);
+        Assert.Equal(40_001, model.CurrentFolder!.Value.Children.Single(child => child.Node.Name == "WinSxS").Node.Children.Count);
+    }
 }
