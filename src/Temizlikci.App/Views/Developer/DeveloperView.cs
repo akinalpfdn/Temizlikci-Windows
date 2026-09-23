@@ -451,6 +451,10 @@ internal sealed partial class DeveloperView : UserControl
     private static void SetDetail(Expander section, string? detail)
     {
         if (section.Header is not Grid header) return;
+        if (header.Children.OfType<TextBlock>().FirstOrDefault(text => Grid.GetColumn(text) == 0) is { } title)
+        {
+            Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(section, Ui.SectionName(title.Text, detail));
+        }
         var existing = header.Children.OfType<TextBlock>().FirstOrDefault(text => Grid.GetColumn(text) == 1);
         if (existing is not null) header.Children.Remove(existing);
         if (detail is null) return;

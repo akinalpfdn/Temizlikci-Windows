@@ -65,6 +65,24 @@ public sealed partial class SourceHygieneTests
         Assert.Empty(offenders);
     }
 
+    /// <summary>High Contrast looks resources up in its own dictionary; a key missing there fails when the view loads,
+    /// but only for people who use a contrast theme.</summary>
+    [Fact]
+    public void Should_DefineEveryColorForEveryTheme_When_TheThemeChanges()
+    {
+        var colors = System.Xml.Linq.XDocument.Load(Path.Combine(SourceTree.Source, "Temizlikci.App", "Theme", "Colors.xaml"));
+        System.Xml.Linq.XNamespace x = "http://schemas.microsoft.com/winfx/2006/xaml";
+        var themes = colors.Descendants()
+            .Where(element => element.Name.LocalName == "ResourceDictionary" && element.Attribute(x + "Key") is not null)
+            .ToDictionary(
+                element => (string)element.Attribute(x + "Key")!,
+                element => element.Elements().Select(resource => (string?)resource.Attribute(x + "Key")).OfType<string>().ToHashSet());
+
+        Assert.Equal(["Dark", "HighContrast", "Light"], themes.Keys.Order());
+        Assert.Equal(themes["Light"], themes["Dark"]);
+        Assert.Equal(themes["Light"], themes["HighContrast"]);
+    }
+
     /// <summary>XAML views: everything except the theme resource dictionaries.</summary>
     private static IEnumerable<string> Views() =>
         SourceTree.Files("*.xaml").Where(path => !SourceTree.Relative(path).Contains("/Theme/", StringComparison.Ordinal));

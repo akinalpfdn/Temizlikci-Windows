@@ -152,7 +152,7 @@ internal static class Ui
             Grid.SetColumn(detailText, 1);
             header.Children.Add(detailText);
         }
-        return new Expander
+        var section = new Expander
         {
             Header = header,
             Content = content,
@@ -160,7 +160,12 @@ internal static class Ui
             HorizontalAlignment = HorizontalAlignment.Stretch,
             HorizontalContentAlignment = HorizontalAlignment.Stretch,
         };
+        // The header is a layout, not text, so screen readers need the name spelled out.
+        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(section, SectionName(title, detail));
+        return section;
     }
+
+    public static string SectionName(string title, string? detail) => detail is null ? title : $"{title}, {detail}";
 
     /// <summary>Shows a model's failed action as a dialog; offers a restart as administrator when that would fix it.</summary>
     public static async Task ShowErrorAsync(XamlRoot root, ActionError error, Func<bool>? restartAsAdministrator)

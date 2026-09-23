@@ -7,6 +7,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
+using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Temizlikci.App.Theme;
@@ -116,6 +117,35 @@ public sealed partial class SunburstChart : UserControl
         {
             AutomationProperties.SetName(this, L10n.ChartAccessibilityLabel(model.Title(folder)));
         }
+        // Opening a folder or finishing a scan replaces the segments screen readers list.
+        FrameworkElementAutomationPeer.FromElement(this)?.RaiseAutomationEvent(AutomationEvents.StructureChanged);
+    }
+
+    protected override AutomationPeer OnCreateAutomationPeer() => new SunburstAutomationPeer(this);
+
+    /// <summary>The box around a segment in the control's own coordinates, for screen readers to point at.</summary>
+    internal Windows.Foundation.Rect LocalBounds(SunburstSegment segment)
+    {
+        var (inner, outer) = SunburstLayout.RingBounds(segment.Depth);
+        float radius = Side / 2;
+        var middle = Origin + new Vector2(radius, radius);
+        double left = double.MaxValue, top = double.MaxValue, right = double.MinValue, bottom = double.MinValue;
+        // The arc's extremes lie on its ends or where it crosses an axis; sampling finely finds them closely enough.
+        const int Steps = 24;
+        for (int step = 0; step <= Steps; step++)
+        {
+            double angle = segment.StartAngle + (segment.EndAngle - segment.StartAngle) * step / Steps;
+            foreach (double fraction in new[] { inner, outer })
+            {
+                double x = middle.X + fraction * radius * Math.Sin(angle);
+                double y = middle.Y - fraction * radius * Math.Cos(angle);
+                left = Math.Min(left, x);
+                right = Math.Max(right, x);
+                top = Math.Min(top, y);
+                bottom = Math.Max(bottom, y);
+            }
+        }
+        return new Windows.Foundation.Rect(left, top, right - left, bottom - top);
     }
 
     // MARK: Geometry
