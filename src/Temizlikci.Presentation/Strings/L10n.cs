@@ -205,4 +205,11 @@ public static class L10n
     public static string SettingsStartAsAdministratorExplanation => Get("settings.admin.explanation");
     public static string SettingsCheckUpdates => Get("settings.checkUpdates");
     public static string SettingsCheckUpdatesExplanation => Get("settings.checkUpdates.explanation");
+
+    public static string InsightsRecycleBinMessage => Get("insights.empty.recycleBin");
+    public static string RecycleTotal(string size) => Format("recycle.summary.total", size);
+    public static string RecycleEmptyNote => Get("recycle.summary.note");
+    public static string RecycleFrom(string folder) => Format("recycle.row.from", folder);
+    public static string RecyclePutBack => Get("recycle.action.putBack");
+    public static string RecycleOpen => Get("recycle.action.open");
 }

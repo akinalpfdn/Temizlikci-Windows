@@ -1188,4 +1188,28 @@
     <value>Once a day at most, Temizlikci asks GitHub whether a newer version is published. Nothing about this PC or its files is sent, and nothing is downloaded or installed unless you choose Download.</value>
     <comment>Explains what the update check does and sends.</comment>
   </data>
+  <data name="insights.empty.recycleBin" xml:space="preserve">
+    <value>Items you move to the Recycle Bin from Temizlikci appear here until you empty it.</value>
+    <comment>Empty state message of the Recycle Bin view.</comment>
+  </data>
+  <data name="recycle.summary.total" xml:space="preserve">
+    <value>{0} moved to the Recycle Bin from Temizlikci</value>
+    <comment>Header of the Recycle Bin view. The argument is a size.</comment>
+  </data>
+  <data name="recycle.summary.note" xml:space="preserve">
+    <value>This space is freed when you empty the Recycle Bin.</value>
+    <comment>Explanation in the Recycle Bin view.</comment>
+  </data>
+  <data name="recycle.row.from" xml:space="preserve">
+    <value>From {0}</value>
+    <comment>Where a recycled item came from. The argument is a folder path.</comment>
+  </data>
+  <data name="recycle.action.putBack" xml:space="preserve">
+    <value>Put Back</value>
+    <comment>Button that returns an item from the Recycle Bin to where it was.</comment>
+  </data>
+  <data name="recycle.action.open" xml:space="preserve">
+    <value>Open Recycle Bin</value>
+    <comment>Button that opens the Recycle Bin in Explorer.</comment>
+  </data>
 </root>

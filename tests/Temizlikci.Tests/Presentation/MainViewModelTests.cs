@@ -4,6 +4,7 @@ using Temizlikci.Domain.Volumes;
 using Temizlikci.Presentation.Actions;
 using Temizlikci.Presentation.Main;
 using Temizlikci.Presentation.Overview;
+using Temizlikci.Presentation.Strings;
 using Temizlikci.Tests.Support;
 
 namespace Temizlikci.Tests.Presentation;
@@ -191,5 +192,38 @@ public sealed class MainViewModelTests
 
         Assert.Empty(model.Ledger.Records);
         Assert.Equal([apps.Path], fixture.Bin.PutBackPaths);
+    }
+
+    [Fact]
+    public async Task Should_ReturnTheErrorAndKeepTheRecord_When_PutBackFails()
+    {
+        var model = Make();
+        var home = model.ScanModel(SidebarDestination.Home)!;
+        await ModelFixture.Scanned(home);
+        home.Recycle(home.CurrentFolder!.Value.Children.Single(child => child.Node.Name == "Apps"));
+        fixture.Bin.PutBackFailure = new RecycleException(RecycleFailure.Occupied, "Apps");
+
+        var error = model.PutBack(model.Ledger.Records[0]);
+
+        Assert.NotNull(error);
+        Assert.Equal(L10n.RecycleErrorOccupied("Apps"), error.Message);
+        Assert.Single(model.Ledger.Records);
+        Assert.Null(home.ActionError);
+    }
+
+    [Fact]
+    public async Task Should_DropItemsEmptiedFromTheRecycleBin_When_TheWindowIsActivated()
+    {
+        var model = Make();
+        var home = model.ScanModel(SidebarDestination.Home)!;
+        await ModelFixture.Scanned(home);
+        var apps = home.CurrentFolder!.Value.Children.Single(child => child.Node.Name == "Apps");
+        home.Recycle(apps);
+        fixture.Bin.GoneFromBin.Add(apps.Path);
+
+        await model.ActivatedAsync();
+
+        Assert.Empty(model.Ledger.Records);
+        Assert.Null(model.Badge(SidebarDestination.RecycleBin));
     }
 }

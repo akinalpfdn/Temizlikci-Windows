@@ -1,0 +1,60 @@
+<UserControl
+    x:Class="Temizlikci.App.Views.RecycleBin.RecycleBinView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Temizlikci.App.Views.RecycleBin"
+    xmlns:views="using:Temizlikci.App.Views"
+    xmlns:s="using:Temizlikci.Presentation.Strings">
+
+    <Grid>
+        <!-- Items moved to the Recycle Bin from the app in this session, each with Put Back. -->
+        <Grid x:Name="Records" Padding="{StaticResource PagePadding}" RowSpacing="{StaticResource SpacingMedium}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Spacing="{StaticResource SpacingXSmall}">
+                <TextBlock x:Name="TotalText" Style="{StaticResource PageTitleTextStyle}" />
+                <TextBlock Text="{x:Bind s:L10n.RecycleEmptyNote}" Style="{StaticResource SecondaryTextStyle}" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <ListView x:Name="Rows" Grid.Row="1" SelectionMode="None">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:RecycleRow">
+                        <Grid Padding="{StaticResource RowPadding}" ColumnSpacing="{StaticResource SpacingMedium}" ToolTipService.ToolTip="{x:Bind OriginalPath}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="{x:Bind Glyph}" FontSize="{StaticResource SectionFontSize}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center" />
+                            <StackPanel Grid.Column="1" Spacing="{StaticResource SpacingXXSmall}" VerticalAlignment="Center">
+                                <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" MaxLines="1" />
+                                <TextBlock views:MiddleTrim.Text="{x:Bind FromText}" Style="{StaticResource CaptionTextStyle}" MaxLines="1" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="{x:Bind SizeText}" Style="{StaticResource SizeTextStyle}" VerticalAlignment="Center" />
+                            <Button Grid.Column="3" Content="{x:Bind s:L10n.RecyclePutBack}" Click="OnPutBack" Tag="{x:Bind}" VerticalAlignment="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Grid.Row="2" HorizontalAlignment="Right" Content="{x:Bind s:L10n.RecycleOpen}" Click="OnOpenRecycleBin" />
+        </Grid>
+
+        <StackPanel x:Name="EmptyState" Style="{StaticResource EmptyStatePanelStyle}" Visibility="Collapsed">
+            <FontIcon Glyph="&#xE74D;" Style="{StaticResource EmptyStateIconStyle}" />
+            <TextBlock Text="{x:Bind s:L10n.SidebarRecycleBin}" Style="{StaticResource EmptyStateTitleTextStyle}" />
+            <TextBlock Text="{x:Bind s:L10n.InsightsRecycleBinMessage}" Style="{StaticResource EmptyStateMessageTextStyle}" />
+            <Button Content="{x:Bind s:L10n.RecycleOpen}" HorizontalAlignment="Center" Click="OnOpenRecycleBin" />
+        </StackPanel>
+    </Grid>
+</UserControl>

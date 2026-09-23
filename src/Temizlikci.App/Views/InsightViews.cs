@@ -11,6 +11,7 @@ internal static class InsightViews
 {
     public static UIElement For(SidebarDestination destination, MainViewModel main, LocationServices services) => destination.Kind switch
     {
+        DestinationKind.RecycleBin => new RecycleBin.RecycleBinView(main),
         _ => EmptyState(destination.Glyph, L10n.InsightsNotScannedTitle, null),
     };
 

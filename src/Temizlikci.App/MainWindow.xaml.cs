@@ -11,6 +11,7 @@ using Temizlikci.App.Views.Overview;
 using Temizlikci.Presentation.Main;
 using Temizlikci.Presentation.Overview;
 using Temizlikci.Presentation.Strings;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
 namespace Temizlikci.App;
@@ -41,7 +42,9 @@ public sealed partial class MainWindow : Window
 
     /// <summary>
     /// Debug builds only, for checking the UI by eye: <c>--folder=C:\path</c> opens that folder, <c>--scan</c> scans the
-    /// open location at launch, <c>--select=name</c> picks a row by name once the scan is done.
+    /// open location at launch, <c>--select=name</c> picks a row by name once the scan is done, <c>--recycle=a,b</c>
+    /// moves those rows to the Recycle Bin (point it only at a scratch folder), <c>--show=RecycleBin</c> then switches to
+    /// that sidebar destination.
     /// </summary>
     [System.Diagnostics.Conditional("DEBUG")]
     private void ApplyPreviewArguments()
@@ -51,10 +54,20 @@ public sealed partial class MainWindow : Window
         if (Value("--folder=") is { } folder) ViewModel.OpenFolder(folder);
         if (!arguments.Contains("--scan") || ViewModel.CurrentScan is not { } scan) return;
         scan.StartScan();
-        if (Value("--select=") is not { } name) return;
+        string? select = Value("--select=");
+        var recycle = Value("--recycle=")?.Split(',').ToList() ?? [];
+        var show = Enum.TryParse<DestinationKind>(Value("--show="), out var kind) ? ViewModel.InsightDestinations.FirstOrDefault(item => item.Kind == kind) : null;
         scan.PropertyChanged += (_, _) =>
         {
-            if (scan.HasResult && scan.Selection is null && scan.Rows.FirstOrDefault(row => row.Node.Name == name) is { Node: not null } row) scan.Select(row);
+            if (!scan.HasResult) return;
+            if (recycle.Count > 0)
+            {
+                var targets = scan.Rows.Where(row => recycle.Contains(row.Node.Name)).ToList();
+                recycle.Clear();
+                foreach (var target in targets) scan.Recycle(target);
+                if (show is not null) DispatcherQueue.TryEnqueue(() => ViewModel.Selection = show);
+            }
+            if (select is not null && scan.Selection is null && scan.Rows.FirstOrDefault(row => row.Node.Name == select) is { Node: not null } row) scan.Select(row);
         };
     }
 
@@ -108,6 +121,36 @@ public sealed partial class MainWindow : Window
         var item = SidebarItems.Make(destination, ViewModel.Title(destination), ViewModel.Badge(destination));
         sidebarItems[destination] = item;
         Sidebar.MenuItems.Add(item);
+        if (destination.Kind == DestinationKind.RecycleBin)
+        {
+            item.AllowDrop = true;
+            item.DragOver += OnRecycleBinDragOver;
+            item.Drop += OnRecycleBinDrop;
+        }
+    }
+
+    /// <summary>Rows from the list, or files from Explorer that are part of the visible scan, can be dropped on the Recycle Bin.</summary>
+    private void OnRecycleBinDragOver(object sender, DragEventArgs e)
+    {
+        if (!e.DataView.Contains(DragPaths.Format) && !e.DataView.Contains(StandardDataFormats.StorageItems)) return;
+        e.AcceptedOperation = DataPackageOperation.Move;
+        e.DragUIOverride.Caption = L10n.RecycleAction;
+    }
+
+    private async void OnRecycleBinDrop(object sender, DragEventArgs e)
+    {
+        var deferral = e.GetDeferral();
+        try
+        {
+            IReadOnlyList<string> paths = e.DataView.Contains(DragPaths.Format)
+                ? DragPaths.Split((string)await e.DataView.GetDataAsync(DragPaths.Format))
+                : (await e.DataView.GetStorageItemsAsync()).Select(storageItem => storageItem.Path).Where(path => path.Length > 0).ToList();
+            ViewModel.RecycleDropped(paths);
+        }
+        finally
+        {
+            deferral.Complete();
+        }
     }
 
     private void RefreshBadges()

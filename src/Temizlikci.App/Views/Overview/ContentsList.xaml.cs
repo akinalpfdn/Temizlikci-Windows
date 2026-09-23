@@ -168,6 +168,19 @@ public sealed partial class ContentsList : UserControl
         }
     }
 
+    /// <summary>Rows drag as paths, for dropping on the sidebar's Recycle Bin. Aggregates have no path to drag.</summary>
+    private void OnDragItemsStarting(object sender, DragItemsStartingEventArgs e)
+    {
+        var paths = e.Items.OfType<ContentRow>().Select(row => LocationScanModel.ActionablePath(row.Node)).OfType<string>().ToList();
+        if (paths.Count == 0)
+        {
+            e.Cancel = true;
+            return;
+        }
+        e.Data.SetData(DragPaths.Format, DragPaths.Join(paths));
+        e.Data.RequestedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Move;
+    }
+
     private void OnRightTapped(object sender, RightTappedRoutedEventArgs e)
     {
         if (model is null || (e.OriginalSource as FrameworkElement)?.DataContext is not ContentRow row) return;
@@ -207,4 +220,14 @@ internal static class ItemMenu
         item.Click += (_, _) => action();
         return item;
     }
+}
+
+/// <summary>The app's own drag format: item paths, one per line.</summary>
+internal static class DragPaths
+{
+    public const string Format = "Temizlikci.Paths";
+
+    public static string Join(IEnumerable<string> paths) => string.Join('\n', paths);
+
+    public static IReadOnlyList<string> Split(string text) => text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 }

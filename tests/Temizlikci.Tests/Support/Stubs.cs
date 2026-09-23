@@ -55,6 +55,7 @@ internal sealed class StubRecycleBin : IRecycleBin
     public List<string> Recycled { get; } = [];
     public List<string> PutBackPaths { get; } = [];
     public RecycleException? Failure { get; set; }
+    public RecycleException? PutBackFailure { get; set; }
     public HashSet<string> GoneFromBin { get; } = new(StringComparer.OrdinalIgnoreCase);
     public int Opened { get; private set; }
 
@@ -68,6 +69,7 @@ internal sealed class StubRecycleBin : IRecycleBin
     public void PutBack(RecycledItem item)
     {
         ArgumentNullException.ThrowIfNull(item);
+        if (PutBackFailure is not null) throw PutBackFailure;
         PutBackPaths.Add(item.OriginalPath);
     }
 

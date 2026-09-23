@@ -278,12 +278,17 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         if (CurrentScan is { } scan) scan.Recycle(scan.Selection ?? scan.CurrentFolder);
     }
 
-    /// <summary>Puts an item back through the location it came from, so that location's tree updates too.</summary>
-    public void PutBack(RecycleRecord record)
+    /// <summary>Puts an item back through the location it came from, so that location's tree updates too. Returns
+    /// the failure for the caller to show, instead of leaving it on a location that isn't visible.</summary>
+    public ActionError? PutBack(RecycleRecord record)
     {
         ArgumentNullException.ThrowIfNull(record);
-        var owner = AllScans.FirstOrDefault(scan => string.Equals(scan.Location.Path.TrimEnd('\\'), record.LocationPath.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase));
-        (owner ?? AllScans.First()).PutBack(record);
+        var owner = AllScans.FirstOrDefault(scan => string.Equals(scan.Location.Path.TrimEnd('\\'), record.LocationPath.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
+            ?? AllScans.First();
+        owner.PutBack(record);
+        if (owner.ActionError is not { } error) return null;
+        owner.DismissError();
+        return error;
     }
 
     public bool RecycleDropped(IReadOnlyList<string> paths) => CurrentScan?.RecycleDropped(paths) ?? false;

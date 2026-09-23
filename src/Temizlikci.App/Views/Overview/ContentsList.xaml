@@ -47,7 +47,9 @@
             SelectionChanged="OnSelectionChanged"
             DoubleTapped="OnDoubleTapped"
             KeyDown="OnRowsKeyDown"
-            RightTapped="OnRightTapped">
+            RightTapped="OnRightTapped"
+            CanDragItems="True"
+            DragItemsStarting="OnDragItemsStarting">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
