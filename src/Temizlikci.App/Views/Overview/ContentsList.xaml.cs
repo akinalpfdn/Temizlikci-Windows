@@ -17,6 +17,7 @@ public sealed partial class ContentsList : UserControl
     private bool updatingSelection;
     private bool listening;
     private bool showsChanges;
+    private bool compact;
 
     public ContentsList()
     {
@@ -33,6 +34,7 @@ public sealed partial class ContentsList : UserControl
             // Moving an element raises its new Loaded before the old Unloaded; a late Unloaded changes nothing.
             if (!IsLoaded) Listen(false);
         };
+        SizeChanged += (_, e) => UpdateCompact(e.NewSize.Width);
     }
 
     /// <summary>Raised when the Change column appears or goes, which moves <see cref="MinimumWidth"/>.</summary>
@@ -93,9 +95,9 @@ public sealed partial class ContentsList : UserControl
         {
             shownRows = model.Rows;
             UpdateChangeColumn(model.Rows.Any(row => model.GrowthFor(row) is not null));
-            var changeWidth = ChangeHeaderColumn.Width;
+            var columns = new RowColumns(SizeHeaderColumn.Width, ChangeHeaderColumn.Width, ShareHeaderColumn.Width, compact);
             long largest = model.Rows.Count == 0 ? 0 : model.Rows.Max(row => row.Node.AllocatedSize);
-            Rows.ItemsSource = model.Rows.Select(row => new ContentRow(model, row, largest, ActualTheme, changeWidth)).ToList();
+            Rows.ItemsSource = model.Rows.Select(row => new ContentRow(model, row, largest, ActualTheme, columns)).ToList();
         }
         NoResults.Text = model.Rows.Count == 0 && model.SearchText.Length > 0 ? L10n.SearchNoResults(model.SearchText) : string.Empty;
         NoResults.Visibility = NoResults.Text.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -119,6 +121,20 @@ public sealed partial class ContentsList : UserControl
         ChangeHeaderColumn.Width = show ? (GridLength)Application.Current.Resources["ChangeColumnWidth"] : new GridLength(0);
         ChangeHeader.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         MinimumWidthChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    /// <summary>Below the width every column needs, names would shrink to a few letters; the size bar and the Share
+    /// column give way instead (the chart and the inspector show the share).</summary>
+    private void UpdateCompact(double width)
+    {
+        bool narrow = width > 0 && width < MinimumWidth;
+        if (narrow == compact) return;
+        compact = narrow;
+        var resources = Application.Current.Resources;
+        SizeHeaderColumn.Width = (GridLength)resources[compact ? "CompactSizeColumnWidth" : "SizeColumnWidth"];
+        ShareHeaderColumn.Width = compact ? new GridLength(0) : (GridLength)resources["ShareColumnWidth"];
+        ShareHeader.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+        Rebuild(force: true);
     }
 
     private void SyncSelection()

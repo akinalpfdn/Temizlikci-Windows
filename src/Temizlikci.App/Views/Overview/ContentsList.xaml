@@ -15,9 +15,9 @@
         <Grid Padding="{StaticResource RowPadding}" ColumnSpacing="{StaticResource SpacingSmall}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="{StaticResource SizeColumnWidth}" />
+                <ColumnDefinition x:Name="SizeHeaderColumn" Width="{StaticResource SizeColumnWidth}" />
                 <ColumnDefinition x:Name="ChangeHeaderColumn" Width="0" />
-                <ColumnDefinition Width="{StaticResource ShareColumnWidth}" />
+                <ColumnDefinition x:Name="ShareHeaderColumn" Width="{StaticResource ShareColumnWidth}" />
             </Grid.ColumnDefinitions>
             <Button x:Name="NameHeader" Style="{StaticResource ColumnHeaderButtonStyle}" Click="OnSortByName" HorizontalAlignment="Left">
                 <TextBlock x:Name="NameHeaderText" Text="{x:Bind s:L10n.TableName}" />
@@ -26,7 +26,7 @@
                 <TextBlock x:Name="SizeHeaderText" Text="{x:Bind s:L10n.TableSize}" />
             </Button>
             <TextBlock x:Name="ChangeHeader" Grid.Column="2" Visibility="Collapsed" Text="{x:Bind s:L10n.TableChange}" Style="{StaticResource BadgeTextStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <TextBlock Grid.Column="3" Text="{x:Bind s:L10n.TableShare}" Style="{StaticResource BadgeTextStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBlock x:Name="ShareHeader" Grid.Column="3" Text="{x:Bind s:L10n.TableShare}" Style="{StaticResource BadgeTextStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" />
         </Grid>
 
         <ListView
@@ -50,9 +50,9 @@
                     <Grid ColumnSpacing="{StaticResource SpacingSmall}" ToolTipService.ToolTip="{x:Bind Tooltip}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="{StaticResource SizeColumnWidth}" />
-                            <ColumnDefinition Width="{x:Bind ChangeColumnWidth}" />
-                            <ColumnDefinition Width="{StaticResource ShareColumnWidth}" />
+                            <ColumnDefinition Width="{x:Bind Columns.Size}" />
+                            <ColumnDefinition Width="{x:Bind Columns.Change}" />
+                            <ColumnDefinition Width="{x:Bind Columns.Share}" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSmall}" VerticalAlignment="Center">
                             <Border Width="{StaticResource SwatchSize}" Height="{StaticResource SwatchSize}" CornerRadius="2" Background="{x:Bind SwatchBrush}" BorderBrush="{x:Bind SwatchBorderBrush}" BorderThickness="1.5" />
@@ -68,7 +68,7 @@
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="{StaticResource SpacingSmall}" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Grid Width="{StaticResource SizeBarWidth}" Height="{StaticResource SizeBarHeight}" VerticalAlignment="Center">
+                            <Grid Width="{StaticResource SizeBarWidth}" Height="{StaticResource SizeBarHeight}" VerticalAlignment="Center" Visibility="{x:Bind BarVisibility}">
                                 <Border Background="{ThemeResource SizeBarTrackBrush}" CornerRadius="3" />
                                 <Border Width="{x:Bind BarLength}" Background="{x:Bind BarBrush}" CornerRadius="3" HorizontalAlignment="Left" />
                             </Grid>
@@ -80,7 +80,7 @@
                                 <TextBlock Text="{x:Bind ChangeText}" Style="{StaticResource BadgeTextStyle}" Foreground="{x:Bind ChangeBrush}" />
                             </StackPanel>
                         </Border>
-                        <TextBlock Grid.Column="3" Text="{x:Bind ShareText}" Style="{StaticResource CaptionTextStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="3" Text="{x:Bind ShareText}" Visibility="{x:Bind ShareVisibility}" Style="{StaticResource CaptionTextStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

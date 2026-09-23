@@ -11,14 +11,18 @@ using Temizlikci.Presentation.Strings;
 
 namespace Temizlikci.App.Views.Overview;
 
+/// <summary>How wide the list's columns are right now; every row and the header share them.</summary>
+/// <param name="Compact">The list is too narrow for everything: sizes as text only, no Share column.</param>
+public sealed record RowColumns(GridLength Size, GridLength Change, GridLength Share, bool Compact);
+
 /// <summary>One list row, with everything its template shows already worked out, so the template only binds.</summary>
 public sealed class ContentRow
 {
     private const double BarWidth = 56;
 
-    public ContentRow(LocationScanModel model, NodeRef node, long largest, ElementTheme theme, GridLength changeColumnWidth)
+    public ContentRow(LocationScanModel model, NodeRef node, long largest, ElementTheme theme, RowColumns columns)
     {
-        ChangeColumnWidth = changeColumnWidth;
+        Columns = columns;
         Node = node;
         Id = node.Id;
         Title = model.Title(node);
@@ -52,8 +56,11 @@ public sealed class ContentRow
     public bool NeedsAccess { get; }
     public SafetyLevel? Safety { get; }
     public GrowthChange? Change { get; }
-    /// <summary>Zero until some row has a change to show, so a first scan gives the width to the names.</summary>
-    public GridLength ChangeColumnWidth { get; }
+    public RowColumns Columns { get; }
+
+    public Visibility BarVisibility => Columns.Compact ? Visibility.Collapsed : Visibility.Visible;
+
+    public Visibility ShareVisibility => Columns.Compact ? Visibility.Collapsed : Visibility.Visible;
 
     public Visibility MeasuringVisibility => IsMeasuring ? Visibility.Visible : Visibility.Collapsed;
     public Visibility NeedsAccessVisibility => NeedsAccess ? Visibility.Visible : Visibility.Collapsed;

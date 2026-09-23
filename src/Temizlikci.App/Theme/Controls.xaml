@@ -7,6 +7,8 @@
     <GridLength x:Key="SizeColumnWidth">150</GridLength>
     <GridLength x:Key="ChangeColumnWidth">110</GridLength>
     <GridLength x:Key="ShareColumnWidth">56</GridLength>
+    <!-- A narrow list keeps the size as text only and leaves the share to the chart and the inspector. -->
+    <GridLength x:Key="CompactSizeColumnWidth">80</GridLength>
 
     <!-- The navigation pane sits on Mica; its content surface is aliased per theme in Colors.xaml. -->
     <StaticResource x:Key="NavigationViewDefaultPaneBackground" ResourceKey="ControlFillColorTransparentBrush" />
