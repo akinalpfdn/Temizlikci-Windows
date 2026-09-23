@@ -23,6 +23,7 @@ public sealed partial class OverviewView : UserControl
     private Guid? shownToast;
     private bool showingError;
     private bool updatingSearch;
+    private bool listening;
 
     public OverviewView(MainViewModel main, LocationScanModel model)
     {
@@ -42,8 +43,11 @@ public sealed partial class OverviewView : UserControl
         Loaded += OnLoaded;
         Unloaded += (_, _) =>
         {
+            // Moving an element raises its new Loaded before the old Unloaded; a late Unloaded changes nothing.
+            if (IsLoaded || !listening) return;
             Model.PropertyChanged -= OnModelChanged;
             main.PropertyChanged -= OnMainChanged;
+            listening = false;
             toastTimer.Stop();
         };
     }
@@ -52,8 +56,12 @@ public sealed partial class OverviewView : UserControl
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        Model.PropertyChanged += OnModelChanged;
-        main.PropertyChanged += OnMainChanged;
+        if (!listening)
+        {
+            Model.PropertyChanged += OnModelChanged;
+            main.PropertyChanged += OnMainChanged;
+            listening = true;
+        }
         Update();
         // The saved scan comes first; a refresh starts only when it's older than the period in Settings.
         await main.OpenLocationAsync(Model, DateTime.UtcNow);
