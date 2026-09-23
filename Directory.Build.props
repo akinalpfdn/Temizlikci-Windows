@@ -8,7 +8,7 @@
     <!-- CA1707 (underscores) conflicts with the Should_X_When_Y test names the project rules require;
          CA1515 (make types internal) doesn't fit libraries consumed by the app and the tests. -->
     <NoWarn>$(NoWarn);CA1707;CA1515</NoWarn>
-    <Version>0.1.0</Version>
+    <Version>1.0.0</Version>
     <Authors>Akinalp Fidan</Authors>
     <Product>Temizlikci</Product>
     <Copyright>© 2026 Akinalp Fidan</Copyright>
