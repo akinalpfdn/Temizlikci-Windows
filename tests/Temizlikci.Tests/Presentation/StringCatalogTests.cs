@@ -20,13 +20,14 @@ public sealed partial class StringCatalogTests
         return keys;
     }
 
-    /// <summary>Keys DomainTexts builds from rule IDs and enum names; each must exist.</summary>
+    /// <summary>Keys the code builds from rule IDs, enum names and the example folders; each must exist.</summary>
     private static IEnumerable<string> ComputedKeys()
     {
         foreach (var rule in Temizlikci.Domain.Cleanup.CleanupCatalog.Rules) yield return "cleanup.reason." + rule.Id;
         foreach (var ecosystem in Enum.GetValues<Temizlikci.Domain.Cleanup.Ecosystem>()) yield return "cleanup.ecosystem." + ecosystem.ToString().ToLowerInvariant();
         foreach (var folder in Enum.GetValues<Temizlikci.Domain.Identity.KnownFolder>()) yield return "identity." + LowerFirst(folder.ToString());
         foreach (var evidence in Enum.GetValues<Temizlikci.Domain.Projects.ProjectEvidence>()) yield return "projects.evidence." + LowerFirst(evidence.ToString());
+        foreach (var folder in Temizlikci.Presentation.Intro.SampleLocation.FolderKeys) yield return "intro.sample." + folder;
     }
 
     private static string LowerFirst(string name) => char.ToLowerInvariant(name[0]) + name[1..];

@@ -47,9 +47,13 @@
     <x:Double x:Key="DateColumnWidth">110</x:Double>
     <x:Double x:Key="GrowthBarHeight">4</x:Double>
     <x:Double x:Key="GrowthBarMinimumLength">3</x:Double>
+    <!-- Chart introduction: the example chart beside its tips, wider than a default dialog allows. -->
+    <x:Double x:Key="IntroChartSide">280</x:Double>
+    <x:Double x:Key="IntroDialogMaxWidth">720</x:Double>
     <x:Double x:Key="ToolbarButtonWidth">44</x:Double>
     <x:Double x:Key="SearchBoxWidth">220</x:Double>
     <x:Double x:Key="SettingsMaxWidth">640</x:Double>
     <Thickness x:Key="ToastMargin">0,0,0,24</Thickness>
     <Thickness x:Key="BannerActionsMargin">0,0,0,12</Thickness>
+    <Thickness x:Key="BannerMargin">24,12,24,0</Thickness>
 </ResourceDictionary>

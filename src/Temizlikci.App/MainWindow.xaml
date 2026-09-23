@@ -18,7 +18,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <FontIcon Glyph="&#xEB05;" FontSize="{StaticResource IconSize}" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" VerticalAlignment="Center" />
+            <Image Source="ms-appx:///Assets/TitleBarIcon.png" Width="{StaticResource IconSize}" Height="{StaticResource IconSize}" VerticalAlignment="Center" AutomationProperties.AccessibilityView="Raw" />
             <TextBlock Grid.Column="1" Text="{x:Bind s:L10n.AppName}" Style="{StaticResource TitleBarTitleTextStyle}" />
             <MenuBar Grid.Column="2" x:Name="AppMenuBar" VerticalAlignment="Center">
                 <MenuBarItem Title="{x:Bind s:L10n.MenuFile}">
@@ -52,7 +52,12 @@
                     <MenuFlyoutItem x:Name="ForwardItem" Text="{x:Bind s:L10n.NavigationForward}" KeyboardAcceleratorTextOverride="Alt+Right" Click="OnForward" />
                     <MenuFlyoutItem x:Name="UpItem" Text="{x:Bind s:L10n.NavigationEnclosingFolder}" KeyboardAcceleratorTextOverride="Alt+Up" Click="OnUp" />
                 </MenuBarItem>
-                <MenuBarItem x:Name="HelpMenu" Title="{x:Bind s:L10n.MenuHelp}" />
+                <MenuBarItem x:Name="HelpMenu" Title="{x:Bind s:L10n.MenuHelp}">
+                    <MenuFlyoutItem Text="{x:Bind s:L10n.MenuHowToRead}" Click="OnHowToRead" />
+                    <MenuFlyoutItem x:Name="CheckForUpdatesItem" Text="{x:Bind s:L10n.UpdatesCheckNow}" Click="OnCheckForUpdates" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem Text="{x:Bind s:L10n.MenuAbout}" Click="OnAbout" />
+                </MenuBarItem>
             </MenuBar>
             <Grid Grid.Column="3" x:Name="DragRegion" Background="Transparent">
                 <TextBlock x:Name="Subtitle" Style="{StaticResource TitleBarTitleTextStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="{StaticResource TitleBarPadding}" />
@@ -74,7 +79,21 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition x:Name="InspectorColumn" Width="{StaticResource InspectorGridWidth}" />
                 </Grid.ColumnDefinitions>
-                <Grid x:Name="ContentHost" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!-- A newer version is out: a quiet notice above the content; nothing installs by itself. -->
+                    <InfoBar x:Name="UpdateBanner" Severity="Informational" IsClosable="False" IsOpen="False" Margin="{StaticResource BannerMargin}">
+                        <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSmall}" Margin="{StaticResource BannerActionsMargin}">
+                            <Button Content="{x:Bind s:L10n.UpdatesDownload}" Style="{StaticResource AccentButtonStyle}" Click="OnDownloadUpdate" />
+                            <Button Content="{x:Bind s:L10n.UpdatesReleaseNotes}" Click="OnReleaseNotes" />
+                            <Button Content="{x:Bind s:L10n.UpdatesNotNow}" Click="OnDismissUpdate" />
+                        </StackPanel>
+                    </InfoBar>
+                    <Grid x:Name="ContentHost" Grid.Row="1" />
+                </Grid>
                 <Border
                     x:Name="InspectorPane"
                     Grid.Column="1"

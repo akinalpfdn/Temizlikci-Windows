@@ -3,10 +3,13 @@ using Temizlikci.App.Services;
 using Temizlikci.Domain.Cleanup;
 using Temizlikci.Domain.Identity;
 using Temizlikci.Domain.Projects;
+using Temizlikci.Domain.Updates;
 using Temizlikci.Presentation.Actions;
 using Temizlikci.Presentation.Developer;
+using Temizlikci.Presentation.Intro;
 using Temizlikci.Presentation.Main;
 using Temizlikci.Presentation.Overview;
+using Temizlikci.Presentation.Updates;
 using Temizlikci.Services.Access;
 using Temizlikci.Services.Editors;
 using Temizlikci.Services.Identity;
@@ -16,6 +19,7 @@ using Temizlikci.Services.RecycleBin;
 using Temizlikci.Services.Scanning;
 using Temizlikci.Services.Shell;
 using Temizlikci.Services.Tools;
+using Temizlikci.Services.Updates;
 using Temizlikci.Services.Volumes;
 
 namespace Temizlikci.App;
@@ -92,8 +96,17 @@ public partial class App : Application
             ledger,
             undo,
             tools);
-        window = new MainWindow(main, services);
-        window.Closed += (_, _) => main.Dispose();
+        var version = AppVersion.Parse(typeof(App).Assembly.GetName().Version?.ToString(3)) ?? AppVersion.Parse("0")!;
+        var releases = new GitHubReleases(version.ToString());
+        var updates = new UpdateModel(version, releases, () => main.Settings, settings => main.Settings = settings, services.Shell);
+        var sampleServices = SampleLocation.Services(services, locations);
+        window = new MainWindow(main, services, updates, () => new LocationScanModel(SampleLocation.Location, sampleServices));
+        window.Closed += (_, _) =>
+        {
+            main.Dispose();
+            releases.Dispose();
+        };
         window.Activate();
+        _ = updates.CheckIfDueAsync(DateTime.UtcNow);
     }
 }

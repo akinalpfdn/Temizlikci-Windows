@@ -7,10 +7,12 @@ using Microsoft.UI.Xaml.Media;
 using Temizlikci.App.Theme;
 using Temizlikci.App.Views;
 using Temizlikci.App.Views.Inspector;
+using Temizlikci.App.Views.Intro;
 using Temizlikci.App.Views.Overview;
 using Temizlikci.Presentation.Main;
 using Temizlikci.Presentation.Overview;
 using Temizlikci.Presentation.Strings;
+using Temizlikci.Presentation.Updates;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 
@@ -19,15 +21,23 @@ namespace Temizlikci.App;
 public sealed partial class MainWindow : Window
 {
     private readonly LocationServices services;
+    private readonly UpdateModel updates;
+    private readonly Func<LocationScanModel> makeSample;
+    private bool showingIntro;
+    /// <summary>Debug previews only: kept here so the timer isn't collected before it fires.</summary>
+    private Microsoft.UI.Dispatching.DispatcherQueueTimer? previewTimer;
     private readonly Dictionary<SidebarDestination, NavigationViewItem> sidebarItems = [];
     private readonly Dictionary<SidebarDestination, OverviewView> overviews = [];
     private readonly InspectorView inspector = new();
     private LocationScanModel? watchedScan;
 
-    public MainWindow(MainViewModel viewModel, LocationServices services)
+    /// <param name="makeSample">The chart introduction's example scan, whose services never touch the disk.</param>
+    public MainWindow(MainViewModel viewModel, LocationServices services, UpdateModel updates, Func<LocationScanModel> makeSample)
     {
         ViewModel = viewModel;
         this.services = services;
+        this.updates = updates;
+        this.makeSample = makeSample;
         InitializeComponent();
         ConfigureChrome();
         BuildSidebar();
@@ -41,6 +51,7 @@ public sealed partial class MainWindow : Window
             if (ViewModel.Inspected is { IsProject: true }) UpdateInspector();
         };
         Activated += OnActivated;
+        updates.PropertyChanged += OnUpdatesChanged;
         ShowSelection();
         ApplyPreviewArguments();
     }
@@ -49,7 +60,9 @@ public sealed partial class MainWindow : Window
     /// Debug builds only, for checking the UI by eye: <c>--folder=C:\path</c> opens that folder, <c>--scan</c> scans the
     /// open location at launch, <c>--select=name</c> picks a row by name once the scan is done, <c>--recycle=a,b</c>
     /// moves those rows to the Recycle Bin (point it only at a scratch folder), <c>--show=RecycleBin</c> then switches to
-    /// that sidebar destination, and <c>--inspect-project=C:\path</c> shows that project in the inspector.
+    /// that sidebar destination, and <c>--inspect-project=C:\path</c> shows that project in the inspector. <c>--return</c>
+    /// comes back to the location a moment later (views are unloaded and loaded again); <c>--intro</c> opens the chart
+    /// introduction.
     /// </summary>
     [System.Diagnostics.Conditional("DEBUG")]
     private void ApplyPreviewArguments()
@@ -57,6 +70,7 @@ public sealed partial class MainWindow : Window
         var arguments = Environment.GetCommandLineArgs();
         string? Value(string name) => arguments.FirstOrDefault(argument => argument.StartsWith(name, StringComparison.Ordinal))?[name.Length..];
         if (Value("--folder=") is { } folder) ViewModel.OpenFolder(folder);
+        if (arguments.Contains("--intro")) Root.Loaded += (_, _) => _ = ShowIntroAsync();
         if (!arguments.Contains("--scan") || ViewModel.CurrentScan is not { } scan) return;
         scan.StartScan();
         string? select = Value("--select=");
@@ -76,10 +90,17 @@ public sealed partial class MainWindow : Window
             {
                 var destination = show;
                 show = null;
+                var location = ViewModel.Selection;
                 DispatcherQueue.TryEnqueue(() =>
                 {
                     ViewModel.Selection = destination;
                     if (inspectProject is not null) ViewModel.Inspected = new InspectedItem(inspectProject, IsProject: true);
+                    if (!arguments.Contains("--return")) return;
+                    previewTimer = DispatcherQueue.CreateTimer();
+                    previewTimer.Interval = TimeSpan.FromSeconds(2);
+                    previewTimer.IsRepeating = false;
+                    previewTimer.Tick += (_, _) => ViewModel.Selection = location;
+                    previewTimer.Start();
                 });
             }
             if (select is not null && scan.Selection is null && scan.Rows.FirstOrDefault(row => row.Node.Name == select) is { Node: not null } row) scan.Select(row);
@@ -94,6 +115,8 @@ public sealed partial class MainWindow : Window
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(DragRegion);
         AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Tall;
+        // The taskbar and Alt+Tab take the window's icon, not the exe's.
+        AppWindow.SetIcon(Path.Join(AppContext.BaseDirectory, "Assets", "Temizlikci.ico"));
         SystemBackdrop = new MicaBackdrop();
         WindowSizing.Apply(this);
         Root.ActualThemeChanged += (_, _) => PaintCaptionButtons();
@@ -247,6 +270,8 @@ public sealed partial class MainWindow : Window
         if (e.PropertyName is nameof(LocationScanModel.FocusNode)) return;
         UpdateInspector();
         UpdateMenus();
+        // The introduction appears once, after the first scan, when there is a real chart to relate it to.
+        if (watchedScan is { HasResult: true } && !ViewModel.Settings.HasSeenChartIntro) _ = ShowIntroAsync();
     }
 
     private void UpdateInspectorVisibility()
@@ -351,6 +376,82 @@ public sealed partial class MainWindow : Window
     private static void ToggleHighlight(LocationScanModel? scan)
     {
         if (scan is not null) scan.IsHighlightingReclaimable = !scan.IsHighlightingReclaimable;
+    }
+
+    // MARK: Help: introduction, updates, about
+
+    private async Task ShowIntroAsync()
+    {
+        if (showingIntro || Content.XamlRoot is null) return;
+        showingIntro = true;
+        ViewModel.Settings = ViewModel.Settings with { HasSeenChartIntro = true };
+        try
+        {
+            await ChartIntroDialog.ShowAsync(Content.XamlRoot, makeSample());
+        }
+        finally
+        {
+            showingIntro = false;
+        }
+    }
+
+    private async void OnHowToRead(object sender, RoutedEventArgs e) => await ShowIntroAsync();
+
+    private async void OnCheckForUpdates(object sender, RoutedEventArgs e) => await updates.CheckNowAsync(DateTime.UtcNow);
+
+    private void OnDownloadUpdate(object sender, RoutedEventArgs e) => updates.Download();
+
+    private void OnReleaseNotes(object sender, RoutedEventArgs e) => updates.OpenReleaseNotes();
+
+    private void OnDismissUpdate(object sender, RoutedEventArgs e) => updates.Dismiss();
+
+    private void OnUpdatesChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        CheckForUpdatesItem.IsEnabled = !updates.IsChecking;
+        UpdateBanner.IsOpen = updates.Available is not null;
+        if (updates.Available is { } release)
+        {
+            UpdateBanner.Title = L10n.UpdatesAvailable(release.Version.ToString());
+            UpdateBanner.Message = L10n.UpdatesCurrent(updates.Current.ToString());
+        }
+        if (e.PropertyName == nameof(UpdateModel.ManualResult) && updates.ManualResult is { } outcome) _ = ShowUpdateResultAsync(outcome);
+    }
+
+    /// <summary>The answer to Check for Updates…, which the person asked for, so it always says something.</summary>
+    private async Task ShowUpdateResultAsync(ManualCheckOutcome outcome)
+    {
+        updates.ClearManualResult();
+        if (Content.XamlRoot is null) return;
+        var dialog = new ContentDialog { XamlRoot = Content.XamlRoot, CloseButtonText = L10n.AlertOk, DefaultButton = ContentDialogButton.Close };
+        switch (outcome)
+        {
+            case ManualCheckOutcome.UpToDate:
+                dialog.Title = L10n.UpdatesUpToDateTitle;
+                dialog.Content = L10n.UpdatesUpToDateMessage(updates.Current.ToString());
+                break;
+            case ManualCheckOutcome.Newer when updates.Available is { } release:
+                dialog.Title = L10n.UpdatesAvailable(release.Version.ToString());
+                dialog.Content = L10n.UpdatesNewerMessage(updates.Current.ToString());
+                dialog.PrimaryButtonText = L10n.UpdatesDownload;
+                dialog.CloseButtonText = L10n.UpdatesNotNow;
+                dialog.DefaultButton = ContentDialogButton.Primary;
+                break;
+            default:
+                dialog.Title = L10n.UpdatesFailedTitle;
+                dialog.Content = L10n.UpdatesFailedMessage;
+                break;
+        }
+        if (await dialog.ShowAsync() == ContentDialogResult.Primary) updates.Download();
+    }
+
+    private async void OnAbout(object sender, RoutedEventArgs e)
+    {
+        if (Content.XamlRoot is null) return;
+        var content = new StackPanel { Spacing = Ui.Double("SpacingSmall") };
+        content.Children.Add(Ui.Text(L10n.AboutVersion(updates.Current.ToString()), "BodyTextStyle"));
+        content.Children.Add(Ui.Wrapped(L10n.AboutSummary, "SecondaryTextStyle"));
+        var dialog = new ContentDialog { XamlRoot = Content.XamlRoot, Title = L10n.AppName, Content = content, CloseButtonText = L10n.AlertOk, DefaultButton = ContentDialogButton.Close };
+        await dialog.ShowAsync();
     }
 
     // MARK: Menu commands

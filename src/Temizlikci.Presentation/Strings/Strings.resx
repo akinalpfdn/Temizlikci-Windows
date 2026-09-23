@@ -1624,4 +1624,124 @@
     <value>Branches with commits only here</value>
     <comment>Inspector list title.</comment>
   </data>
+  <data name="intro.title" xml:space="preserve">
+    <value>How to Read the Chart</value>
+    <comment>Title of the chart introduction.</comment>
+  </data>
+  <data name="intro.tip.rings" xml:space="preserve">
+    <value>Each ring shows what's inside the ring before it. The innermost ring is the folder you're looking at.</value>
+    <comment>Intro tip about rings.</comment>
+  </data>
+  <data name="intro.tip.size" xml:space="preserve">
+    <value>The wider a segment, the more space it uses. The list beside the chart shows the same items with exact sizes.</value>
+    <comment>Intro tip about segment size.</comment>
+  </data>
+  <data name="intro.tip.interaction" xml:space="preserve">
+    <value>Click a segment to see its details. Double-click a folder to open it, and click the center to go back up.</value>
+    <comment>Intro tip about interaction.</comment>
+  </data>
+  <data name="intro.tip.highlight" xml:space="preserve">
+    <value>Turn on Highlight Reclaimable to see which developer files are safe to remove.</value>
+    <comment>Intro tip about highlighting.</comment>
+  </data>
+  <data name="intro.tryIt" xml:space="preserve">
+    <value>Try it on this example.</value>
+    <comment>Invitation to interact with the sample chart.</comment>
+  </data>
+  <data name="intro.done" xml:space="preserve">
+    <value>Get Started</value>
+    <comment>Button that closes the introduction.</comment>
+  </data>
+  <data name="intro.sample.name" xml:space="preserve">
+    <value>Example Folder</value>
+    <comment>Name of the example folder in the introduction.</comment>
+  </data>
+  <data name="intro.sample.photos" xml:space="preserve">
+    <value>Photos</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.projects" xml:space="preserve">
+    <value>Projects</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.music" xml:space="preserve">
+    <value>Music</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.apps" xml:space="preserve">
+    <value>Apps</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.caches" xml:space="preserve">
+    <value>Caches</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.vacation" xml:space="preserve">
+    <value>Vacation</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.family" xml:space="preserve">
+    <value>Family</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.website" xml:space="preserve">
+    <value>Website</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="intro.sample.game" xml:space="preserve">
+    <value>Game</value>
+    <comment>Folder name in the example chart.</comment>
+  </data>
+  <data name="updates.available" xml:space="preserve">
+    <value>Temizlikci {0} is available</value>
+    <comment>Banner and alert title. The argument is a version.</comment>
+  </data>
+  <data name="updates.current" xml:space="preserve">
+    <value>You have {0}. Download the new version, unzip it and replace the old folder.</value>
+    <comment>Banner detail. The argument is the installed version.</comment>
+  </data>
+  <data name="updates.newerMessage" xml:space="preserve">
+    <value>You have {0}. Download opens the zip file in your browser.</value>
+    <comment>Alert message. The argument is the installed version.</comment>
+  </data>
+  <data name="updates.download" xml:space="preserve">
+    <value>Download</value>
+    <comment>Button that opens the download in the browser.</comment>
+  </data>
+  <data name="updates.releaseNotes" xml:space="preserve">
+    <value>Release Notes</value>
+    <comment>Button that opens the release page.</comment>
+  </data>
+  <data name="updates.notNow" xml:space="preserve">
+    <value>Not Now</value>
+    <comment>Button that hides the update banner for this version.</comment>
+  </data>
+  <data name="updates.checkNow" xml:space="preserve">
+    <value>Check for Updates…</value>
+    <comment>Help menu item.</comment>
+  </data>
+  <data name="updates.upToDate.title" xml:space="preserve">
+    <value>Temizlikci Is Up to Date</value>
+    <comment>Alert title.</comment>
+  </data>
+  <data name="updates.upToDate.message" xml:space="preserve">
+    <value>{0} is the newest version.</value>
+    <comment>Alert message. The argument is the installed version.</comment>
+  </data>
+  <data name="updates.failed.title" xml:space="preserve">
+    <value>Couldn't Check for Updates</value>
+    <comment>Alert title.</comment>
+  </data>
+  <data name="updates.failed.message" xml:space="preserve">
+    <value>GitHub didn't answer. Check your internet connection and try again.</value>
+    <comment>Alert message.</comment>
+  </data>
+  <data name="about.version" xml:space="preserve">
+    <value>Version {0}</value>
+    <comment>About dialog line. The argument is a version.</comment>
+  </data>
+  <data name="about.summary" xml:space="preserve">
+    <value>See what fills your disk, and free space safely.</value>
+    <comment>About dialog description.</comment>
+  </data>
 </root>

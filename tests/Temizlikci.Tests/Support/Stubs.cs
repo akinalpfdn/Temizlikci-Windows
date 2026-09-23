@@ -186,6 +186,14 @@ internal sealed class ModelFixture
         IReadOnlyList<CleanupRule>? rules = null)
     {
         events ??= [new ScanEvent.Finished(new ScanResult(TreeBuilder.Sample(), TimeSpan.FromSeconds(1), 5, 3, 0, ScanMethod.DirectoryWalk))];
+        return new LocationScanModel(new ScanLocation(root, "Scan Place", wholeVolume), BuildServices(events, failure, usage, rules));
+    }
+
+    /// <summary>The stub services every model from this fixture shares.</summary>
+    public LocationServices Services => BuildServices([], null, null, null);
+
+    private LocationServices BuildServices(IReadOnlyList<ScanEvent> events, Exception? failure, VolumeUsage? usage, IReadOnlyList<CleanupRule>? rules)
+    {
         var locations = KnownLocations.Sample;
         var markers = new Temizlikci.Tests.Domain.StubMarkers();
         var services = new LocationServices
@@ -205,7 +213,7 @@ internal sealed class ModelFixture
             HiddenSpace = new NoHiddenSpace(),
             UtcNow = () => Now,
         };
-        return new LocationScanModel(new ScanLocation(root, "Scan Place", wholeVolume), services);
+        return services;
     }
 
     public static async Task<LocationScanModel> Scanned(LocationScanModel model)

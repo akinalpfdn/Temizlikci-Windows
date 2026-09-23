@@ -317,4 +317,26 @@ public static class L10n
     public static string GitConflicted => Get("git.conflicted");
     public static string GitStashes => Get("git.stashes");
     public static string GitBranchesOnlyHere => Get("git.branchesOnlyHere");
+
+    public static string IntroTitle => Get("intro.title");
+    public static string IntroRings => Get("intro.tip.rings");
+    public static string IntroSize => Get("intro.tip.size");
+    public static string IntroInteraction => Get("intro.tip.interaction");
+    public static string IntroHighlight => Get("intro.tip.highlight");
+    public static string IntroTryIt => Get("intro.tryIt");
+    public static string IntroDone => Get("intro.done");
+    public static string IntroSampleName => Get("intro.sample.name");
+    public static string UpdatesAvailable(string version) => Format("updates.available", version);
+    public static string UpdatesCurrent(string version) => Format("updates.current", version);
+    public static string UpdatesNewerMessage(string version) => Format("updates.newerMessage", version);
+    public static string UpdatesDownload => Get("updates.download");
+    public static string UpdatesReleaseNotes => Get("updates.releaseNotes");
+    public static string UpdatesNotNow => Get("updates.notNow");
+    public static string UpdatesCheckNow => Get("updates.checkNow");
+    public static string UpdatesUpToDateTitle => Get("updates.upToDate.title");
+    public static string UpdatesUpToDateMessage(string version) => Format("updates.upToDate.message", version);
+    public static string UpdatesFailedTitle => Get("updates.failed.title");
+    public static string UpdatesFailedMessage => Get("updates.failed.message");
+    public static string AboutVersion(string version) => Format("about.version", version);
+    public static string AboutSummary => Get("about.summary");
 }
