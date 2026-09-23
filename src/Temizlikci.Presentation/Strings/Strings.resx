@@ -176,4 +176,1016 @@
     <value>on {0}</value>
     <comment>Relative time a week or more ago. {0}: the date.</comment>
   </data>
+  <data name="node.smallerFiles" xml:space="preserve">
+    <value>Smaller Files ({0})</value>
+    <comment>Several files under 10 MB, shown as one item. {0}: how many.</comment>
+  </data>
+  <data name="node.merged" xml:space="preserve">
+    <value>Smaller Items</value>
+    <comment>Items too small to draw in the chart, shown together.</comment>
+  </data>
+  <data name="node.unattributed" xml:space="preserve">
+    <value>Other Used Space</value>
+    <comment>Used disk space that no scanned folder accounts for.</comment>
+  </data>
+  <data name="node.pending" xml:space="preserve">
+    <value>Not Scanned Yet</value>
+    <comment>Space not measured yet while a scan runs.</comment>
+  </data>
+  <data name="node.needsAccess" xml:space="preserve">
+    <value>Needs Administrator</value>
+    <comment>Badge on a folder that can't be read without administrator rights.</comment>
+  </data>
+  <data name="node.kind.folder" xml:space="preserve">
+    <value>Folder</value>
+    <comment>Inspector subtitle for a folder.</comment>
+  </data>
+  <data name="node.kind.file" xml:space="preserve">
+    <value>File</value>
+    <comment>Inspector subtitle for a file.</comment>
+  </data>
+  <data name="node.kind.smallerFiles" xml:space="preserve">
+    <value>Files Under 10 MB</value>
+    <comment>Inspector subtitle for grouped small files.</comment>
+  </data>
+  <data name="node.kind.protected" xml:space="preserve">
+    <value>Unreadable Folder</value>
+    <comment>Inspector subtitle for a folder that needs administrator rights.</comment>
+  </data>
+  <data name="node.kind.unattributed" xml:space="preserve">
+    <value>Unattributed Space</value>
+    <comment>Inspector subtitle for space no folder accounts for.</comment>
+  </data>
+  <data name="node.kind.pending" xml:space="preserve">
+    <value>Still Scanning</value>
+    <comment>Inspector subtitle for space not measured yet.</comment>
+  </data>
+  <data name="recycle.action.move" xml:space="preserve">
+    <value>Move to Recycle Bin</value>
+    <comment>Command and button that moves the selected item to the Recycle Bin.</comment>
+  </data>
+  <data name="error.noPermission" xml:space="preserve">
+    <value>Windows didn't allow that.</value>
+    <comment>Generic permission error.</comment>
+  </data>
+  <data name="error.suggestion.admin" xml:space="preserve">
+    <value>Restart Temizlikci as administrator (File › Restart as Administrator), then try again.</value>
+    <comment>Recovery suggestion when a permission is missing.</comment>
+  </data>
+  <data name="error.unexpected" xml:space="preserve">
+    <value>Something unexpected happened: {0}</value>
+    <comment>Last-resort error text. {0}: the system's description.</comment>
+  </data>
+  <data name="scanError.rootNotFound" xml:space="preserve">
+    <value>"{0}" can't be found.</value>
+    <comment>Scan error. {0}: the folder name.</comment>
+  </data>
+  <data name="scanError.rootNotFolder" xml:space="preserve">
+    <value>"{0}" isn't a folder.</value>
+    <comment>Scan error. {0}: the item name.</comment>
+  </data>
+  <data name="scanError.rootUnreadable" xml:space="preserve">
+    <value>Temizlikci can't read "{0}".</value>
+    <comment>Scan error. {0}: the folder name.</comment>
+  </data>
+  <data name="scanError.suggestion.chooseAnother" xml:space="preserve">
+    <value>Choose another folder to scan.</value>
+    <comment>Recovery suggestion for a missing scan location.</comment>
+  </data>
+  <data name="recycle.error.noPermission" xml:space="preserve">
+    <value>You don't have permission to move "{0}" to the Recycle Bin.</value>
+    <comment>Error. {0}: the item name.</comment>
+  </data>
+  <data name="recycle.error.missing" xml:space="preserve">
+    <value>"{0}" no longer exists.</value>
+    <comment>Error when the item was removed since the scan. {0}: the item name.</comment>
+  </data>
+  <data name="recycle.error.inUse" xml:space="preserve">
+    <value>"{0}" is open in another app.</value>
+    <comment>Error when a file is locked. {0}: the item name.</comment>
+  </data>
+  <data name="recycle.error.protected" xml:space="preserve">
+    <value>Windows needs "{0}", so Temizlikci won't move it.</value>
+    <comment>Error for a system location. {0}: the item name.</comment>
+  </data>
+  <data name="recycle.error.failed" xml:space="preserve">
+    <value>"{0}" couldn't be moved to the Recycle Bin.</value>
+    <comment>Generic error. {0}: the item name.</comment>
+  </data>
+  <data name="recycle.error.putBack" xml:space="preserve">
+    <value>"{0}" couldn't be put back.</value>
+    <comment>Error when restoring fails. {0}: the item name.</comment>
+  </data>
+  <data name="recycle.error.occupied" xml:space="preserve">
+    <value>Something named "{0}" is already where the item was.</value>
+    <comment>Error when the original location is taken. {0}: the item name.</comment>
+  </data>
+  <data name="recycle.suggestion.rescan" xml:space="preserve">
+    <value>Rescan to see the folder as it is now.</value>
+    <comment>Recovery suggestion after a Recycle Bin error.</comment>
+  </data>
+  <data name="recycle.suggestion.closeApps" xml:space="preserve">
+    <value>Close the apps using it, then try again.</value>
+    <comment>Recovery suggestion when an item is in use.</comment>
+  </data>
+  <data name="recycle.suggestion.putBack" xml:space="preserve">
+    <value>Open the Recycle Bin and restore the item from there.</value>
+    <comment>Recovery suggestion when putting back fails.</comment>
+  </data>
+  <data name="scan.action.scanLocation" xml:space="preserve">
+    <value>Scan {0}</value>
+    <comment>Button that starts scanning a location. {0}: its name.</comment>
+  </data>
+  <data name="scan.failed.title" xml:space="preserve">
+    <value>The Scan Didn't Finish</value>
+    <comment>Title shown when a scan fails.</comment>
+  </data>
+  <data name="scan.failed.tryAgain" xml:space="preserve">
+    <value>Try Again</value>
+    <comment>Button that restarts a failed scan.</comment>
+  </data>
+  <data name="scan.chart.hint" xml:space="preserve">
+    <value>Click to select · Double-click to open · Click the center to go up</value>
+    <comment>Hint under the chart.</comment>
+  </data>
+  <data name="scan.footer.scanned" xml:space="preserve">
+    <value>Scanned {0} in {1}</value>
+    <comment>Footer after a scan. {0}: when, {1}: how long.</comment>
+  </data>
+  <data name="scan.footer.saved" xml:space="preserve">
+    <value>From the scan {0}</value>
+    <comment>Footer when the tree comes from a saved scan. {0}: a relative time such as "3 days ago".</comment>
+  </data>
+  <data name="scan.footer.mft" xml:space="preserve">
+    <value>read from the Master File Table</value>
+    <comment>Added to the footer when the fast administrator scan was used.</comment>
+  </data>
+  <data name="scan.measuring" xml:space="preserve">
+    <value>Still measuring</value>
+    <comment>Spoken for a folder whose size is still growing during a scan.</comment>
+  </data>
+  <data name="scan.loadingSaved" xml:space="preserve">
+    <value>Opening the last scan…</value>
+    <comment>Shown while the saved scan of a location is read at launch.</comment>
+  </data>
+  <data name="scan.refreshing" xml:space="preserve">
+    <value>Refreshing in the background…</value>
+    <comment>Shown while a new scan replaces a saved one.</comment>
+  </data>
+  <data name="scan.refreshNow" xml:space="preserve">
+    <value>Rescan</value>
+    <comment>Link that starts a fresh scan of a saved result.</comment>
+  </data>
+  <data name="scan.footer.sizes" xml:space="preserve">
+    <value>Sizes are space on disk. Hard links are counted once.</value>
+    <comment>Footer note explaining how sizes are measured.</comment>
+  </data>
+  <data name="scan.outdated" xml:space="preserve">
+    <value>Rescan to see current sizes.</value>
+    <comment>Footer note after the disk was changed outside a scan.</comment>
+  </data>
+  <data name="scan.progress.detail" xml:space="preserve">
+    <value>{0} files · {1}</value>
+    <comment>Progress line. {0}: files counted, {1}: size so far.</comment>
+  </data>
+  <data name="scan.progress.table" xml:space="preserve">
+    <value>Reading the Master File Table… {0}</value>
+    <comment>Progress line for the fast administrator scan. {0}: a percentage.</comment>
+  </data>
+  <data name="chart.accessibility.label" xml:space="preserve">
+    <value>Disk usage of {0}</value>
+    <comment>Accessibility name of the sunburst chart. {0}: the folder name.</comment>
+  </data>
+  <data name="chart.action.open" xml:space="preserve">
+    <value>Open</value>
+    <comment>Action that shows a folder's contents in the chart.</comment>
+  </data>
+  <data name="chart.center.goUp" xml:space="preserve">
+    <value>Up to {0}</value>
+    <comment>Chart center line that says which folder going up leads to. {0}: that folder.</comment>
+  </data>
+  <data name="chart.center.usedOfVolume" xml:space="preserve">
+    <value>used of {0}</value>
+    <comment>Chart center caption under a drive's used size. {0}: the drive capacity.</comment>
+  </data>
+  <data name="chart.center.shareOf" xml:space="preserve">
+    <value>{0} of {1}</value>
+    <comment>Chart center caption. {0}: a percentage, {1}: the containing folder.</comment>
+  </data>
+  <data name="chart.center.measuredSoFar" xml:space="preserve">
+    <value>measured so far</value>
+    <comment>Chart center caption while a scan is running.</comment>
+  </data>
+  <data name="details.size" xml:space="preserve">
+    <value>Size</value>
+    <comment>Inspector label for space on disk.</comment>
+  </data>
+  <data name="details.shareOfScan" xml:space="preserve">
+    <value>Share of Scan</value>
+    <comment>Inspector label for the share of everything scanned.</comment>
+  </data>
+  <data name="details.shareOfFolder" xml:space="preserve">
+    <value>Share of Folder</value>
+    <comment>Inspector label for the share of the containing folder.</comment>
+  </data>
+  <data name="details.files" xml:space="preserve">
+    <value>Files</value>
+    <comment>Inspector label for the number of files.</comment>
+  </data>
+  <data name="details.modified" xml:space="preserve">
+    <value>Modified</value>
+    <comment>Inspector label for the last modification date.</comment>
+  </data>
+  <data name="details.path" xml:space="preserve">
+    <value>Location</value>
+    <comment>Inspector label for the item's path.</comment>
+  </data>
+  <data name="details.showInExplorer" xml:space="preserve">
+    <value>Show in Explorer</value>
+    <comment>Button that opens Explorer with the item selected.</comment>
+  </data>
+  <data name="details.properties" xml:space="preserve">
+    <value>Properties</value>
+    <comment>Button that opens the Windows Properties dialog of the item.</comment>
+  </data>
+  <data name="details.explain.unattributed" xml:space="preserve">
+    <value>Space Windows reports as used that no scanned folder accounts for: NTFS's own records, restore points and shadow copies, and folders Temizlikci couldn't read.</value>
+    <comment>Inspector explanation for unattributed space.</comment>
+  </data>
+  <data name="details.explain.inaccessible" xml:space="preserve">
+    <value>Temizlikci couldn't read this folder, so its size isn't included. Restarting as administrator usually lets it in.</value>
+    <comment>Inspector explanation for an unreadable folder.</comment>
+  </data>
+  <data name="details.explain.smallerFiles" xml:space="preserve">
+    <value>Files under 10 MB in this folder, added together.</value>
+    <comment>Inspector explanation for grouped small files.</comment>
+  </data>
+  <data name="details.explain.pending" xml:space="preserve">
+    <value>Used space the scan hasn't reached yet. It shrinks as folders are measured; anything still unexplained at the end becomes Other Used Space.</value>
+    <comment>Inspector explanation for space not scanned yet.</comment>
+  </data>
+  <data name="table.column.name" xml:space="preserve">
+    <value>Name</value>
+    <comment>List column with item names.</comment>
+  </data>
+  <data name="table.column.size" xml:space="preserve">
+    <value>Size</value>
+    <comment>List column with space on disk.</comment>
+  </data>
+  <data name="table.column.share" xml:space="preserve">
+    <value>Share</value>
+    <comment>List column with each item's share of the folder.</comment>
+  </data>
+  <data name="table.column.change" xml:space="preserve">
+    <value>Change</value>
+    <comment>List column with the change in size since the previous scan.</comment>
+  </data>
+  <data name="navigation.back" xml:space="preserve">
+    <value>Back</value>
+    <comment>Toolbar and menu command that returns to the previous folder.</comment>
+  </data>
+  <data name="navigation.forward" xml:space="preserve">
+    <value>Forward</value>
+    <comment>Toolbar and menu command that goes forward in folder history.</comment>
+  </data>
+  <data name="navigation.enclosingFolder" xml:space="preserve">
+    <value>Enclosing Folder</value>
+    <comment>Menu command that opens the folder containing the current one.</comment>
+  </data>
+  <data name="navigation.rescan" xml:space="preserve">
+    <value>Rescan</value>
+    <comment>Command that scans the current location again.</comment>
+  </data>
+  <data name="navigation.stop" xml:space="preserve">
+    <value>Stop Scanning</value>
+    <comment>Command that cancels the running scan.</comment>
+  </data>
+  <data name="navigation.searchPrompt" xml:space="preserve">
+    <value>Search this folder</value>
+    <comment>Placeholder of the search box.</comment>
+  </data>
+  <data name="navigation.subtitle.scanning" xml:space="preserve">
+    <value>Scanning… {0} so far</value>
+    <comment>Window subtitle during a scan. {0}: the size measured so far.</comment>
+  </data>
+  <data name="navigation.subtitle.volume" xml:space="preserve">
+    <value>{0} used · {1} available</value>
+    <comment>Window subtitle for a scanned drive.</comment>
+  </data>
+  <data name="navigation.subtitle.noScan" xml:space="preserve">
+    <value>No scan yet</value>
+    <comment>Window subtitle before any scan has run.</comment>
+  </data>
+  <data name="menu.edit.find" xml:space="preserve">
+    <value>Find</value>
+    <comment>Edit menu command that moves focus to the search box.</comment>
+  </data>
+  <data name="menu.edit.undo" xml:space="preserve">
+    <value>Undo</value>
+    <comment>Edit menu command.</comment>
+  </data>
+  <data name="menu.edit.undoAction" xml:space="preserve">
+    <value>Undo {0}</value>
+    <comment>Edit menu command with the action it reverses. {0}: the action.</comment>
+  </data>
+  <data name="menu.file.showInExplorer" xml:space="preserve">
+    <value>Show in Explorer</value>
+    <comment>File menu command.</comment>
+  </data>
+  <data name="menu.file.properties" xml:space="preserve">
+    <value>Properties</value>
+    <comment>File menu command that opens the Windows Properties dialog.</comment>
+  </data>
+  <data name="menu.view.highlight" xml:space="preserve">
+    <value>Highlight Reclaimable</value>
+    <comment>View menu toggle and toolbar button that colors the chart by cleanup safety.</comment>
+  </data>
+  <data name="menu.view.highlight.unavailable" xml:space="preserve">
+    <value>Nothing here is a developer cache or build folder, so there's nothing to highlight.</value>
+    <comment>Tooltip of the highlight button when the location has no developer artifacts.</comment>
+  </data>
+  <data name="menu.view.sidebar" xml:space="preserve">
+    <value>Sidebar</value>
+    <comment>View menu toggle that shows or hides the sidebar.</comment>
+  </data>
+  <data name="menu.help.howToRead" xml:space="preserve">
+    <value>How to Read the Chart</value>
+    <comment>Help menu item that shows the chart introduction.</comment>
+  </data>
+  <data name="menu.help.about" xml:space="preserve">
+    <value>About Temizlikci</value>
+    <comment>Help menu item.</comment>
+  </data>
+  <data name="menu.file.restartAdmin" xml:space="preserve">
+    <value>Restart as Administrator</value>
+    <comment>File menu command that starts the app again with administrator rights.</comment>
+  </data>
+  <data name="alert.ok" xml:space="preserve">
+    <value>OK</value>
+    <comment>Button that dismisses an informational dialog.</comment>
+  </data>
+  <data name="alert.cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Button that cancels a dialog's action.</comment>
+  </data>
+  <data name="folderPicker.commit" xml:space="preserve">
+    <value>Choose</value>
+    <comment>Default button of the folder picker.</comment>
+  </data>
+  <data name="search.noResults" xml:space="preserve">
+    <value>No results for "{0}".</value>
+    <comment>Shown when a search finds nothing. {0}: what was searched for.</comment>
+  </data>
+  <data name="cleanup.safety.safe" xml:space="preserve">
+    <value>Safe to Remove</value>
+    <comment>Label for items that regenerate on their own.</comment>
+  </data>
+  <data name="cleanup.safety.tool" xml:space="preserve">
+    <value>Remove with Tool</value>
+    <comment>Label for items that must be removed with their own tool.</comment>
+  </data>
+  <data name="cleanup.safety.keep" xml:space="preserve">
+    <value>Keep</value>
+    <comment>Label for items that hold personal data or that Windows needs.</comment>
+  </data>
+  <data name="access.banner.title" xml:space="preserve">
+    <value>Some Folders Need Administrator Rights</value>
+    <comment>Title of the banner shown when folders couldn't be read.</comment>
+  </data>
+  <data name="access.banner.message" xml:space="preserve">
+    <value>Temizlikci couldn't read {0} folders, so their space is counted in Other Used Space. As administrator it reads every folder and uses the much faster Master File Table scan.</value>
+    <comment>Banner message. {0}: how many folders couldn't be read.</comment>
+  </data>
+  <data name="access.banner.restart" xml:space="preserve">
+    <value>Restart as Administrator</value>
+    <comment>Button that starts the app again with administrator rights.</comment>
+  </data>
+  <data name="access.banner.notNow" xml:space="preserve">
+    <value>Not Now</value>
+    <comment>Button that hides the access banner.</comment>
+  </data>
+  <data name="recycle.action.undo" xml:space="preserve">
+    <value>Undo</value>
+    <comment>Button in the confirmation that puts the item back.</comment>
+  </data>
+  <data name="recycle.toast.moved" xml:space="preserve">
+    <value>Moved "{0}" to the Recycle Bin. Its {1} is freed when you empty the Recycle Bin.</value>
+    <comment>Confirmation after recycling. {0}: item name, {1}: its size.</comment>
+  </data>
+  <data name="duration.seconds" xml:space="preserve">
+    <value>{0} s</value>
+    <comment>How long a scan took, under a minute. {0}: seconds.</comment>
+  </data>
+  <data name="duration.minutes" xml:space="preserve">
+    <value>{0} min {1} s</value>
+    <comment>How long a scan took. {0}: minutes, {1}: seconds.</comment>
+  </data>
+  <data name="growth.inspector.label" xml:space="preserve">
+    <value>Change since {0}</value>
+    <comment>Inspector label for the size change. {0}: date of the previous scan.</comment>
+  </data>
+  <data name="identity.section.title" xml:space="preserve">
+    <value>What Is This?</value>
+    <comment>Header of the inspector card that explains an item.</comment>
+  </data>
+  <data name="identity.dataOf" xml:space="preserve">
+    <value>Data belonging to {0}.</value>
+    <comment>A folder holding an app's data. {0}: the app's name.</comment>
+  </data>
+  <data name="space.breakdown.title" xml:space="preserve">
+    <value>What Fills This Space</value>
+    <comment>Header over the breakdown of unattributed space.</comment>
+  </data>
+  <data name="space.part.metadata" xml:space="preserve">
+    <value>NTFS records</value>
+    <comment>Name of the file system's own records ($MFT and friends).</comment>
+  </data>
+  <data name="space.part.metadata.detail" xml:space="preserve">
+    <value>The Master File Table and NTFS's other bookkeeping files. They grow with the number of files and never shrink on their own; Windows needs them.</value>
+    <comment>Explains NTFS metadata.</comment>
+  </data>
+  <data name="space.part.shadowCopies" xml:space="preserve">
+    <value>Restore points</value>
+    <comment>Name of the shadow copy storage part.</comment>
+  </data>
+  <data name="space.part.shadowCopies.detail" xml:space="preserve">
+    <value>Restore points and shadow copies. Limit their space or delete old ones in System Properties › System Protection › Configure.</value>
+    <comment>Explains shadow copies.</comment>
+  </data>
+  <data name="space.part.remainder" xml:space="preserve">
+    <value>Not Attributed</value>
+    <comment>Used space the named parts don't explain.</comment>
+  </data>
+  <data name="space.part.remainder.detail" xml:space="preserve">
+    <value>Used space that nothing above explains, such as space Windows reserves for updates.</value>
+    <comment>Explains the leftover part.</comment>
+  </data>
+  <data name="space.part.remainder.unreadable" xml:space="preserve">
+    <value>Folders Temizlikci couldn't read are counted here too; restarting as administrator reads them.</value>
+    <comment>Added when some folders couldn't be read.</comment>
+  </data>
+  <data name="projects.period.month" xml:space="preserve">
+    <value>30 days</value>
+    <comment>Staleness period.</comment>
+  </data>
+  <data name="projects.period.quarter" xml:space="preserve">
+    <value>90 days</value>
+    <comment>Staleness period.</comment>
+  </data>
+  <data name="projects.period.halfYear" xml:space="preserve">
+    <value>6 months</value>
+    <comment>Staleness period.</comment>
+  </data>
+  <data name="projects.period.year" xml:space="preserve">
+    <value>1 year</value>
+    <comment>Staleness period.</comment>
+  </data>
+  <data name="projects.openInVisualStudio" xml:space="preserve">
+    <value>Open in Visual Studio</value>
+    <comment>Button that opens the project's solution in Visual Studio.</comment>
+  </data>
+  <data name="projects.openInAndroidStudio" xml:space="preserve">
+    <value>Open in Android Studio</value>
+    <comment>Button that opens the project folder in Android Studio.</comment>
+  </data>
+  <data name="projects.openInVSCode" xml:space="preserve">
+    <value>Open in Visual Studio Code</value>
+    <comment>Button that opens the project folder in Visual Studio Code.</comment>
+  </data>
+  <data name="projects.evidence.git" xml:space="preserve">
+    <value>Git repository</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.visualStudio" xml:space="preserve">
+    <value>Visual Studio solution</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.dotNet" xml:space="preserve">
+    <value>.NET project</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.node" xml:space="preserve">
+    <value>Node.js project</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.flutter" xml:space="preserve">
+    <value>Flutter or Dart package</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.rust" xml:space="preserve">
+    <value>Rust crate</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.gradle" xml:space="preserve">
+    <value>Gradle project</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.maven" xml:space="preserve">
+    <value>Maven project</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.go" xml:space="preserve">
+    <value>Go module</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="projects.evidence.unity" xml:space="preserve">
+    <value>Unity project</value>
+    <comment>How a folder was identified as a project.</comment>
+  </data>
+  <data name="cleanup.ecosystem.windows" xml:space="preserve">
+    <value>Windows</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.visualstudio" xml:space="preserve">
+    <value>Visual Studio</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.dotnet" xml:space="preserve">
+    <value>.NET</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.wsl" xml:space="preserve">
+    <value>WSL</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.docker" xml:space="preserve">
+    <value>Docker</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.android" xml:space="preserve">
+    <value>Android</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.flutter" xml:space="preserve">
+    <value>Flutter &amp; Dart</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.node" xml:space="preserve">
+    <value>Node.js</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.rust" xml:space="preserve">
+    <value>Rust</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.go" xml:space="preserve">
+    <value>Go</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.python" xml:space="preserve">
+    <value>Python</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.java" xml:space="preserve">
+    <value>Java &amp; Gradle</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.unity" xml:space="preserve">
+    <value>Unity</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.editors" xml:space="preserve">
+    <value>Editors</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.ecosystem.appdata" xml:space="preserve">
+    <value>App Data</value>
+    <comment>Group title in the Developer view.</comment>
+  </data>
+  <data name="cleanup.reason.windows.updateDownloads" xml:space="preserve">
+    <value>Update packages Windows downloaded. Windows removes the ones it no longer needs; to clear them now, use Settings › System › Storage › Temporary files.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.componentStore" xml:space="preserve">
+    <value>Windows' component store. Much of it is shared with System32 through hard links, so it looks bigger than it is. Only the component cleanup (DISM) can shrink it safely.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.installer" xml:space="preserve">
+    <value>Installer files Windows needs to repair, update and uninstall your programs. Deleting them breaks uninstalling.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.temp" xml:space="preserve">
+    <value>Temporary files of Windows and of programs running as administrator. Clear them with Settings › System › Storage › Temporary files; the folder itself must stay.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.userTemp" xml:space="preserve">
+    <value>Your temporary files. Clear them with Settings › System › Storage › Temporary files; the folder itself must stay, and files in use are skipped there.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.deliveryOptimization" xml:space="preserve">
+    <value>Update pieces Windows shares with other PCs. Clear them in Settings › System › Storage › Temporary files (Delivery Optimization Files).</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.errorReports" xml:space="preserve">
+    <value>Windows error reports. Clear them in Settings › System › Storage › Temporary files.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.crashDumps" xml:space="preserve">
+    <value>Crash dumps apps wrote when they stopped unexpectedly. Nothing needs them unless you're debugging that crash.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.packageCache" xml:space="preserve">
+    <value>Installers kept by Visual Studio and other setup programs so they can repair and uninstall. Deleting them breaks those uninstallers.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.previousInstallation" xml:space="preserve">
+    <value>Your previous Windows installation, kept so you can go back. Remove it with Settings › System › Storage › Temporary files (Previous Windows installation).</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.recycleBin" xml:space="preserve">
+    <value>Items in the Recycle Bin. They use space until you empty it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.systemVolumeInformation" xml:space="preserve">
+    <value>Restore points and system data. Manage their space in System Properties › System Protection; never delete this folder by hand.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.hibernationFile" xml:space="preserve">
+    <value>The hibernation file, as large as a share of your memory. Turn off hibernation with powercfg /hibernate off to remove it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.pageFile" xml:space="preserve">
+    <value>Virtual memory. Windows sizes it itself; change it in System Properties › Advanced › Performance.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.windows.swapFile" xml:space="preserve">
+    <value>Swap space for Store apps, managed by Windows.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.vs.solutionCache" xml:space="preserve">
+    <value>Visual Studio's cache for this solution: IntelliSense database and window layout. Visual Studio rebuilds it the next time it opens the solution.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.vs.solutionCacheSlnx" xml:space="preserve">
+    <value>Visual Studio's cache for this solution: IntelliSense database and window layout. Visual Studio rebuilds it the next time it opens the solution.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.vs.installerCache" xml:space="preserve">
+    <value>Visual Studio Installer's download cache. Turn off "Keep download cache after the installation" in the installer's settings; deleting it by hand makes repairs download again.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.dotnet.packages" xml:space="preserve">
+    <value>Extracted NuGet packages that projects reference directly. Clear them with dotnet nuget locals global-packages --clear, then restore your projects.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.dotnet.httpCache" xml:space="preserve">
+    <value>NuGet's download cache. NuGet downloads packages again as needed.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.dotnet.bin" xml:space="preserve">
+    <value>Build output of this .NET project. The next build recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.dotnet.obj" xml:space="preserve">
+    <value>Intermediate build files of this .NET project. dotnet restore and the next build recreate them.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.wsl.distributions" xml:space="preserve">
+    <value>WSL Linux distributions and their virtual disks. Manage them in the WSL section; deleting the files loses everything installed in Linux.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.wsl.ubuntu" xml:space="preserve">
+    <value>An Ubuntu distribution for WSL and its virtual disk. Manage it in the WSL section; deleting the folder loses everything installed in it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.wsl.debian" xml:space="preserve">
+    <value>A Debian distribution for WSL and its virtual disk. Manage it in the WSL section; deleting the folder loses everything installed in it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.docker.data" xml:space="preserve">
+    <value>Docker's virtual disks, holding every image, container and volume. Reclaim space with docker system prune; deleting the files loses all of it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.android.gradleCaches" xml:space="preserve">
+    <value>Gradle's download and build caches. Gradle fetches them again on the next build.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.android.gradleWrapper" xml:space="preserve">
+    <value>Gradle versions downloaded by project wrappers. A project's wrapper downloads its version again when you build it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.android.emulators" xml:space="preserve">
+    <value>Android emulators. Remove them in Android Studio's Device Manager.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.android.systemImages" xml:space="preserve">
+    <value>Android system images. Remove them in Android Studio's SDK Manager.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.android.studioCaches" xml:space="preserve">
+    <value>Android Studio's caches, indexes and logs. It rebuilds them when you open a project; your settings live elsewhere.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.flutter.build" xml:space="preserve">
+    <value>Flutter build output. Building the project recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.flutter.dartTool" xml:space="preserve">
+    <value>Dart tooling state. Running flutter pub get recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.flutter.pubCache" xml:space="preserve">
+    <value>Downloaded Dart and Flutter packages. Running flutter pub get downloads them again.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.modules" xml:space="preserve">
+    <value>Installed npm packages. Running npm install restores them.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.next" xml:space="preserve">
+    <value>Next.js build cache. The next build recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.npmCache" xml:space="preserve">
+    <value>npm's download cache. npm refills it as you install packages.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.yarnCache" xml:space="preserve">
+    <value>Yarn's package cache. Yarn downloads packages again as needed.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.yarnBerryCache" xml:space="preserve">
+    <value>Yarn's package cache. Yarn downloads packages again as needed.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.pnpmStore" xml:space="preserve">
+    <value>pnpm's package store, which every node_modules folder links into. Use pnpm store prune, which only removes what nothing references.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.bunCache" xml:space="preserve">
+    <value>Bun's install cache. Bun downloads packages again as needed.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.electronCache" xml:space="preserve">
+    <value>Downloaded Electron binaries. They are fetched again on the next install.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.gypCache" xml:space="preserve">
+    <value>Node headers kept for building native modules. They are downloaded again when needed.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.playwright" xml:space="preserve">
+    <value>Browsers downloaded for Playwright tests. Running playwright install downloads them again.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.node.cypress" xml:space="preserve">
+    <value>Cypress binaries. Installing Cypress downloads them again.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.rust.registry" xml:space="preserve">
+    <value>Downloaded crates. Cargo restores anything a build needs, by re-extracting or downloading it again.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.rust.target" xml:space="preserve">
+    <value>Rust build output. Running cargo build recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.rust.toolchains" xml:space="preserve">
+    <value>Installed Rust toolchains, not a cache. Remove ones you don't need with rustup toolchain uninstall.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.go.buildCache" xml:space="preserve">
+    <value>Go's build cache. Go rebuilds it as needed.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.go.modCache" xml:space="preserve">
+    <value>Downloaded Go modules, stored read-only. Remove them with go clean -modcache.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.python.pipCache" xml:space="preserve">
+    <value>pip's download cache. Clear it with pip cache purge, or remove it here — pip downloads packages again as needed.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.python.uvCache" xml:space="preserve">
+    <value>uv's cache. uv states it is never safe to delete by hand; run uv cache clean instead.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.java.maven" xml:space="preserve">
+    <value>Downloaded Java dependencies. Maven downloads them again on the next build.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.java.gradleBuild" xml:space="preserve">
+    <value>Gradle build output for this project. The next build recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.java.gradleBuildKts" xml:space="preserve">
+    <value>Gradle build output for this project. The next build recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.java.mavenTarget" xml:space="preserve">
+    <value>Maven build output for this project. mvn package recreates it.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.unity.library" xml:space="preserve">
+    <value>Unity's imported asset cache for this project. Unity rebuilds it when you open the project, which can take a while.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.unity.cache" xml:space="preserve">
+    <value>Unity's shared download cache. Unity downloads what it needs again.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.editors.jetbrains" xml:space="preserve">
+    <value>Caches, indexes and logs of JetBrains IDEs. They are rebuilt when you open a project; settings live in Roaming.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.editors.vscodeCache" xml:space="preserve">
+    <value>Visual Studio Code's web cache. It is rebuilt as you use the editor.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.editors.vscodeCachedData" xml:space="preserve">
+    <value>Visual Studio Code's compiled code cache. It is rebuilt on the next start.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.editors.vscodeExtensionDownloads" xml:space="preserve">
+    <value>Downloaded extension packages kept after installing them. Installed extensions don't need them.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="cleanup.reason.appData.packages" xml:space="preserve">
+    <value>Data of apps from the Microsoft Store, such as their settings and documents. Clear it in Settings › Apps › Installed apps › Advanced options.</value>
+    <comment>Why an item has its cleanup label.</comment>
+  </data>
+  <data name="identity.systemDrive" xml:space="preserve">
+    <value>The drive Windows runs from.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.otherDrive" xml:space="preserve">
+    <value>A drive in this PC.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.windows" xml:space="preserve">
+    <value>Windows itself. Temizlikci never moves anything here to the Recycle Bin.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.system32" xml:space="preserve">
+    <value>Windows' core programs and drivers.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.sysWow64" xml:space="preserve">
+    <value>Windows' 32-bit programs, for older apps.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.winSxS" xml:space="preserve">
+    <value>Windows' component store: every version of its components, largely hard-linked with System32, so its size is overstated.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.windowsInstaller" xml:space="preserve">
+    <value>Installer files Windows needs to repair and uninstall programs.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.softwareDistribution" xml:space="preserve">
+    <value>Windows Update's working folder and downloads.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.windowsTemp" xml:space="preserve">
+    <value>Temporary files of Windows and of programs running as administrator.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.programFiles" xml:space="preserve">
+    <value>Programs installed for everyone on this PC.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.programFilesX86" xml:space="preserve">
+    <value>32-bit programs installed for everyone on this PC.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.programData" xml:space="preserve">
+    <value>Data programs share across every account: licenses, caches, installers.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.users" xml:space="preserve">
+    <value>The profile folder of every account on this PC.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.publicProfile" xml:space="preserve">
+    <value>Files every account on this PC can see.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.home" xml:space="preserve">
+    <value>Your profile folder: documents, downloads and settings.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.appData" xml:space="preserve">
+    <value>Your apps' data and settings. Hidden in Explorer by default.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.localAppData" xml:space="preserve">
+    <value>App data kept on this PC only: caches, local settings, per-user installs.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.roamingAppData" xml:space="preserve">
+    <value>App settings that can follow you to other PCs in a domain.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.localLow" xml:space="preserve">
+    <value>Data of apps that run with low integrity, such as browsers' sandboxes.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.userTemp" xml:space="preserve">
+    <value>Your temporary files. Apps usually clean up after themselves, but not always.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.storeAppData" xml:space="preserve">
+    <value>Data of apps from the Microsoft Store, one folder per app.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.userPrograms" xml:space="preserve">
+    <value>Programs installed for you only, without administrator rights.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.desktop" xml:space="preserve">
+    <value>What you see on your desktop.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.documents" xml:space="preserve">
+    <value>Your documents.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.downloads" xml:space="preserve">
+    <value>Files you downloaded.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.pictures" xml:space="preserve">
+    <value>Your pictures.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.videos" xml:space="preserve">
+    <value>Your videos.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.music" xml:space="preserve">
+    <value>Your music.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.oneDrive" xml:space="preserve">
+    <value>Your OneDrive. Files kept only online take no space here.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.recycleBin" xml:space="preserve">
+    <value>The Recycle Bin. It keeps using space until you empty it.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.systemVolumeInformation" xml:space="preserve">
+    <value>Restore points and system data. Windows manages it.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.recovery" xml:space="preserve">
+    <value>Windows' recovery files.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.perfLogs" xml:space="preserve">
+    <value>Performance logs Windows can write. Usually empty.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.pageFile" xml:space="preserve">
+    <value>Virtual memory Windows manages.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.hibernationFile" xml:space="preserve">
+    <value>What's in memory when the PC hibernates.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="identity.swapFile" xml:space="preserve">
+    <value>Swap space for Store apps.</value>
+    <comment>What a known folder is.</comment>
+  </data>
+  <data name="settings.refresh.label" xml:space="preserve">
+    <value>Refresh a saved scan when it is older than</value>
+    <comment>Label of the automatic refresh setting.</comment>
+  </data>
+  <data name="settings.refresh.explanation" xml:space="preserve">
+    <value>Temizlikci shows the last scan of a location as soon as you open it. When that scan is older than this, it reads the disk again in the background and replaces it when it's done.</value>
+    <comment>Explains the automatic refresh setting.</comment>
+  </data>
+  <data name="settings.refresh.day" xml:space="preserve">
+    <value>1 day</value>
+    <comment>Refresh period.</comment>
+  </data>
+  <data name="settings.refresh.threeDays" xml:space="preserve">
+    <value>3 days</value>
+    <comment>Refresh period.</comment>
+  </data>
+  <data name="settings.refresh.week" xml:space="preserve">
+    <value>1 week</value>
+    <comment>Refresh period.</comment>
+  </data>
+  <data name="settings.refresh.never" xml:space="preserve">
+    <value>Never</value>
+    <comment>Refresh period meaning the app never scans by itself.</comment>
+  </data>
+  <data name="settings.admin" xml:space="preserve">
+    <value>Start as administrator</value>
+    <comment>Settings toggle that makes the app restart itself elevated at launch.</comment>
+  </data>
+  <data name="settings.admin.explanation" xml:space="preserve">
+    <value>As administrator, Temizlikci reads every folder and scans NTFS drives in seconds through the Master File Table. Windows asks for permission each time the app starts. System folders stay protected either way: Temizlikci never moves them to the Recycle Bin.</value>
+    <comment>Explains the start-as-administrator setting.</comment>
+  </data>
+  <data name="settings.checkUpdates" xml:space="preserve">
+    <value>Check for new versions automatically</value>
+    <comment>Settings toggle for the daily update check.</comment>
+  </data>
+  <data name="settings.checkUpdates.explanation" xml:space="preserve">
+    <value>Once a day at most, Temizlikci asks GitHub whether a newer version is published. Nothing about this PC or its files is sent, and nothing is downloaded or installed unless you choose Download.</value>
+    <comment>Explains what the update check does and sends.</comment>
+  </data>
 </root>

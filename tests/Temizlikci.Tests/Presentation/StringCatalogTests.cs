@@ -13,8 +13,23 @@ public sealed partial class StringCatalogTests
     [GeneratedRegex("""(?:Get|Format)\("([^"]+)"[,)]""")]
     private static partial Regex KeyUse();
 
-    private static HashSet<string> CodeKeys() =>
-        KeyUse().Matches(File.ReadAllText(CodePath)).Select(match => match.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+    private static HashSet<string> CodeKeys()
+    {
+        var keys = KeyUse().Matches(File.ReadAllText(CodePath)).Select(match => match.Groups[1].Value).ToHashSet(StringComparer.Ordinal);
+        keys.UnionWith(ComputedKeys());
+        return keys;
+    }
+
+    /// <summary>Keys DomainTexts builds from rule IDs and enum names; each must exist.</summary>
+    private static IEnumerable<string> ComputedKeys()
+    {
+        foreach (var rule in Temizlikci.Domain.Cleanup.CleanupCatalog.Rules) yield return "cleanup.reason." + rule.Id;
+        foreach (var ecosystem in Enum.GetValues<Temizlikci.Domain.Cleanup.Ecosystem>()) yield return "cleanup.ecosystem." + ecosystem.ToString().ToLowerInvariant();
+        foreach (var folder in Enum.GetValues<Temizlikci.Domain.Identity.KnownFolder>()) yield return "identity." + LowerFirst(folder.ToString());
+        foreach (var evidence in Enum.GetValues<Temizlikci.Domain.Projects.ProjectEvidence>()) yield return "projects.evidence." + LowerFirst(evidence.ToString());
+    }
+
+    private static string LowerFirst(string name) => char.ToLowerInvariant(name[0]) + name[1..];
 
     private static Dictionary<string, XElement> ResxEntries() =>
         XDocument.Load(ResxPath).Root!.Elements("data").ToDictionary(data => (string)data.Attribute("name")!, StringComparer.Ordinal);

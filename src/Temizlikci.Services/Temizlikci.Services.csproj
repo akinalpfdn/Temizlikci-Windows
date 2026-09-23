@@ -7,6 +7,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Management" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Temizlikci.Domain\Temizlikci.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

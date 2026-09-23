@@ -31,13 +31,13 @@ public sealed record SidebarDestination(DestinationKind Kind, string? Path = nul
     /// <summary>A Segoe Fluent Icons glyph.</summary>
     public string Glyph => Kind switch
     {
-        DestinationKind.Drive => "",
-        DestinationKind.Home => "",
-        DestinationKind.ChosenFolder => "",
-        DestinationKind.Developer => "",
-        DestinationKind.WhatGrew => "",
-        DestinationKind.LargeFiles => "",
-        DestinationKind.RecycleBin => "",
-        _ => "",
+        DestinationKind.Drive => "\uEDA2",
+        DestinationKind.Home => "\uE80F",
+        DestinationKind.ChosenFolder => "\uE8B7",
+        DestinationKind.Developer => "\uEC7A",
+        DestinationKind.WhatGrew => "\uE9D2",
+        DestinationKind.LargeFiles => "\uE7C3",
+        DestinationKind.RecycleBin => "\uE74D",
+        _ => "\uE8B7",
     };
 }

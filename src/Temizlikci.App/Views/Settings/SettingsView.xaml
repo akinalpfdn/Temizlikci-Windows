@@ -1,0 +1,27 @@
+<UserControl
+    x:Class="Temizlikci.App.Views.Settings.SettingsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="using:Temizlikci.Presentation.Strings">
+
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource PagePadding}" Spacing="{StaticResource SpacingLarge}" MaxWidth="{StaticResource SettingsMaxWidth}" HorizontalAlignment="Left">
+            <TextBlock Text="{x:Bind s:L10n.MenuSettings}" Style="{StaticResource PageTitleTextStyle}" />
+
+            <StackPanel Spacing="{StaticResource SpacingSmall}">
+                <ComboBox x:Name="RefreshBox" Header="{x:Bind s:L10n.SettingsRefreshLabel}" SelectionChanged="OnRefreshChanged" MinWidth="{StaticResource SearchBoxWidth}" />
+                <TextBlock Text="{x:Bind s:L10n.SettingsRefreshExplanation}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <StackPanel Spacing="{StaticResource SpacingSmall}">
+                <ToggleSwitch x:Name="AdministratorSwitch" Header="{x:Bind s:L10n.SettingsStartAsAdministrator}" Toggled="OnAdministratorToggled" />
+                <TextBlock Text="{x:Bind s:L10n.SettingsStartAsAdministratorExplanation}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <StackPanel Spacing="{StaticResource SpacingSmall}">
+                <ToggleSwitch x:Name="UpdatesSwitch" Header="{x:Bind s:L10n.SettingsCheckUpdates}" Toggled="OnUpdatesToggled" />
+                <TextBlock Text="{x:Bind s:L10n.SettingsCheckUpdatesExplanation}" Style="{StaticResource CaptionTextStyle}" TextWrapping="Wrap" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

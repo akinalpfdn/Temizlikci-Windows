@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using Temizlikci.Presentation.Main;
 
@@ -8,6 +9,13 @@ namespace Temizlikci.App.Views;
 internal static class SidebarItems
 {
     public static NavigationViewItem Make(SidebarDestination destination, string title, string? badge)
+    {
+        var item = new NavigationViewItem { Icon = new FontIcon { Glyph = destination.Glyph }, Tag = destination };
+        Update(item, title, badge);
+        return item;
+    }
+
+    public static void Update(NavigationViewItem item, string title, string? badge)
     {
         var grid = new Grid { ColumnSpacing = (double)Application.Current.Resources["SpacingSmall"] };
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
@@ -19,13 +27,7 @@ internal static class SidebarItems
             Grid.SetColumn(badgeText, 1);
             grid.Children.Add(badgeText);
         }
-        var item = new NavigationViewItem
-        {
-            Content = grid,
-            Icon = new FontIcon { Glyph = destination.Glyph },
-            Tag = destination,
-        };
-        Microsoft.UI.Xaml.Automation.AutomationProperties.SetName(item, badge is null ? title : $"{title}, {badge}");
-        return item;
+        item.Content = grid;
+        AutomationProperties.SetName(item, badge is null ? title : $"{title}, {badge}");
     }
 }

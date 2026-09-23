@@ -4,6 +4,9 @@
     <!-- Grid lengths can't be x:Double, so layout tokens that feed row and column definitions live here. -->
     <GridLength x:Key="TitleBarGridHeight">48</GridLength>
     <GridLength x:Key="InspectorGridWidth">300</GridLength>
+    <GridLength x:Key="SizeColumnWidth">150</GridLength>
+    <GridLength x:Key="ChangeColumnWidth">110</GridLength>
+    <GridLength x:Key="ShareColumnWidth">56</GridLength>
 
     <!-- The navigation pane sits on Mica; its content surface is aliased per theme in Colors.xaml. -->
     <StaticResource x:Key="NavigationViewDefaultPaneBackground" ResourceKey="ControlFillColorTransparentBrush" />

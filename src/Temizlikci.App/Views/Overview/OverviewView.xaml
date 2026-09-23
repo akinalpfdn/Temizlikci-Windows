@@ -1,0 +1,125 @@
+<UserControl
+    x:Class="Temizlikci.App.Views.Overview.OverviewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Temizlikci.App.Views.Overview"
+    xmlns:s="using:Temizlikci.Presentation.Strings">
+
+    <Grid>
+        <!-- Results: header, banner, chart and list, footer. -->
+        <Grid x:Name="Results" Padding="{StaticResource PagePadding}" RowSpacing="{StaticResource SpacingMedium}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid ColumnSpacing="{StaticResource SpacingSmall}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <AppBarButton x:Name="BackButton" Label="{x:Bind s:L10n.NavigationBack}" LabelPosition="Collapsed" Width="{StaticResource ToolbarButtonWidth}" Click="OnBack" ToolTipService.ToolTip="{x:Bind s:L10n.NavigationBack}">
+                        <AppBarButton.Icon><FontIcon Glyph="&#xE72B;" /></AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton x:Name="ForwardButton" Label="{x:Bind s:L10n.NavigationForward}" LabelPosition="Collapsed" Width="{StaticResource ToolbarButtonWidth}" Click="OnForward" ToolTipService.ToolTip="{x:Bind s:L10n.NavigationForward}">
+                        <AppBarButton.Icon><FontIcon Glyph="&#xE72A;" /></AppBarButton.Icon>
+                    </AppBarButton>
+                </StackPanel>
+                <BreadcrumbBar x:Name="Breadcrumb" Grid.Column="1" VerticalAlignment="Center" ItemClicked="OnBreadcrumbClicked" />
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="{StaticResource SpacingXSmall}">
+                    <AutoSuggestBox x:Name="SearchBox" PlaceholderText="{x:Bind s:L10n.NavigationSearchPrompt}" Width="{StaticResource SearchBoxWidth}" QueryIcon="Find" TextChanged="OnSearchChanged" VerticalAlignment="Center" />
+                    <AppBarButton x:Name="RescanButton" Label="{x:Bind s:L10n.NavigationRescan}" LabelPosition="Collapsed" Width="{StaticResource ToolbarButtonWidth}" Click="OnRescanOrStop">
+                        <AppBarButton.Icon><FontIcon x:Name="RescanIcon" Glyph="&#xE72C;" /></AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarToggleButton x:Name="HighlightButton" Label="{x:Bind s:L10n.MenuHighlight}" LabelPosition="Collapsed" Width="{StaticResource ToolbarButtonWidth}" Click="OnHighlight">
+                        <AppBarToggleButton.Icon><FontIcon Glyph="&#xE7E6;" /></AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
+                </StackPanel>
+            </Grid>
+
+            <InfoBar
+                x:Name="AccessBanner"
+                Grid.Row="1"
+                Severity="Informational"
+                IsClosable="False"
+                Title="{x:Bind s:L10n.AccessBannerTitle}">
+                <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingSmall}" Margin="{StaticResource BannerActionsMargin}">
+                    <Button Content="{x:Bind s:L10n.AccessRestart}" Style="{StaticResource AccentButtonStyle}" Click="OnRestartAsAdministrator" />
+                    <Button Content="{x:Bind s:L10n.AccessNotNow}" Click="OnDismissBanner" />
+                </StackPanel>
+            </InfoBar>
+
+            <Grid x:Name="Body" Grid.Row="2" ColumnSpacing="{StaticResource SpacingXLarge}" SizeChanged="OnBodySizeChanged">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="ChartColumn" Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="{StaticResource SpacingSmall}" VerticalAlignment="Top">
+                    <local:SunburstChart x:Name="Chart" />
+                    <TextBlock x:Name="ChartHint" Text="{x:Bind s:L10n.ScanChartHint}" Style="{StaticResource ChartCaptionTextStyle}" TextWrapping="Wrap" />
+                </StackPanel>
+                <local:ContentsList x:Name="List" Grid.Column="1" />
+            </Grid>
+
+            <Grid Grid.Row="3" ColumnSpacing="{StaticResource SpacingSmall}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ProgressRing x:Name="FooterProgress" Width="{StaticResource IconSize}" Height="{StaticResource IconSize}" IsActive="False" Visibility="Collapsed" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="{StaticResource SpacingSmall}">
+                    <TextBlock x:Name="FooterText" Style="{StaticResource CaptionTextStyle}" VerticalAlignment="Center" />
+                    <HyperlinkButton x:Name="RefreshLink" Content="{x:Bind s:L10n.ScanRefreshNow}" Click="OnRefresh" Padding="0" FontSize="{StaticResource CaptionFontSize}" Visibility="Collapsed" />
+                </StackPanel>
+                <TextBlock Grid.Column="3" Text="{x:Bind s:L10n.ScanSizesFooter}" Style="{StaticResource CaptionTextStyle}" VerticalAlignment="Center" />
+            </Grid>
+        </Grid>
+
+        <!-- Empty, loading and failed states. -->
+        <StackPanel x:Name="EmptyState" Style="{StaticResource EmptyStatePanelStyle}">
+            <FontIcon Glyph="&#xEB05;" Style="{StaticResource EmptyStateIconStyle}" />
+            <TextBlock Text="{x:Bind s:L10n.OverviewEmptyTitle}" Style="{StaticResource EmptyStateTitleTextStyle}" />
+            <TextBlock Text="{x:Bind s:L10n.OverviewEmptyMessage}" Style="{StaticResource EmptyStateMessageTextStyle}" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="{StaticResource SpacingSmall}">
+                <Button x:Name="ScanButton" Style="{StaticResource AccentButtonStyle}" Click="OnScan" />
+                <Button Content="{x:Bind s:L10n.SidebarChooseFolder}" Click="OnChooseFolder" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel x:Name="LoadingState" Style="{StaticResource EmptyStatePanelStyle}" Visibility="Collapsed">
+            <ProgressRing IsActive="True" />
+            <TextBlock Text="{x:Bind s:L10n.ScanLoadingSaved}" Style="{StaticResource EmptyStateMessageTextStyle}" />
+        </StackPanel>
+
+        <StackPanel x:Name="FailedState" Style="{StaticResource EmptyStatePanelStyle}" Visibility="Collapsed">
+            <FontIcon Glyph="&#xE7BA;" Style="{StaticResource EmptyStateIconStyle}" />
+            <TextBlock Text="{x:Bind s:L10n.ScanFailedTitle}" Style="{StaticResource EmptyStateTitleTextStyle}" />
+            <TextBlock x:Name="FailedMessage" Style="{StaticResource EmptyStateMessageTextStyle}" />
+            <Button Content="{x:Bind s:L10n.ScanTryAgain}" HorizontalAlignment="Center" Click="OnScan" />
+        </StackPanel>
+
+        <!-- "Moved to the Recycle Bin" with Undo, for a few seconds. -->
+        <Border
+            x:Name="Toast"
+            Visibility="Collapsed"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Margin="{StaticResource ToastMargin}"
+            Padding="{StaticResource BannerPadding}"
+            CornerRadius="{StaticResource MediumRadius}"
+            Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource ContentDividerBrush}"
+            BorderThickness="1">
+            <StackPanel Orientation="Horizontal" Spacing="{StaticResource SpacingMedium}">
+                <TextBlock x:Name="ToastText" TextWrapping="Wrap" MaxWidth="{StaticResource EmptyStateMaxWidth}" VerticalAlignment="Center" />
+                <Button Content="{x:Bind s:L10n.RecycleUndo}" Click="OnUndoRecycle" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

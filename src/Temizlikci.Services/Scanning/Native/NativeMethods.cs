@@ -40,7 +40,9 @@ internal static partial class NativeMethods
         public nuint Information;
     }
 
-    [StructLayout(LayoutKind.Sequential)]
+    /// <summary>WIN32_FILE_ATTRIBUTE_DATA. FILETIMEs are two DWORDs, so the struct is 4-byte packed: with default
+    /// packing the 64-bit fields would start at offset 8 instead of 4 and read the wrong bytes.</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct Win32FileAttributeData
     {
         public uint FileAttributes;

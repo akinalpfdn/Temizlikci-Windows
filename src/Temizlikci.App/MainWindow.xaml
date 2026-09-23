@@ -4,13 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:s="using:Temizlikci.Presentation.Strings">
 
-    <Grid x:Name="Root">
+    <Grid x:Name="Root" PreviewKeyDown="OnPreviewKeyDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="{StaticResource TitleBarGridHeight}" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Title bar: icon, name and menu bar; the empty remainder is the drag region. -->
+        <!-- Title bar: icon, name, subtitle and menu bar; the empty remainder is the drag region. -->
         <Grid x:Name="TitleBar" Padding="{StaticResource TitleBarPadding}" ColumnSpacing="{StaticResource SpacingSmall}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -22,17 +22,41 @@
             <TextBlock Grid.Column="1" Text="{x:Bind s:L10n.AppName}" Style="{StaticResource TitleBarTitleTextStyle}" />
             <MenuBar Grid.Column="2" x:Name="AppMenuBar" VerticalAlignment="Center">
                 <MenuBarItem Title="{x:Bind s:L10n.MenuFile}">
+                    <MenuFlyoutItem x:Name="ChooseFolderItem" Text="{x:Bind s:L10n.MenuChooseFolder}" KeyboardAcceleratorTextOverride="Ctrl+O" Click="OnChooseFolder" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="RescanItem" Text="{x:Bind s:L10n.NavigationRescan}" KeyboardAcceleratorTextOverride="F5" Click="OnRescan" />
+                    <MenuFlyoutItem x:Name="StopItem" Text="{x:Bind s:L10n.NavigationStop}" KeyboardAcceleratorTextOverride="Shift+F5" Click="OnStop" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="ShowInExplorerItem" Text="{x:Bind s:L10n.MenuShowInExplorer}" KeyboardAcceleratorTextOverride="Ctrl+Shift+E" Click="OnShowInExplorer" />
+                    <MenuFlyoutItem x:Name="PropertiesItem" Text="{x:Bind s:L10n.MenuProperties}" KeyboardAcceleratorTextOverride="Alt+Enter" Click="OnProperties" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="RestartItem" Text="{x:Bind s:L10n.MenuRestartAsAdministrator}" Click="OnRestartAsAdministrator" />
+                    <MenuFlyoutItem x:Name="SettingsItem" Text="{x:Bind s:L10n.MenuSettings}" KeyboardAcceleratorTextOverride="Ctrl+," Click="OnSettings" />
+                    <MenuFlyoutSeparator />
                     <MenuFlyoutItem Text="{x:Bind s:L10n.MenuExit}" Click="OnExit" />
                 </MenuBarItem>
-                <MenuBarItem Title="{x:Bind s:L10n.MenuView}">
-                    <ToggleMenuFlyoutItem Text="{x:Bind s:L10n.MenuShowInspector}" IsChecked="{x:Bind ViewModel.IsInspectorPresented, Mode=TwoWay}">
-                        <ToggleMenuFlyoutItem.KeyboardAccelerators>
-                            <KeyboardAccelerator Modifiers="Control" Key="I" />
-                        </ToggleMenuFlyoutItem.KeyboardAccelerators>
-                    </ToggleMenuFlyoutItem>
+                <MenuBarItem Title="{x:Bind s:L10n.MenuEdit}">
+                    <MenuFlyoutItem x:Name="UndoItem" Text="{x:Bind s:L10n.MenuUndo}" KeyboardAcceleratorTextOverride="Ctrl+Z" Click="OnUndo" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="FindItem" Text="{x:Bind s:L10n.MenuFind}" KeyboardAcceleratorTextOverride="Ctrl+F" Click="OnFind" />
+                    <MenuFlyoutItem x:Name="RecycleItem" Text="{x:Bind s:L10n.RecycleAction}" KeyboardAcceleratorTextOverride="Del" Click="OnRecycle" />
                 </MenuBarItem>
+                <MenuBarItem Title="{x:Bind s:L10n.MenuView}">
+                    <ToggleMenuFlyoutItem x:Name="SidebarItem" Text="{x:Bind s:L10n.MenuSidebar}" IsChecked="{x:Bind ViewModel.IsSidebarPresented, Mode=TwoWay}" />
+                    <ToggleMenuFlyoutItem x:Name="InspectorItem" Text="{x:Bind s:L10n.MenuShowInspector}" KeyboardAcceleratorTextOverride="Ctrl+I" IsChecked="{x:Bind ViewModel.IsInspectorPresented, Mode=TwoWay}" />
+                    <MenuFlyoutSeparator />
+                    <ToggleMenuFlyoutItem x:Name="HighlightItem" Text="{x:Bind s:L10n.MenuHighlight}" KeyboardAcceleratorTextOverride="Ctrl+H" Click="OnHighlight" />
+                </MenuBarItem>
+                <MenuBarItem Title="{x:Bind s:L10n.MenuGo}">
+                    <MenuFlyoutItem x:Name="BackItem" Text="{x:Bind s:L10n.NavigationBack}" KeyboardAcceleratorTextOverride="Alt+Left" Click="OnBack" />
+                    <MenuFlyoutItem x:Name="ForwardItem" Text="{x:Bind s:L10n.NavigationForward}" KeyboardAcceleratorTextOverride="Alt+Right" Click="OnForward" />
+                    <MenuFlyoutItem x:Name="UpItem" Text="{x:Bind s:L10n.NavigationEnclosingFolder}" KeyboardAcceleratorTextOverride="Alt+Up" Click="OnUp" />
+                </MenuBarItem>
+                <MenuBarItem x:Name="HelpMenu" Title="{x:Bind s:L10n.MenuHelp}" />
             </MenuBar>
-            <Border Grid.Column="3" x:Name="DragRegion" Background="Transparent" />
+            <Grid Grid.Column="3" x:Name="DragRegion" Background="Transparent">
+                <TextBlock x:Name="Subtitle" Style="{StaticResource TitleBarTitleTextStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Margin="{StaticResource TitleBarPadding}" />
+            </Grid>
         </Grid>
 
         <NavigationView
@@ -42,6 +66,7 @@
             IsBackButtonVisible="Collapsed"
             IsPaneToggleButtonVisible="False"
             IsSettingsVisible="False"
+            IsPaneOpen="{x:Bind ViewModel.IsSidebarPresented, Mode=OneWay}"
             OpenPaneLength="{StaticResource SidebarWidth}"
             SelectionChanged="OnSidebarSelectionChanged">
             <Grid>
@@ -49,31 +74,12 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition x:Name="InspectorColumn" Width="{StaticResource InspectorGridWidth}" />
                 </Grid.ColumnDefinitions>
-
-                <Grid x:Name="ContentHost">
-                    <StackPanel x:Name="LocationEmptyState" Style="{StaticResource EmptyStatePanelStyle}">
-                        <FontIcon Glyph="&#xEB05;" Style="{StaticResource EmptyStateIconStyle}" />
-                        <TextBlock Text="{x:Bind s:L10n.OverviewEmptyTitle}" Style="{StaticResource EmptyStateTitleTextStyle}" />
-                        <TextBlock Text="{x:Bind s:L10n.OverviewEmptyMessage}" Style="{StaticResource EmptyStateMessageTextStyle}" />
-                    </StackPanel>
-                    <StackPanel x:Name="InsightEmptyState" Style="{StaticResource EmptyStatePanelStyle}" Visibility="Collapsed">
-                        <FontIcon x:Name="InsightEmptyIcon" Glyph="&#xEC7A;" Style="{StaticResource EmptyStateIconStyle}" />
-                        <TextBlock Text="{x:Bind s:L10n.InsightsNotScannedTitle}" Style="{StaticResource EmptyStateTitleTextStyle}" />
-                    </StackPanel>
-                </Grid>
-
+                <Grid x:Name="ContentHost" />
                 <Border
-                    x:Name="Inspector"
+                    x:Name="InspectorPane"
                     Grid.Column="1"
                     BorderBrush="{ThemeResource ContentDividerBrush}"
-                    BorderThickness="1,0,0,0"
-                    Visibility="{x:Bind ViewModel.IsInspectorPresented, Mode=OneWay}">
-                    <StackPanel Style="{StaticResource EmptyStatePanelStyle}" Padding="{StaticResource InspectorPadding}">
-                        <FontIcon Glyph="&#xE946;" Style="{StaticResource EmptyStateIconStyle}" />
-                        <TextBlock Text="{x:Bind s:L10n.InspectorNoSelectionTitle}" Style="{StaticResource EmptyStateTitleTextStyle}" />
-                        <TextBlock Text="{x:Bind s:L10n.InspectorNoSelectionMessage}" Style="{StaticResource EmptyStateMessageTextStyle}" />
-                    </StackPanel>
-                </Border>
+                    BorderThickness="1,0,0,0" />
             </Grid>
         </NavigationView>
     </Grid>

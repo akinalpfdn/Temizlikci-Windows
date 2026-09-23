@@ -193,4 +193,16 @@ public sealed class DirectoryScannerTests
 
         Assert.Equal(date, result.Root.Children.Single(child => child.Name == "dated.bin").ModifiedUtc);
     }
+
+    [Fact]
+    public async Task Should_ReadTheRootsOwnDate_When_ValidatingIt()
+    {
+        using var tree = new FixtureTree();
+        var date = new DateTime(2025, 6, 1, 8, 30, 0, DateTimeKind.Utc);
+        Directory.SetLastWriteTimeUtc(tree.Root, date);
+
+        var (result, _) = await Scan(tree.Root);
+
+        Assert.Equal(date, result.Root.ModifiedUtc);
+    }
 }
