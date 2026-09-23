@@ -47,6 +47,40 @@ public sealed partial class ScanBenchmarkTests
         Assert.True(difference < 0.01, $"Scanner and independent totals differ by {difference:P2}.");
     }
 
+    /// <summary>Elevated only: the Master File Table and the directory walk (with backup rights) on the same folder.</summary>
+    [Fact]
+    public async Task Should_MatchTheDirectoryWalk_When_ReadingTheMasterFileTableOfARealFolder()
+    {
+        Assert.SkipWhen(BenchmarkPath is null, "Set TEMIZLIKCI_BENCH_PATH to a folder to measure.");
+        Assert.SkipUnless(new Temizlikci.Services.Access.WindowsElevation().IsElevated, "Reading the Master File Table needs administrator rights.");
+        Temizlikci.Services.Access.WindowsElevation.EnableBackupPrivilege();
+        string root = NodePath.Trim(BenchmarkPath!);
+
+        var clock = Stopwatch.StartNew();
+        var mft = await Finish(new MftScanner(), root);
+        var mftTime = clock.Elapsed;
+        long retained = GC.GetTotalMemory(forceFullCollection: true);
+        clock.Restart();
+        var walk = await Finish(new DirectoryScanner(), root);
+        var walkTime = clock.Elapsed;
+
+        double difference = walk.Root.AllocatedSize == 0 ? 0 : Math.Abs(mft.Root.AllocatedSize - walk.Root.AllocatedSize) / (double)walk.Root.AllocatedSize;
+        string report = $"{root} elevated: MFT {mft.Root.AllocatedSize:N0} B, {mft.FileCount:N0} files, {mftTime.TotalSeconds:F2} s, managed {retained / 1048576.0:F0} MB; "
+            + $"walk {walk.Root.AllocatedSize:N0} B, {walk.FileCount:N0} files, {walk.InaccessibleCount} unreadable, {walkTime.TotalSeconds:F2} s; difference {difference:P3}";
+        File.AppendAllText(Path.Combine(Path.GetTempPath(), "temizlikci-benchmark.txt"), report + Environment.NewLine);
+        Assert.True(difference < 0.01, report);
+    }
+
+    private static async Task<ScanResult> Finish(IDiskScanner scanner, string root)
+    {
+        ScanResult? result = null;
+        await foreach (var scanEvent in scanner.ScanAsync(root, ScanConfiguration.Standard, TestContext.Current.CancellationToken))
+        {
+            if (scanEvent is ScanEvent.Finished finished) result = finished.Result;
+        }
+        return result ?? throw new InvalidOperationException("No result.");
+    }
+
     /// <summary>Opens every file for its standard information, counting hard links once by file ID — slow, but shares
     /// no code with the scanner.</summary>
     private static (long Total, long Files, int Unreadable) IndependentTotal(string root)

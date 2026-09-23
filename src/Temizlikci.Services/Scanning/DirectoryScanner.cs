@@ -98,7 +98,8 @@ public sealed class DirectoryScanner : IDiskScanner
         }
     }
 
-    private static DateTime? ValidateRoot(string root)
+    /// <summary>Checks the root is a readable folder and returns its modification date.</summary>
+    internal static DateTime? ValidateRoot(string root)
     {
         if (!NativeMethods.GetFileAttributesEx(NativeMethods.LongPath(root), 0, out var data))
         {
