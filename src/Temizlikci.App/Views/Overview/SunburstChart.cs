@@ -33,31 +33,42 @@ public sealed partial class SunburstChart : UserControl
     private const double LabelMinimumSweep = 0.42;
     private const double HoverDimming = 0.42;
 
-    private readonly CanvasControl canvas = new();
+    private readonly Grid host = new();
     private readonly SunburstCenter center = new();
+    private CanvasControl canvas;
     private LocationScanModel? model;
+    private bool listening;
 
     public SunburstChart()
     {
         IsTabStop = true;
         UseSystemFocusVisuals = true;
-        var grid = new Grid();
-        grid.Children.Add(canvas);
-        grid.Children.Add(center);
-        Content = grid;
-        canvas.Draw += OnDraw;
-        canvas.PointerMoved += OnPointerMoved;
-        canvas.PointerExited += (_, _) => SetHovered(null);
-        canvas.Tapped += OnTapped;
-        canvas.DoubleTapped += OnDoubleTapped;
-        canvas.PointerPressed += (_, _) => Focus(FocusState.Pointer);
+        canvas = MakeCanvas();
+        host.Children.Add(canvas);
+        host.Children.Add(center);
+        Content = host;
         KeyDown += OnKeyDown;
         ActualThemeChanged += (_, _) => canvas.Invalidate();
         SizeChanged += (_, _) => canvas.Invalidate();
+        // Views are unloaded and loaded again (a cached overview coming back, a dialog opening), so the chart lets go
+        // of its model and its Win2D resources on the way out and takes them up again on the way in.
+        Loaded += (_, _) =>
+        {
+            if (!host.Children.Contains(canvas))
+            {
+                canvas = MakeCanvas();
+                host.Children.Insert(0, canvas);
+            }
+            Listen(true);
+            Refresh();
+        };
         Unloaded += (_, _) =>
         {
-            Model = null;
+            // Moving an element raises its new Loaded before the old Unloaded; a late Unloaded changes nothing.
+            if (IsLoaded) return;
+            Listen(false);
             // Win2D resources belong to the control; release them with it.
+            host.Children.Remove(canvas);
             canvas.RemoveFromVisualTree();
         };
     }
@@ -67,12 +78,32 @@ public sealed partial class SunburstChart : UserControl
         get => model;
         set
         {
-            if (model is not null) model.PropertyChanged -= OnModelChanged;
+            Listen(false);
             model = value;
-            if (model is not null) model.PropertyChanged += OnModelChanged;
+            Listen(true);
             center.Model = model;
             Refresh();
         }
+    }
+
+    private CanvasControl MakeCanvas()
+    {
+        var made = new CanvasControl();
+        made.Draw += OnDraw;
+        made.PointerMoved += OnPointerMoved;
+        made.PointerExited += (_, _) => SetHovered(null);
+        made.Tapped += OnTapped;
+        made.DoubleTapped += OnDoubleTapped;
+        made.PointerPressed += (_, _) => Focus(FocusState.Pointer);
+        return made;
+    }
+
+    private void Listen(bool on)
+    {
+        if (model is null || listening == on) return;
+        if (on) model.PropertyChanged += OnModelChanged;
+        else model.PropertyChanged -= OnModelChanged;
+        listening = on;
     }
 
     private void OnModelChanged(object? sender, PropertyChangedEventArgs e) => Refresh();

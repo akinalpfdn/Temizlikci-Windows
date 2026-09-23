@@ -15,13 +15,24 @@ public sealed partial class ContentsList : UserControl
     private LocationScanModel? model;
     private IReadOnlyList<NodeRef>? shownRows;
     private bool updatingSelection;
+    private bool listening;
     private bool showsChanges;
 
     public ContentsList()
     {
         InitializeComponent();
         ActualThemeChanged += (_, _) => Rebuild(force: true);
-        Unloaded += (_, _) => Model = null;
+        // A cached overview is unloaded and loaded again as people move around; the list follows its model again.
+        Loaded += (_, _) =>
+        {
+            Listen(true);
+            Rebuild(force: true);
+        };
+        Unloaded += (_, _) =>
+        {
+            // Moving an element raises its new Loaded before the old Unloaded; a late Unloaded changes nothing.
+            if (!IsLoaded) Listen(false);
+        };
     }
 
     /// <summary>Raised when the Change column appears or goes, which moves <see cref="MinimumWidth"/>.</summary>
@@ -46,11 +57,19 @@ public sealed partial class ContentsList : UserControl
         get => model;
         set
         {
-            if (model is not null) model.PropertyChanged -= OnModelChanged;
+            Listen(false);
             model = value;
-            if (model is not null) model.PropertyChanged += OnModelChanged;
+            Listen(true);
             Rebuild(force: true);
         }
+    }
+
+    private void Listen(bool on)
+    {
+        if (model is null || listening == on) return;
+        if (on) model.PropertyChanged += OnModelChanged;
+        else model.PropertyChanged -= OnModelChanged;
+        listening = on;
     }
 
     private void OnModelChanged(object? sender, PropertyChangedEventArgs e)
